@@ -1,0 +1,3 @@
+[submodule "src/3rdParty/efsw"]
+	path = src/3rdParty/efsw
+	url = https://github.com/SpartanJ/efsw
