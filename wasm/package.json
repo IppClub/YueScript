@@ -1,37 +1,37 @@
 {
-	"name": "yuescript",
+	"name": "e",
 	"version": "0.26.0",
 	"description": "A Moonscript dialect compiles to Lua.",
-	"main": "./dist/esm/yuescript.mjs",
+	"main": "./dist/esm/e.mjs",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/pigpigyyy/Yuescript.git"
+		"url": "git+https://github.com/pigpigyyy/E.git"
 	},
-	"keywords": ["lua", "cpp", "moonscript", "yuescript", "transpiler"],
+	"keywords": ["lua", "cpp", "moonscript", "e", "transpiler"],
 	"exports": {
 		".": {
-			"import": "./dist/esm/yuescript.mjs",
-			"require": "./dist/cjs/yuescript.js",
-			"types": "./dist/esm/yuescript.d.ts"
+			"import": "./dist/esm/e.mjs",
+			"require": "./dist/cjs/e.cjs",
+			"types": "./dist/esm/e.d.ts"
 		},
-		"./yuescript.wasm": {
-			"import": "./dist/esm/yuescript.wasm",
-			"require": "./dist/cjs/yuescript.wasm"
+		"./e.wasm": {
+			"import": "./dist/esm/e.wasm",
+			"require": "./dist/cjs/e.wasm"
 		},
-		"./yuescript.wasm.map": {
-			"import": "./dist/esm/yuescript.wasm.map",
-			"require": "./dist/cjs/yuescript.wasm.map"
+		"./e.wasm.map": {
+			"import": "./dist/esm/e.wasm.map",
+			"require": "./dist/cjs/e.wasm.map"
 		}
 	},
 	"files": [
-		"./dist/cjs/yuescript.cjs",
-		"./dist/esm/yuescript.mjs",
-		"./dist/esm/yuescript.d.ts",
-		"./dist/esm/yuescript.wasm",
-		"./dist/esm/yuescript.wasm.map",
-		"./dist/cjs/yuescript.d.ts",
-		"./dist/cjs/yuescript.wasm",
-		"./dist/cjs/yuescript.wasm.map"
+		"./dist/cjs/e.cjs",
+		"./dist/esm/e.mjs",
+		"./dist/esm/e.d.ts",
+		"./dist/esm/e.wasm",
+		"./dist/esm/e.wasm.map",
+		"./dist/cjs/e.d.ts",
+		"./dist/cjs/e.wasm",
+		"./dist/cjs/e.wasm.map"
 
 	],
 	"browser": {
@@ -47,15 +47,15 @@
 	"author": "pigpigyyy",
 	"license": "MIT",
 	"bugs": {
-		"url": "https://github.com/pigpigyyy/Yuescript/issues"
+		"url": "https://github.com/pigpigyyy/E/issues"
 	},
-	"homepage": "https://github.com/pigpigyyy/Yuescript#readme",
+	"homepage": "https://github.com/pigpigyyy/E#readme",
 	"tsd": {
 		"compilerOptions": {
 			"lib": ["ES2017", "DOM"]
 		}
 	},
-	"types": "./dist/esm/yuescript.d.ts",
+	"types": "./dist/esm/e.d.ts",
 	"engines": {
 		"node": ">=18.0.0"
 	},

@@ -3,20 +3,20 @@ sidebar: auto
 title: Reference
 ---
 
-# YueScript
+# E
 
-<img src="/image/yuescript.svg" width="300px" height="300px" alt="logo"/>
+<img src="/image/e.svg" width="300px" height="300px" alt="logo"/>
 
 ## Introduction
 
-YueScript is a dynamic language that compiles to Lua. And it's a [MoonScript](https://github.com/leafo/moonscript) dialect. The codes written in YueScript are expressive and extremely concise. And it is suitable for writing some changing application logic with more maintainable codes and runs in a Lua embeded environment such as games or website servers.
+E is a dynamic language that compiles to Lua. And it's a [MoonScript](https://github.com/leafo/moonscript) dialect. The codes written in E are expressive and extremely concise. And it is suitable for writing some changing application logic with more maintainable codes and runs in a Lua embeded environment such as games or website servers.
 
-Yue (月) is the name of moon in Chinese and it's pronounced as [jyɛ].
+E (月) is the name of moon in Chinese and it's pronounced as [jyɛ].
 
-### An Overview of YueScript
+### An Overview of E
 ```moonscript
 -- import syntax
-import p, to_lua from "yue"
+import p, to_lua from "e"
 
 -- object literals
 inventory =
@@ -58,10 +58,10 @@ with apple
 -- js-like export syntax
 export 🌛 = "月之脚本"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 -- import syntax
-import p, to_lua from "yue"
+import p, to_lua from "e"
 
 -- object literals
 inventory =
@@ -112,16 +112,16 @@ export 🌛 = "月之脚本"
 &emsp;Install [luarocks](https://luarocks.org), a package manager for Lua modules. Then install it as a Lua module and executable with:
 
 ```
-> luarocks install yuescript
+> luarocks install e
 ```
 
-&emsp;Or you can build `yue.so` file with:
+&emsp;Or you can build `e.so` file with:
 
 ```
 > make shared LUAI=/usr/local/include/lua LUAL=/usr/local/lib/lua
 ```
 
-&emsp;Then get the binary file from path **bin/shared/yue.so**.
+&emsp;Then get the binary file from path **bin/shared/e.so**.
 
 * **Build Binary Tool**
 
@@ -130,12 +130,12 @@ export 🌛 = "月之脚本"
 > make install
 ```
 
-&emsp;Build YueScript tool without macro feature:
+&emsp;Build E tool without macro feature:
 ```
 > make install NO_MACRO=true
 ```
 
-&emsp;Build YueScript tool without built-in Lua binary:
+&emsp;Build E tool without built-in Lua binary:
 ```
 > make install NO_LUA=true
 ```
@@ -144,38 +144,38 @@ export 🌛 = "月之脚本"
 
 &emsp;You can download precompiled binary files, including binary executable files compatible with different Lua versions and library files.
 
-&emsp;Download precompiled binary files from [here](https://github.com/IppClub/YueScript/releases).
+&emsp;Download precompiled binary files from [here](https://github.com/IppClub/E/releases).
 
 ## Usage
 
 ### Lua Module
 
-&emsp;Use YueScript module in Lua:
+&emsp;Use E module in Lua:
 
 * **Case 1**
-Require "your_yuescript_entry.yue" in Lua.
+Require "your_e_entry.e" in Lua.
 ```Lua
-require("yue")("your_yuescript_entry")
+require("e")("your_e_entry")
 ```
-&emsp;And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
+&emsp;And this code still works when you compile "your_e_entry.e"  to "your_e_entry.lua" in the same path. In the rest E files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
 
 * **Case 2**
-Require YueScript module and rewite message by hand.
+Require E module and rewite message by hand.
 ```lua
-local yue = require("yue")
-yue.insert_loader()
+local e = require("e")
+e.insert_loader()
 local success, result = xpcall(function()
-  return require("yuescript_module_name")
+  return require("e_module_name")
 end, function(err)
-  return yue.traceback(err)
+  return e.traceback(err)
 end)
 ```
 
 * **Case 3**
-Use the YueScript compiler function in Lua.
+Use the E compiler function in Lua.
 ```lua
-local yue = require("yue")
-local codes, err, globals = yue.to_lua([[
+local e = require("e")
+local codes, err, globals = e.to_lua([[
 f = ->
   print "hello world"
 f!
@@ -191,12 +191,12 @@ f!
 })
 ```
 
-### YueScript Tool
+### E Tool
 
-&emsp;Use YueScript tool with:
+&emsp;Use E tool with:
 ```
-> yue -h
-Usage: yue [options|files|directories] ...
+> e -h
+Usage: e [options|files|directories] ...
 
    -h       Print this message
    -e str   Execute a file or raw codes
@@ -224,12 +224,12 @@ Usage: yue [options|files|directories] ...
    in a single line to start/stop multi-line mode
 ```
 &emsp;&emsp;Use cases:
-&emsp;&emsp;Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
-&emsp;&emsp;Compile and save results to a target path:  **yue -t /target/path/ .**
-&emsp;&emsp;Compile and reserve debug info:  **yue -l .**
-&emsp;&emsp;Compile and generate minified codes:  **yue -m .**
-&emsp;&emsp;Execute raw codes:  **yue -e 'print 123'**
-&emsp;&emsp;Execute a YueScript file:  **yue -e main.yue**
+&emsp;&emsp;Recursively compile every E file with extension **.e** under current path:  **e .**
+&emsp;&emsp;Compile and save results to a target path:  **e -t /target/path/ .**
+&emsp;&emsp;Compile and reserve debug info:  **e -l .**
+&emsp;&emsp;Compile and generate minified codes:  **e -m .**
+&emsp;&emsp;Execute raw codes:  **e -e 'print 123'**
+&emsp;&emsp;Execute a E file:  **e -e main.e**
 
 ## Macro
 
@@ -265,7 +265,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 macro PI2 = -> math.pi * 2
 area = $PI2 * 5
@@ -298,11 +298,11 @@ if $and f1!, f2!, f3!
 
 ### Insert Raw Codes
 
-A macro function can either return a YueScript string or a config table containing Lua codes.
+A macro function can either return a E string or a config table containing Lua codes.
 ```moonscript
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "fail to assign to the Yue macro defined variable"
+macro eFunc = (var) -> "local #{var} = ->"
+$eFunc funcA
+funcA = -> "fail to assign to the E macro defined variable"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
@@ -324,11 +324,11 @@ if cond then
 end
 ]==]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "fail to assign to the Yue macro defined variable"
+macro eFunc = (var) -> "local #{var} = ->"
+$eFunc funcA
+funcA = -> "fail to assign to the E macro defined variable"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
@@ -386,7 +386,7 @@ import "utils" as {
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Builtin Macro
 
@@ -395,7 +395,7 @@ There are some builtin macros but you can override them by declaring macros with
 print $FILE -- get string of current module name
 print $LINE -- get number 2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print $FILE -- get string of current module name
 print $LINE -- get number 2
@@ -404,7 +404,7 @@ print $LINE -- get number 2
 
 ### Generating Macros with Macros
 
-In YueScript, macro functions allow you to generate code at compile time. By nesting macro functions, you can create more complex generation patterns. This feature enables you to define a macro function that generates another macro function, allowing for more dynamic code generation.
+In E, macro functions allow you to generate code at compile time. By nesting macro functions, you can create more complex generation patterns. This feature enables you to define a macro function that generates another macro function, allowing for more dynamic code generation.
 
 ```moonscript
 macro Enum = (...) ->
@@ -446,18 +446,18 @@ print "Valid enum type:", $BodyType Static
 
 ## Operator
 
-All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And Yuescipt offers some other special operators to write more expressive codes.
+All of Lua's binary and unary operators are available. Additionally **!=** is as an alias for **~=**, and either **\\** or **::** can be used to write a chaining function call like `tb\func!` or `tb::func!`. And E offers some other special operators to write more expressive codes.
 
 ```moonscript
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Chaining Comparisons
 
@@ -506,7 +506,7 @@ print v(1) > v(2) <= v(3)
 	false
 ]]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 v = (x) ->
 	print x
@@ -529,7 +529,7 @@ print v(1) > v(2) <= v(3)
 	false
 ]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The middle expression is only evaluated once, rather than twice as it would be if the expression were written as `v(1) < v(2) and v(2) <= v(3)`. However, the order of evaluations in a chained comparison is undefined. It is strongly recommended not to use expressions with side effects (such as printing) in chained comparisons. If side effects are required, the short-circuit `and` operator should be used explicitly.
 
@@ -540,12 +540,12 @@ The **[] =** operator is used to append values to tables.
 tab = []
 tab[] = "Value"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tab = []
 tab[] = "Value"
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Table Spreading
 
@@ -567,7 +567,7 @@ a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 parts =
 	* "shoulders"
@@ -608,7 +608,7 @@ print d.value
 
 close _ = <close>: -> print "out of scope"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 mt = {}
 add = (right) => &lt;&gt;: mt, value: @value + right.value
@@ -638,7 +638,7 @@ print tb.value
 tb.<> = __index: {item: "hello"}
 print tb.item
 ```
-<YueDisplay>
+<EDisplay>
 
 <pre>
 -- create with metatable containing field "value"
@@ -648,7 +648,7 @@ print tb.value
 tb.&lt;&gt; = __index: {item: "hello"}
 print tb.item
 </pre>
-</YueDisplay>
+</EDisplay>
 
 * **Metatable Destructure**
 Destruct metatable with metamethod key surrounded by **<>**.
@@ -657,7 +657,7 @@ Destruct metatable with metamethod key surrounded by **<>**.
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {item, :new, :&lt;close&gt;, &lt;index&gt;: getter} = tb
 print item, new, close, getter
@@ -682,7 +682,7 @@ with? io.open "test.txt", "w"
   \write "hello"
   \close!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func?!
 print abc?["hello world"]?.xyz
@@ -716,7 +716,7 @@ readFile "example.txt"
   |> render
   |> print
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 "hello" |> print
 1 |> print 2 -- insert pipe item as the first argument
@@ -741,7 +741,7 @@ func a ?? {}
 
 a ??= false
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 local a, b, c, d
 a = b ?? c ?? d
@@ -796,7 +796,7 @@ tb =
       tb: { }
 
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 -- assignment with implicit object
 list =
@@ -838,7 +838,7 @@ tb =
       func: => @value + 2
       tb: { }
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Module
 
@@ -870,7 +870,7 @@ do
   import "lpeg" as :C, :Ct, :Cmt
   import "export" as {one, two, Something:{umm:{ch}}}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 -- used as table destructuring
 do
@@ -919,7 +919,7 @@ export y = ->
 export class Something
   umm: "cool"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 export a, b, c = 1, 2, 3
 export cool = "cat"
@@ -943,12 +943,12 @@ Doing named export with destructuring.
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = 'default'}} = tb
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
-export :loadstring, to_lua: tolua = yue
+export :loadstring, to_lua: tolua = e
 export {itemA: {:fieldA = 'default'}} = tb
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Export named items from module without creating local variables.
 
@@ -957,7 +957,7 @@ export.itemA = tb
 export.<index> = items
 export["a-b-c"] = 123
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 export.itemA = tb
 export.&lt;index&gt; = items
@@ -980,7 +980,7 @@ else
 export with tmp
   j = 2000
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 d, e, f = 3, 2, 1
 export d, e, f
@@ -1003,13 +1003,13 @@ export default ->
   print "hello"
   123
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 export default ->
   print "hello"
   123
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Assignment
 
@@ -1020,7 +1020,7 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- uses the existing variable
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 hello = "world"
 a, b, c = 1, 2, 3
@@ -1041,7 +1041,7 @@ x %= 10
 s ..= "world" -- will add a new local if local variable is not exist
 arg or= "default value"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x = 1
 x += 1
@@ -1061,7 +1061,7 @@ You can do chaining assignment to assign multiple items to hold the same value.
 a = b = c = d = e = 0
 x = y = z = f!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 a = b = c = d = e = 0
 x = y = z = f!
@@ -1085,7 +1085,7 @@ do
   a = 1
   B = 2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 do
   local a = 1
@@ -1121,7 +1121,7 @@ do
   B = 2
   local Temp = "a local value"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 do
   global a = 1
@@ -1138,7 +1138,7 @@ do
   B = 2
   local Temp = "a local value"
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Destructuring Assignment
 
@@ -1154,7 +1154,7 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
-<YueDisplay>
+<EDisplay>
 
 <pre>
 thing = [1, 2]
@@ -1178,7 +1178,7 @@ print hello, the_day
 
 :day = obj -- OK to do simple destructuring without braces
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 obj = {
   hello: "world"
@@ -1207,7 +1207,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 obj2 = {
   numbers: [1, 2, 3, 4]
@@ -1232,7 +1232,7 @@ If the destructuring statement is complicated, feel free to spread it out over a
   }
 } = obj2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {
   numbers: [first, second]
@@ -1248,44 +1248,44 @@ It's common to extract values from at table and assign them the local variables 
 ```moonscript
 {:concat, :insert} = table
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {:concat, :insert} = table
 </pre>
-</YueDisplay>
+</EDisplay>
 
 This is effectively the same as import, but we can rename fields we want to extract by mixing the syntax:
 
 ```moonscript
 {:mix, :max, random: rand} = math
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {:mix, :max, random: rand} = math
 </pre>
-</YueDisplay>
+</EDisplay>
 
 You can write default values while doing destructuring like:
 
 ```moonscript
 {:name = "nameless", :job = "jobless"} = person
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {:name = "nameless", :job = "jobless"} = person
 </pre>
-</YueDisplay>
+</EDisplay>
 
 You can use `_` as placeholder when doing a list destructuring:
 
 ```moonscript
 [_, two, _, four] = items
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 [_, two, _, four] = items
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Destructuring In Other Places
 
@@ -1300,7 +1300,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tuples = [
   ["hello", "world"]
@@ -1322,7 +1322,7 @@ We know each element in the array table is a two item tuple, so we can unpack it
 if user := database.find_user "moon"
   print user.name
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 if user := database.find_user "moon"
   print user.name
@@ -1337,7 +1337,7 @@ elseif world := os.getenv "world"
 else
   print "nothing :("
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 if hello := os.getenv "hello"
   print "You have hello", hello
@@ -1354,7 +1354,7 @@ if success, result := pcall -> "get result without problems"
   print result -- variable result is scoped
 print "OK"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 if success, result := pcall -> "get result without problems"
   print result -- variable result is scoped
@@ -1370,7 +1370,7 @@ while byte := stream\read_one!
   -- do something with the byte
   print byte
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 while byte := stream\read_one!
   -- do something with the byte
@@ -1389,7 +1389,7 @@ count = select '#', ...
 first = select 1, ...
 print ok, count, first
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 list = [1, 2, 3, 4, 5]
 fn = (ok) -> ok, table.unpack list
@@ -1402,7 +1402,7 @@ print ok, count, first
 
 ## Whitespace
 
-YueScript is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
+E is a whitespace significant language. You have to write some code block in the same indent with space **' '** or tab **'\t'** like function body, value list and some control blocks. And expressions containing different whitespaces might mean different things. Tab is treated like 4 space, but it's better not mix the use of spaces and tabs.
 
 ### Multiline Chaining
 
@@ -1415,7 +1415,7 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 Rx.Observable
   .fromRange 1, 8
@@ -1440,7 +1440,7 @@ It's OK.
 
 func --[[port]] 3000, --[[ip]] "192.168.1.1"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 -- I am a comment
 
@@ -1463,16 +1463,16 @@ The syntax for Lua error handling in a common form.
 try
   func 1, 2, 3
 catch err
-  print yue.traceback err
+  print e.traceback err
 
 success, result = try
   func 1, 2, 3
 catch err
-  yue.traceback err
+  e.traceback err
 
 try func 1, 2, 3
 catch err
-  print yue.traceback err
+  print e.traceback err
 
 success, result = try func 1, 2, 3
 
@@ -1483,24 +1483,24 @@ try
 -- working with if assignment pattern
 if success, result := try func 1, 2, 3
 catch err
-    print yue.traceback err
+    print e.traceback err
   print result
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 try
   func 1, 2, 3
 catch err
-  print yue.traceback err
+  print e.traceback err
 
 success, result = try
   func 1, 2, 3
 catch err
-  yue.traceback err
+  e.traceback err
 
 try func 1, 2, 3
 catch err
-  print yue.traceback err
+  print e.traceback err
 
 success, result = try func 1, 2, 3
 
@@ -1511,10 +1511,10 @@ try
 -- working with if assignment pattern
 if success, result := try func 1, 2, 3
 catch err
-    print yue.traceback err
+    print e.traceback err
   print result
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Try?
 
@@ -1537,7 +1537,7 @@ catch e
   print e
   e
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 a, b, c = try? func!
 
@@ -1565,12 +1565,12 @@ Syntax support for Lua 5.4 attributes. And you can still use both the `const` an
 const a = 123
 close _ = <close>: -> print "Out of scope."
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 const a = 123
 close _ = &lt;close&gt;: -> print "Out of scope."
 </pre>
-</YueDisplay>
+</EDisplay>
 
 You can do desctructuring with variables attributed as constant.
 
@@ -1578,12 +1578,12 @@ You can do desctructuring with variables attributed as constant.
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 const {:a, :b, c, d} = tb
 -- a = 1
 </pre>
-</YueDisplay>
+</EDisplay>
 
 You can also declare a global variable to be `const`.
 
@@ -1591,12 +1591,12 @@ You can also declare a global variable to be `const`.
 global const Constant = 123
 -- Constant = 1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 global const Constant = 123
 -- Constant = 1
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Literals
 
@@ -1612,7 +1612,7 @@ some_string = "Here is a string
 -- String interpolation is only available in double quoted strings.
 print "I am #{math.random! * 100}% sure."
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_string = "Here is a string
   that has a line break in it."
@@ -1621,7 +1621,7 @@ some_string = "Here is a string
 -- String interpolation is only available in double quoted strings.
 print "I am #{math.random! * 100}% sure."
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Number Literals
 
@@ -1632,13 +1632,13 @@ integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
-<YueDisplay>
+<EDisplay>
 
 <pre>
 integer = 1_000_000
 hex = 0xEF_BB_BF
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Function Literals
 
@@ -1648,7 +1648,7 @@ All functions are created using a function expression. A simple function is deno
 my_function = ->
 my_function() -- call the empty function
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_function = ->
 my_function() -- call the empty function
@@ -1664,7 +1664,7 @@ func_b = ->
   value = 100
   print "The value:", value
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func_a = -> print "hello world"
 
@@ -1680,7 +1680,7 @@ If a function has no arguments, it can be called using the ! operator, instead o
 func_a!
 func_b()
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func_a!
 func_b()
@@ -1692,11 +1692,11 @@ Functions with arguments can be created by preceding the arrow with a list of ar
 ```moonscript
 sum = (x, y) -> print "sum", x + y
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 sum = (x, y) -> print "sum", x + y
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Functions can be called by listing the arguments after the name of an expression that evaluates to a function. When chaining together function calls, the arguments are applied to the closest function to the left.
 
@@ -1706,25 +1706,25 @@ print sum 10, 20
 
 a b c "a", "b", "c"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 sum 10, 20
 print sum 10, 20
 
 a b c "a", "b", "c"
 </pre>
-</YueDisplay>
+</EDisplay>
 
 In order to avoid ambiguity in when calling functions, parentheses can also be used to surround the arguments. This is required here in order to make sure the right arguments get sent to the right functions.
 
 ```moonscript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print "x:", sum(10, 20), "y:", sum(30, 40)
 </pre>
-</YueDisplay>
+</EDisplay>
 
 There must not be any space between the opening parenthesis and the function.
 
@@ -1734,7 +1734,7 @@ Functions will coerce the last statement in their body into a return statement, 
 sum = (x, y) -> x + y
 print "The sum is ", sum 10, 20
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 sum = (x, y) -> x + y
 print "The sum is ", sum 10, 20
@@ -1746,11 +1746,11 @@ And if you need to explicitly return, you can use the return keyword:
 ```moonscript
 sum = (x, y) -> return x + y
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 sum = (x, y) -> return x + y
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Just like in Lua, functions can return multiple values. The last statement must be a list of values separated by commas:
 
@@ -1758,7 +1758,7 @@ Just like in Lua, functions can return multiple values. The last statement must 
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
@@ -1772,11 +1772,11 @@ Because it is an idiom in Lua to send an object as the first argument when calli
 ```moonscript
 func = (num) => @value + num
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func = (num) => @value + num
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Argument Defaults
 
@@ -1787,7 +1787,7 @@ my_function = (name = "something", height = 100) ->
   print "Hello I am", name
   print "My height is", height
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_function = (name = "something", height = 100) ->
   print "Hello I am", name
@@ -1801,7 +1801,7 @@ An argument default value expression is evaluated in the body of the function in
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_args = (x = 100, y = x + 1000) ->
   print x + y
@@ -1820,7 +1820,7 @@ b = x-10
 c = x -y
 d = x- z
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 a = x - 10
 b = x-10
@@ -1839,7 +1839,7 @@ Where there is a space following a variable and a string literal, the function c
 x = func"hello" + 100
 y = func "hello" + 100
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x = func"hello" + 100
 y = func "hello" + 100
@@ -1861,7 +1861,7 @@ cool_func 1, 2,
   5, 6,
   7, 8
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_func 5, 4, 3,
   8, 9, 10
@@ -1899,7 +1899,7 @@ x = [
   8, 9, 10
 ]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x = [
   1, 2, 3, 4, a_func 4, 5,
@@ -1917,7 +1917,7 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 y = [ my_func 1, 2, 3,
    4, 5,
@@ -1941,7 +1941,7 @@ if func 1, 2, 3,
   print "hello"
   print "I am inside if"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 if func 1, 2, 3,
   "hello",
@@ -1955,7 +1955,7 @@ if func 1, 2, 3,
   print "hello"
   print "I am inside if"
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Backcalls
 
@@ -1965,7 +1965,7 @@ Backcalls are used for unnesting callbacks. They are defined using arrows pointe
 <- f
 print "hello"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 <- f
 print "hello"
@@ -1978,7 +1978,7 @@ Fat arrow functions are also available.
 <= f
 print @value
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 <= f
 print @value
@@ -1991,7 +1991,7 @@ You can specify a placeholder for where you want the backcall function to go as 
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 (x) <- map _, [1, 2, 3]
 x * 2
@@ -2008,7 +2008,7 @@ result, msg = do
   check info
 print result, msg
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 result, msg = do
   data <- readAsync "filename.txt"
@@ -2026,11 +2026,11 @@ Like in Lua, tables are delimited in curly braces.
 ```moonscript
 some_values = [1, 2, 3, 4]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_values = [1, 2, 3, 4]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Unlike Lua, assigning a value to a key in a table is done with **:** (instead of **=**).
 
@@ -2041,7 +2041,7 @@ some_values = {
   ["favorite food"]: "rice"
 }
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_values = {
   name: "Bill",
@@ -2049,7 +2049,7 @@ some_values = {
   ["favorite food"]: "rice"
 }
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The curly braces can be left off if a single table of key value pairs is being assigned.
 
@@ -2059,14 +2059,14 @@ profile =
   shoe_size: 13,
   favorite_foods: ["ice cream", "donuts"]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 profile =
   height: "4 feet",
   shoe_size: 13,
   favorite_foods: ["ice cream", "donuts"]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Newlines can be used to delimit values instead of a comma (or both):
 
@@ -2078,7 +2078,7 @@ values = {
   occupation: "crime fighting"
 }
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 values = {
   1, 2, 3, 4
@@ -2087,7 +2087,7 @@ values = {
   occupation: "crime fighting"
 }
 </pre>
-</YueDisplay>
+</EDisplay>
 
 When creating a single line table literal, the curly braces can also be left off:
 
@@ -2096,13 +2096,13 @@ my_function dance: "Tango", partner: "none"
 
 y = type: "dog", legs: 4, tails: 1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_function dance: "Tango", partner: "none"
 
 y = type: "dog", legs: 4, tails: 1
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The keys of a table literal can be language keywords without being escaped:
 
@@ -2112,14 +2112,14 @@ tbl = {
   end: "hunger"
 }
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tbl = {
   do: "something"
   end: "hunger"
 }
 </pre>
-</YueDisplay>
+</EDisplay>
 
 If you are constructing a table out of variables and wish the keys to be the same as the variable names, then the **:** prefix operator can be used:
 
@@ -2130,7 +2130,7 @@ person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 hair = "golden"
 height = 200
@@ -2138,7 +2138,7 @@ person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
 </pre>
-</YueDisplay>
+</EDisplay>
 
 If you want the key of a field in the table to to be result of an expression, then you can wrap it in **[ ]**, just like in Lua. You can also use a string literal directly as a key, leaving out the square brackets. This is useful if your key has any special characters.
 
@@ -2148,14 +2148,14 @@ t = {
   "hello world": true
 }
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 t = {
   [1 + 2]: "hello"
   "hello world": true
 }
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Lua tables have both an array part and a hash part, but sometimes you want to make a semantic distinction between array and hash usage when writing Lua tables. Then you can write Lua table with **[ ]** instead of **{ }** to represent an array table and writing any key value pair in a list table won't be allowed.
 
@@ -2163,12 +2163,12 @@ Lua tables have both an array part and a hash part, but sometimes you want to ma
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Comprehensions
 
@@ -2182,7 +2182,7 @@ The following creates a copy of the items table but with all the values doubled.
 items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
@@ -2194,22 +2194,22 @@ The items included in the new table can be restricted with a when clause:
 ```moonscript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Because it is common to iterate over the values of a numerically indexed table, an **\*** operator is introduced. The doubled example can be rewritten as:
 
 ```moonscript
 doubled = [item * 2 for item in *items]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 doubled = [item * 2 for item in *items]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The for and when clauses can be chained as much as desired. The only requirement is that a comprehension has at least one for clause.
 
@@ -2222,7 +2222,7 @@ y_coords = [9, 2, 3]
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x_coords = [4, 5, 6, 7]
 y_coords = [9, 2, 3]
@@ -2237,11 +2237,11 @@ Numeric for loops can also be used in comprehensions:
 ```moonscript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 evens = [i for i = 1, 100 when i % 2 == 0]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Table Comprehensions
 
@@ -2258,7 +2258,7 @@ thing = {
 
 thing_copy = {k, v for k, v in pairs thing}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 thing = {
   color: "red"
@@ -2273,11 +2273,11 @@ thing_copy = {k, v for k, v in pairs thing}
 ```moonscript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 no_color = {k, v for k, v in pairs thing when k != "color"}
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The **\*** operator is also supported. Here we create a square root look up table for a few numbers.
 
@@ -2285,12 +2285,12 @@ The **\*** operator is also supported. Here we create a square root look up tabl
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The key-value tuple in a table comprehension can also come from a single expression, in which case the expression should return two values. The first is used as the key and the second is used as the value:
 
@@ -2300,7 +2300,7 @@ In this example we convert an array of pairs to a table where the first item in 
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
@@ -2316,33 +2316,33 @@ Here we can set the minimum and maximum bounds, taking all items with indexes be
 ```moonscript
 slice = [item for item in *items[1, 5]]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 slice = [item for item in *items[1, 5]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 Any of the slice arguments can be left off to use a sensible default. In this example, if the max index is left off it defaults to the length of the table. This will take everything but the first element:
 
 ```moonscript
 slice = [item for item in *items[2,]]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 slice = [item for item in *items[2,]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 If the minimum bound is left out, it defaults to 1. Here we only provide a step size and leave the other bounds blank. This takes all odd indexed items: (1, 3, 5, …)
 
 ```moonscript
 slice = [item for item in *items[,,2]]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 slice = [item for item in *items[,,2]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## For Loop
 
@@ -2358,7 +2358,7 @@ for k = 1, 15, 2 -- an optional step provided
 for key, value in pairs object
   print key, value
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 for i = 10, 20
   print i
@@ -2377,7 +2377,7 @@ The slicing and **\*** operators can be used, just like with comprehensions:
 for item in *items[2, 4]
   print item
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 for item in *items[2, 4]
   print item
@@ -2391,7 +2391,7 @@ for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 for item in *items do print item
 
@@ -2410,7 +2410,7 @@ doubled_evens = for i = 1, 20
   else
     i
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 doubled_evens = for i = 1, 20
   if i % 2 == 0
@@ -2428,7 +2428,7 @@ For example, to find the first number greater than 10:
 first_large = for n in *numbers
   break n if n > 10
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 first_large = for n in *numbers
   break n if n > 10
@@ -2448,7 +2448,7 @@ func_b = -> return for i = 1, 10 do i
 print func_a! -- prints nil
 print func_b! -- prints table object
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func_a = -> for i = 1, 10 do print i
 func_b = -> return for i = 1, 10 do i
@@ -2471,7 +2471,7 @@ repeat
   i -= 1
 until i == 0
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 10
 repeat
@@ -2493,7 +2493,7 @@ while i > 0
 
 while running == true do my_function!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 10
 while i > 0
@@ -2512,7 +2512,7 @@ until i == 0
 
 until running == false do my_function!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 10
 until i == 0
@@ -2535,7 +2535,7 @@ while i < 10
   continue if i % 2 == 0
   print i
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 0
 while i < 10
@@ -2553,14 +2553,14 @@ odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_numbers = [1, 2, 3, 4, 5, 6]
 odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Conditionals
 
@@ -2571,7 +2571,7 @@ if have_coins
 else
   print "No coins"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 have_coins = false
 if have_coins
@@ -2587,7 +2587,7 @@ A short syntax for single statements can also be used:
 have_coins = false
 if have_coins then print "Got coins" else print "No coins"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 have_coins = false
 if have_coins then print "Got coins" else print "No coins"
@@ -2600,7 +2600,7 @@ Because if statements can be used as expressions, this can also be written as:
 have_coins = false
 print if have_coins then "Got coins" else "No coins"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 have_coins = false
 print if have_coins then "Got coins" else "No coins"
@@ -2623,7 +2623,7 @@ else
 
 print message -- prints: I am very tall
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 is_tall = (name) ->
   if name == "Rob"
@@ -2646,7 +2646,7 @@ The opposite of if is unless:
 unless os.date("%A") == "Monday"
   print "it is not Monday!"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 unless os.date("%A") == "Monday"
   print "it is not Monday!"
@@ -2656,11 +2656,11 @@ unless os.date("%A") == "Monday"
 ```moonscript
 print "You're lucky!" unless math.random! > 0.1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print "You're lucky!" unless math.random! > 0.1
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### In Expression
 
@@ -2675,7 +2675,7 @@ if a in [1, 3, 5, 7]
 if a in list
   print "checking if `a` is in a list"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 a = 5
 
@@ -2690,11 +2690,11 @@ if a in list
 ```moonscript
 print "You're lucky!" unless math.random! > 0.1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print "You're lucky!" unless math.random! > 0.1
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Line Decorators
 
@@ -2703,22 +2703,22 @@ For convenience, the for loop and if statement can be applied to single statemen
 ```moonscript
 print "hello world" if name == "Rob"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print "hello world" if name == "Rob"
 </pre>
-</YueDisplay>
+</EDisplay>
 
 And with basic loops:
 
 ```moonscript
 print "item: ", item for item in *items
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print "item: ", item for item in *items
 </pre>
-</YueDisplay>
+</EDisplay>
 
 And with while loops:
 
@@ -2727,13 +2727,13 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ## Switch
 
@@ -2748,7 +2748,7 @@ switch name := "Dan"
   else
     print "I don't know about you with name #{name}"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 switch name := "Dan"
   when "Robert"
@@ -2774,7 +2774,7 @@ next_number = switch b
   else
     error "can't count that high!"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 b = 1
 next_number = switch b
@@ -2795,7 +2795,7 @@ msg = switch math.random(1, 5)
   when 2 then "you are almost lucky"
   else "not so lucky"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 msg = switch math.random(1, 5)
   when 1 then "you are lucky"
@@ -2818,7 +2818,7 @@ switch math.random(1, 5) when 1
 else
   print "not so lucky"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 switch math.random(1, 5)
   when 1
@@ -2991,7 +2991,7 @@ switch tb
 
 ## Object Oriented Programming
 
-In these examples, the generated Lua code may appear overwhelming. It is best to focus on the meaning of the YueScript code at first, then look into the Lua code if you wish to know the implementation details.
+In these examples, the generated Lua code may appear overwhelming. It is best to focus on the meaning of the E code at first, then look into the Lua code if you wish to know the implementation details.
 
 A simple class:
 
@@ -3006,7 +3006,7 @@ class Inventory
     else
       @items[name] = 1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Inventory
   new: =>
@@ -3035,7 +3035,7 @@ inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 inv = Inventory!
 inv\add_item "t-shirt"
@@ -3064,7 +3064,7 @@ b\give_item "shirt"
 -- will print both pants and shirt
 print item for item in *a.clothes
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Person
   clothes: []
@@ -3089,7 +3089,7 @@ class Person
   new: =>
     @clothes = []
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Person
   new: =>
@@ -3108,7 +3108,7 @@ class BackPack extends Inventory
     if #@items > size then error "backpack is full"
     super name
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class BackPack extends Inventory
   size: 10
@@ -3132,7 +3132,7 @@ class Shelf
 -- will print: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Shelf
   @__inherited: (child) =>
@@ -3168,7 +3168,7 @@ class MyClass extends ParentClass
     -- super as a value is equal to the parent class:
     assert super == ParentClass
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class MyClass extends ParentClass
   a_method: =>
@@ -3194,7 +3194,7 @@ assert b.__class == BackPack
 
 print BackPack.size -- prints 10
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 b = BackPack!
 assert b.__class == BackPack
@@ -3222,11 +3222,11 @@ The name of the class as when it was declared is stored as a string in the __nam
 ```moonscript
 print BackPack.__name -- prints Backpack
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print BackPack.__name -- prints Backpack
 </pre>
-</YueDisplay>
+</EDisplay>
 
 The base object is stored in __base. We can modify this table to add functionality to instances that have already been created and ones that are yet to be created.
 
@@ -3245,7 +3245,7 @@ Things\some_func!
 -- class variables not visible in instances
 assert Things().some_func == nil
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Things
   @some_func: => print "Hello from", @__name
@@ -3271,7 +3271,7 @@ Counter!
 
 print Counter.count -- prints 2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Counter
   @count: 0
@@ -3291,11 +3291,11 @@ The calling semantics of @@ are similar to @. Calling a @@ name will pass the cl
 ```moonscript
 @@hello 1,2,3,4
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 @@hello 1,2,3,4
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Class Declaration Statements
 
@@ -3307,7 +3307,7 @@ Here is an alternative way to create a class variable compared to what's describ
 class Things
   @class_var = "hello world"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Things
   @class_var = "hello world"
@@ -3326,7 +3326,7 @@ class MoreThings
   some_method: =>
     log "hello world: " .. secret
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class MoreThings
   secret = 123
@@ -3347,7 +3347,7 @@ If they are used all by themselves, they are aliases for self and self.__class.
 assert @ == self
 assert @@ == self.__class
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 assert @ == self
 assert @@ == self.__class
@@ -3359,11 +3359,11 @@ For example, a quick way to create a new instance of the same class from an inst
 ```moonscript
 some_instance_method = (...) => @@ ...
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 some_instance_method = (...) => @@ ...
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Constructor Property Promotion
 
@@ -3382,7 +3382,7 @@ class Something
     @@biz = biz
     @@baz = baz
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 class Something
   new: (@foo, @bar, @@biz, @@baz) =>
@@ -3405,7 +3405,7 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
@@ -3422,7 +3422,7 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x = class Bucket
   drops: 0
@@ -3440,7 +3440,7 @@ BigBucket = class extends Bucket
 
 assert Bucket.__name == "BigBucket"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 BigBucket = class extends Bucket
   add_drop: => @drops += 10
@@ -3454,11 +3454,11 @@ You can even leave off the body, meaning you can write a blank anonymous class l
 ```moonscript
 x = class
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 x = class
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### Class Mixing
 
@@ -3481,7 +3481,7 @@ y\func!
 
 assert y.__class.__parent ~= X -- X is not parent of Y
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 MyIndex = __index: var: 1
 
@@ -3518,7 +3518,7 @@ with Person!
   \save!
   print .name
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 with Person!
   .name = "Oswald"
@@ -3534,7 +3534,7 @@ The with statement can also be used as an expression which returns the value it 
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
@@ -3551,7 +3551,7 @@ create_person = (name,  relatives) ->
 
 me = create_person "Leaf", [dad, mother, sister]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 create_person = (name,  relatives) ->
   with Person!
@@ -3571,7 +3571,7 @@ with str := "Hello"
   print "original:", str
   print "upper:", \upper!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 with str := "Hello"
   print "original:", str
@@ -3590,7 +3590,7 @@ with tb
     ["key-name"] = value
   [] = "abc" -- appending to "tb"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 with tb
   [1] = 1
@@ -3608,7 +3608,7 @@ with tb
 with? obj
   print obj.name
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 with? obj
   print obj.name
@@ -3625,7 +3625,7 @@ do
   print var
 print var -- nil here
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 do
   var = "hello"
@@ -3634,7 +3634,7 @@ print var -- nil here
 </pre>
 </YueDisplay>
 
-YueScript's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
+E's **do** can also be used an expression . Allowing you to combine multiple lines into one. The result of the do expression is the last statement in its body.
 
 ```moonscript
 counter = do
@@ -3646,7 +3646,7 @@ counter = do
 print counter!
 print counter!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 counter = do
   i = 0
@@ -3666,7 +3666,7 @@ tbl = {
     1234
 }
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tbl = {
   key: do
@@ -3702,7 +3702,7 @@ run_callback my_object.write
 -- lets us bundle the object into a new function
 run_callback my_object\write
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 my_object = {
   value: 1000
@@ -3742,7 +3742,7 @@ my_func!
 
 print i -- will print 0
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 100
 
@@ -3775,7 +3775,7 @@ my_func = (using nil) ->
 my_func!
 print i -- prints 100, i is unaffected
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 i = 100
 
@@ -3801,7 +3801,7 @@ my_func = (add using k, i) ->
 my_func(22)
 print i, k -- these have been updated
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tmp = 1213
 i, k = 100, 50
@@ -3816,15 +3816,15 @@ print i, k -- these have been updated
 </pre>
 </YueDisplay>
 
-## The YueScript Library
+## The E Library
 
-Access it by `require("yue")`.
+Access it by `require("e")`.
 
-### yue
+### e
 
 **Description:**
 
-The YueScript language library.
+The E language library.
 
 #### version
 
@@ -3832,7 +3832,7 @@ The YueScript language library.
 
 **Description:**
 
-The YueScript version.
+The E version.
 
 **Signature:**
 ```lua
@@ -3852,7 +3852,7 @@ The file separator for the current platform.
 dirsep: string
 ```
 
-#### yue_compiled
+#### e_compiled
 
 **Type:** Field.
 
@@ -3862,7 +3862,7 @@ The compiled module code cache.
 
 **Signature:**
 ```lua
-yue_compiled: {string: string}
+e_compiled: {string: string}
 ```
 
 #### to_lua
@@ -3871,7 +3871,7 @@ yue_compiled: {string: string}
 
 **Description:**
 
-The YueScript compiling function. It compiles the YueScript code to Lua code.
+The E compiling function. It compiles the E code to Lua code.
 
 **Signature:**
 ```lua
@@ -3885,7 +3885,7 @@ to_lua: function(code: string, config?: Config):
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| code | string | The YueScript code. |
+| code | string | The E code. |
 | config | Config | [Optional] The compiler options. |
 
 **Returns:**
@@ -3952,7 +3952,7 @@ read_file: function(filename: string): string
 
 **Description:**
 
-Insert the YueScript loader to the package loaders (searchers).
+Insert the E loader to the package loaders (searchers).
 
 **Signature:**
 ```lua
@@ -3977,7 +3977,7 @@ insert_loader: function(pos?: integer): boolean
 
 **Description:**
 
-Remove the YueScript loader from the package loaders (searchers).
+Remove the E loader from the package loaders (searchers).
 
 **Signature:**
 ```lua
@@ -3996,7 +3996,7 @@ remove_loader: function(): boolean
 
 **Description:**
 
-Loads YueScript code from a string into a function.
+Loads E code from a string into a function.
 
 **Signature:**
 ```lua
@@ -4009,7 +4009,7 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| input | string | The YueScript code. |
+| input | string | The E code. |
 | chunkname | string | The name of the code chunk. |
 | env | table | The environment table. |
 | config | Config | [Optional] The compiler options. |
@@ -4027,7 +4027,7 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 
 **Description:**
 
-Loads YueScript code from a string into a function.
+Loads E code from a string into a function.
 
 **Signature:**
 ```lua
@@ -4040,7 +4040,7 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| input | string | The YueScript code. |
+| input | string | The E code. |
 | chunkname | string | The name of the code chunk. |
 | config | Config | [Optional] The compiler options. |
 
@@ -4057,7 +4057,7 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 
 **Description:**
 
-Loads YueScript code from a string into a function.
+Loads E code from a string into a function.
 
 **Signature:**
 ```lua
@@ -4070,7 +4070,7 @@ loadstring: function(input: string, config?: Config):
 
 | Parameter | Type | Description |
 | --- | --- | --- |
-| input | string | The YueScript code. |
+| input | string | The E code. |
 | config | Config | [Optional] The compiler options. |
 
 **Returns:**
@@ -4086,7 +4086,8 @@ loadstring: function(input: string, config?: Config):
 
 **Description:**
 
-Loads YueScript code from a file into a function.
+Loads E code from a file into a function.
+Loads E code from a file into a function.
 
 **Signature:**
 ```lua
@@ -4145,7 +4146,8 @@ loadfile: function(filename: string, config?: Config):
 
 **Description:**
 
-Loads YueScript code from a file into a function and executes it.
+Loads E code from a file into a function and executes it.
+Loads E code from a file into a function and executes it.
 
 **Signature:**
 ```lua
@@ -4198,7 +4200,7 @@ dofile: function(filename: string, config?: Config): any...
 
 **Description:**
 
-Resolves the YueScript module name to the file path.
+Resolves the E module name to the file path.
 
 **Signature:**
 ```lua
@@ -4225,7 +4227,7 @@ find_modulepath: function(name: string): string
 
 Calls a function in protected mode.
 Catches any errors and returns a status code and results or error object.
-Rewrites the error line number to the original line number in the YueScript code when errors occur.
+Rewrites the error line number to the original line number in the E code when errors occur.
 
 **Signature:**
 ```lua
@@ -4251,8 +4253,8 @@ pcall: function(f: function, ...: any): boolean, any...
 
 **Description:**
 
-Loads a given module. Can be either a Lua module or a YueScript module.
-Rewrites the error line number to the original line number in the YueScript code if the module is a YueScript module and loading fails.
+Loads a given module. Can be either a Lua module or a E module.
+Rewrites the error line number to the original line number in the E code if the module is a E module and loading fails.
 
 **Signature:**
 ```lua
@@ -4309,7 +4311,7 @@ options: Config.Options
 
 **Description:**
 
-The traceback function that rewrites the stack trace line numbers to the original line numbers in the YueScript code.
+The traceback function that rewrites the stack trace line numbers to the original line numbers in the E code.
 
 **Signature:**
 ```lua
@@ -4403,12 +4405,12 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string):
 
 **Description:**
 
-Requires the YueScript module.
-Rewrites the error line number to the original line number in the YueScript code when loading fails.
+Requires the E module.
+Rewrites the error line number to the original line number in the E code when loading fails.
 
 **Signature:**
 ```lua
-metamethod __call: function(self: yue, module: string): any...
+metamethod __call: function(self: e, module: string): any...
 ```
 
 **Parameters:**
@@ -4507,7 +4509,7 @@ Whether the compiler error message should include the line number offset. For in
 line_offset: integer
 ```
 
-#### yue.Config.LuaTarget
+#### e.Config.LuaTarget
 
 **Type:** Enumeration.
 

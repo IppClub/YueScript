@@ -5,18 +5,18 @@ title: 参考手册
 
 # 月之脚本
 
-<img src="/image/yuescript.svg" width="300px" height="300px" alt="logo"/>
+<img src="/image/e.svg" width="300px" height="300px" alt="logo"/>
 
 ## 介绍
 
-月之脚本（YueScript）是一种动态语言，可以编译为Lua。它是[MoonScript](https://github.com/leafo/moonscript)的方言。用月之脚本编写的代码既有表现力又非常简洁。它适合编写一些更易于维护的代码，并在嵌入 Lua 的环境中运行，如游戏或网站服务器。
+月之脚本（E）是一种动态语言，可以编译为Lua。它是[MoonScript](https://github.com/leafo/moonscript)的方言。用月之脚本编写的代码既有表现力又非常简洁。它适合编写一些更易于维护的代码，并在嵌入 Lua 的环境中运行，如游戏或网站服务器。
 
-Yue（月）是中文中“月亮”的名称。
+E（月）是中文中“月亮”的名称。
 
 ### 月之脚本概览
 ```moonscript
 -- 导入语法
-import p, to_lua from "yue"
+import p, to_lua from "e"
 
 -- 隐式对象
 inventory =
@@ -58,10 +58,10 @@ with apple
 -- 类似js的导出语法
 export 🌛 = "月之脚本"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 -- 导入语法
-import p, to_lua from "yue"
+import p, to_lua from "e"
 
 -- 隐式对象
 inventory =
@@ -112,16 +112,16 @@ export 🌛 = "月之脚本"
 &emsp;安装 [luarocks](https://luarocks.org)，一个Lua模块的包管理器。然后作为Lua模块和可执行文件安装它：
 
 ```
-> luarocks install yuescript
+> luarocks install e
 ```
 
-&emsp;或者你可以自己构建 `yue.so` 文件：
+&emsp;或者你可以自己构建 `e.so` 文件：
 
 ```
 > make shared LUAI=/usr/local/include/lua LUAL=/usr/local/lib/lua
 ```
 
-&emsp;然后从路径 **bin/shared/yue.so** 获取二进制文件。
+&emsp;然后从路径 **bin/shared/e.so** 获取二进制文件。
 
 * **构建二进制工具**
 
@@ -130,12 +130,12 @@ export 🌛 = "月之脚本"
 > make install
 ```
 
-&emsp;构建不带宏功能的月之脚本编译工具：
+&emsp;构建不带宏功能的E编译工具：
 ```
 > make install NO_MACRO=true
 ```
 
-&emsp;构建不带内置Lua二进制文件的月之脚本编译工具：
+&emsp;构建不带内置Lua二进制文件的E编译工具：
 ```
 > make install NO_LUA=true
 ```
@@ -144,38 +144,38 @@ export 🌛 = "月之脚本"
 
 &emsp;你可以下载预编译的二进制程序，包括兼容不同 Lua 版本的二进制可执行文件和库文件。
 
-&emsp;在[这里](https://github.com/IppClub/YueScript/releases)下载预编译的二进制程序。
+&emsp;在[这里](https://github.com/IppClub/E/releases)下载预编译的二进制程序。
 
 ## 使用方法
 
 ### Lua 模块
 
-在Lua中使用月之脚本模块：
+在Lua中使用E模块：
 
 * **用法 1**
-在Lua中引入 "你的脚本入口文件.yue"。
+在Lua中引入 "你的脚本入口文件.e"。
 ```Lua
-require("yue")("你的脚本入口文件")
+require("e")("你的脚本入口文件")
 ```
-当你在同一路径下把 "你的脚本入口文件.yue" 编译成了 "你的脚本入口文件.lua" 时，仍然可以使用这个代码加载 .lua 代码文件。在其余的月之脚本文件中，只需正常使用 **require** 或 **import**进行脚本引用即可。错误消息中的代码行号也会被正确处理。
+当你在同一路径下把 "你的脚本入口文件.e" 编译成了 "你的脚本入口文件.lua" 时，仍然可以使用这个代码加载 .lua 代码文件。在其余的E文件中，只需正常使用 **require** 或 **import**进行脚本引用即可。错误消息中的代码行号也会被正确处理。
 
 * **用法 2**
-手动引入月之脚本模块并重写错误消息来帮助调试。
+手动引入E模块并重写错误消息来帮助调试。
 ```lua
-local yue = require("yue")
-yue.insert_loaders()
+local e = require("e")
+e.insert_loaders()
 local success, result = xpcall(function()
-  return require("yuescript_module_name")
+  return require("e_module_name")
 end, function(err)
-  return yue.traceback(err)
+  return e.traceback(err)
 end)
 ```
 
 * **用法 3**
-在Lua中使用月之脚本编译器功能。
+在Lua中使用E编译器功能。
 ```lua
-local yue = require("yue")
-local codes, err, globals = yue.to_lua([[
+local e = require("e")
+local codes, err, globals = e.to_lua([[
 f = ->
   print "hello world"
 f!
@@ -191,11 +191,11 @@ f!
 })
 ```
 
-### 月之脚本编译工具
+### E编译工具
 
-使用月之脚本编译工具：
+使用E编译工具：
 ```
-使用命令: yue [选项|文件|目录] ...
+使用命令: e [选项|文件|目录] ...
 
    -h       打印此消息
    -e str   执行一个文件或一段原始代码
@@ -223,12 +223,12 @@ f!
    在单行输入符号 '$' 并换行后，可以开始或是停止多行输入模式
 ```
 &emsp;&emsp;使用案例：
-&emsp;&emsp;递归编译当前路径下扩展名为 **.yue** 的每个月之脚本文件： **yue .**
-&emsp;&emsp;编译并将结果保存到目标路径： **yue -t /target/path/ .**
-&emsp;&emsp;编译并保留调试信息： **yue -l .**
-&emsp;&emsp;编译并生成压缩代码： **yue -m .**
-&emsp;&emsp;直接执行代码： **yue -e 'print 123'**
-&emsp;&emsp;执行一个月之脚本文件： **yue -e main.yue**
+&emsp;&emsp;递归编译当前路径下扩展名为 **.e** 的每个E文件： **e .**
+&emsp;&emsp;编译并将结果保存到目标路径： **e -t /target/path/ .**
+&emsp;&emsp;编译并保留调试信息： **e -l .**
+&emsp;&emsp;编译并生成压缩代码： **e -m .**
+&emsp;&emsp;直接执行代码： **e -e 'print 123'**
+&emsp;&emsp;执行一个E文件： **e -e main.e**
 
 ## 宏
 
@@ -264,7 +264,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 macro PI2 = -> math.pi * 2
 area = $PI2 * 5
@@ -297,11 +297,11 @@ if $and f1!, f2!, f3!
 
 ### 直接插入代码
 
-宏函数可以返回一个包含月之脚本代码的字符串，或是一个包含 Lua 代码字符串的配置表。
+宏函数可以返回一个包含E代码的字符串，或是一个包含 Lua 代码字符串的配置表。
 ```moonscript
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "无法访问宏生成月之脚本里定义的变量"
+macro eFunc = (var) -> "local #{var} = ->"
+$eFunc funcA
+funcA = -> "无法访问宏生成E里定义的变量"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
@@ -323,11 +323,11 @@ if cond then
 end
 ]==]
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
-macro yueFunc = (var) -> "local #{var} = ->"
-$yueFunc funcA
-funcA = -> "无法访问宏生成月之脚本里定义的变量"
+macro eFunc = (var) -> "local #{var} = ->"
+$eFunc funcA
+funcA = -> "无法访问宏生成E里定义的变量"
 
 macro luaFunc = (var) -> {
   code: "local function #{var}() end"
@@ -385,16 +385,16 @@ import "utils" as {
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ]]
 </pre>
-</YueDisplay>
+</EDisplay>
 
 ### 内置宏
 
-月之脚本中有一些内置可以直接使用的宏，但你可以通过声明相同名称的宏来覆盖它们。
+E中有一些内置可以直接使用的宏，但你可以通过声明相同名称的宏来覆盖它们。
 ```moonscript
 print $FILE -- 获取当前模块名称的字符串
 print $LINE -- 获取当前代码行数：2
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print $FILE -- 获取当前模块名称的字符串
 print $LINE -- 获取当前代码行数：2
@@ -403,7 +403,7 @@ print $LINE -- 获取当前代码行数：2
 
 ### 用宏生成宏
 
-在月之脚本中，宏函数允许你在编译时生成代码。通过嵌套的宏函数，你可以创建更复杂的生成模式。这个特性允许你定义一个宏函数，用它来生成另一个宏函数，从而实现更加动态的代码生成。
+在E中，宏函数允许你在编译时生成代码。通过嵌套的宏函数，你可以创建更复杂的生成模式。这个特性允许你定义一个宏函数，用它来生成另一个宏函数，从而实现更加动态的代码生成。
 
 ```moonscript
 macro Enum = (...) ->
@@ -422,7 +422,7 @@ macro BodyType = $Enum(
 print "有效的枚举类型:", $BodyType Static
 -- print "编译报错的枚举类型:", $BodyType Unknown
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 macro Enum = (...) ->
 	items = {...}
@@ -444,13 +444,13 @@ print "有效的枚举类型:", $BodyType Static
 
 ## 操作符
 
-Lua的所有二元和一元操作符在月之脚本中都是可用的。此外，**!=** 符号是 **~=** 的别名，而 **\\** 或 **::** 均可用于编写链式函数调用，如写作 `tb\func!` 或 `tb::func!`。此外月之脚本还提供了一些其他特殊的操作符，以编写更具表达力的代码。
+Lua的所有二元和一元操作符在E中都是可用的。此外，**!=** 符号是 **~=** 的别名，而 **\\** 或 **::** 均可用于编写链式函数调用，如写作 `tb\func!` 或 `tb::func!`。此外E还提供了一些其他特殊的操作符，以编写更具表达力的代码。
 
 ```moonscript
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tb\func! if tb ~= nil
 tb::func! if tb != nil
@@ -459,7 +459,7 @@ tb::func! if tb != nil
 
 ### 链式比较
 
-你可以在月之脚本中进行比较表达式的链式书写：
+你可以在E中进行比较表达式的链式书写：
 
 ```moonscript
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
@@ -469,7 +469,7 @@ a = 5
 print 1 <= a <= 10
 -- 输出：true
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 print 1 < 2 <= 2 < 3 == 3 > 2 >= 1 == 1 < 3 != 5
 -- 输出：true
@@ -539,7 +539,7 @@ print v(1) > v(2) <= v(3)
 tab = []
 tab[] = "Value"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 tab = []
 tab[] = "Value"
@@ -566,7 +566,7 @@ a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 parts =
 	* "shoulders"
@@ -607,7 +607,7 @@ print d.value
 
 close _ = <close>: -> print "超出范围"
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 mt = {}
 add = (right) => &lt;&gt;: mt, value: @value + right.value
@@ -637,7 +637,7 @@ print tb.value
 tb.<> = __index: {item: "hello"}
 print tb.item
 ```
-<YueDisplay>
+<EDisplay>
 
 <pre>
 -- 使用包含字段 "value" 的元表创建
@@ -647,7 +647,7 @@ print tb.value
 tb.&lt;&gt; = __index: {item: "hello"}
 print tb.item
 </pre>
-</YueDisplay>
+</EDisplay>
 
 * **元表解构**
 使用被 **<>** 包围的元方法键解构元表。
@@ -656,7 +656,7 @@ print tb.item
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 {item, :new, :&lt;close&gt;, &lt;index&gt;: getter} = tb
 print item, new, close, getter
@@ -681,7 +681,7 @@ with? io.open "test.txt", "w"
   \write "你好"
   \close!
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 func?!
 print abc?["你好 世界"]?.xyz
@@ -715,7 +715,7 @@ readFile "example.txt"
   |> render
   |> print
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 "你好" |> print
 1 |> print 2 -- 将管道项作为第一个参数插入
@@ -740,7 +740,7 @@ func a ?? {}
 
 a ??= false
 ```
-<YueDisplay>
+<EDisplay>
 <pre>
 local a, b, c, d
 a = b ?? c ?? d

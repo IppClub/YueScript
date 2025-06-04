@@ -24,7 +24,7 @@ jobs:
       - name: luarocks upload
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          ./yue -e spec/inputs/luarocks_upload.yue ${{ secrets.LUAROCKS_KEY }}
+          ./e -e spec/inputs/luarocks_upload.e ${{ secrets.LUAROCKS_KEY }}
       - name: build for luajit
         if: startsWith(github.ref, 'refs/tags/')
         run: |
@@ -39,16 +39,16 @@ jobs:
           mv src/libluajit.a arm64/liblua.a
           cd ..
           make shared LUAI=LuaJIT/src LUAL=LuaJIT/x86_64 TARGET_FLAGS="-arch x86_64"
-          mv bin/shared/yue.so yue_x86_64.so
+          mv bin/shared/e.so e_x86_64.so
           make clean
           make shared LUAI=LuaJIT/src LUAL=LuaJIT/arm64 TARGET_FLAGS="-arch arm64"
-          lipo -create yue_x86_64.so bin/shared/yue.so -output yue.so
-          zip -r yue-macos-universal-luajit-so.zip yue.so
+          lipo -create e_x86_64.so bin/shared/e.so -output e.so
+          zip -r e-macos-universal-luajit-so.zip e.so
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./yue-macos-universal-luajit-so.zip
+            ./e-macos-universal-luajit-so.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

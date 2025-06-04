@@ -26,12 +26,12 @@ jobs:
         run: |
           make clean
           make release
-          (cd bin/release && zip -r ../../yue-linux-x86_64.zip ./yue)
+          (cd bin/release && zip -r ../../e-linux-x86_64.zip ./e)
       - name: release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            ./yue-linux-x86_64.zip
+            ./e-linux-x86_64.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

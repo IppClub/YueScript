@@ -11,6 +11,6 @@ RUN cd /tmp && wget https://luarocks.org/releases/luarocks-3.3.1.tar.gz \
     && make && make install \
     && cd /tmp ; rm -rf luarocks-3.3.1 luarocks-3.3.1.tar.gz
 
-RUN luarocks install yuescript
+RUN luarocks install e
 
-CMD ["yue"]
+CMD ["e"]

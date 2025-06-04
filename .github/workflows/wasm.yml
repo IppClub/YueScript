@@ -18,6 +18,6 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: yuescript-wasm
+          name: e-wasm
           path: ./wasm
           retention-days: 7
