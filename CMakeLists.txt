@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(yue CXX)
+project(e CXX)
 
 set(LUA_LIBDIR ${LUA_INCDIR}/../lib ${LUA_INCDIR}/../../lib)
 set(LUA_INCLUDE_DIR "${LUA_INCDIR}")
@@ -58,29 +58,29 @@ if (APPLE)
 	add_compile_options(-Wno-deprecated-declarations)
 endif ()
 
-add_library(libyue MODULE
-	src/yuescript/ast.cpp
-	src/yuescript/parser.cpp
-	src/yuescript/yue_ast.cpp
-	src/yuescript/yue_parser.cpp
-	src/yuescript/yue_compiler.cpp
-	src/yuescript/yuescript.cpp
+add_library(libe MODULE
+	src/e/ast.cpp
+	src/e/parser.cpp
+	src/e/e_ast.cpp
+	src/e/e_parser.cpp
+	src/e/e_compiler.cpp
+	src/e/e.cpp
 )
-set_target_properties(libyue PROPERTIES PREFIX "")
-set_target_properties(libyue PROPERTIES OUTPUT_NAME "yue")
-target_link_libraries(libyue ${LUA_LIBRARIES})
+set_target_properties(libe PROPERTIES PREFIX "")
+set_target_properties(libe PROPERTIES OUTPUT_NAME "e")
+target_link_libraries(libe ${LUA_LIBRARIES})
 
-add_executable(yue
-	src/yuescript/ast.cpp
-	src/yuescript/parser.cpp
-	src/yuescript/yue_ast.cpp
-	src/yuescript/yue_parser.cpp
-	src/yuescript/yue_compiler.cpp
-	src/yuescript/yuescript.cpp
-	src/yue.cpp
+add_executable(e
+	src/e/ast.cpp
+	src/e/parser.cpp
+	src/e/e_ast.cpp
+	src/e/e_parser.cpp
+	src/e/e_compiler.cpp
+	src/e/e.cpp
+	src/e.cpp
 )
 
-target_sources(yue PRIVATE
+target_sources(e PRIVATE
 	src/3rdParty/efsw/Debug.cpp
 	src/3rdParty/efsw/DirectorySnapshot.cpp
 	src/3rdParty/efsw/DirectorySnapshotDiff.cpp
@@ -101,14 +101,14 @@ target_sources(yue PRIVATE
 )
 
 if (WIN32)
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/platform/win/FileSystemImpl.cpp
 		src/3rdParty/efsw/platform/win/MutexImpl.cpp
 		src/3rdParty/efsw/platform/win/SystemImpl.cpp
 		src/3rdParty/efsw/platform/win/ThreadImpl.cpp
 	)
 else ()
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/platform/posix/FileSystemImpl.cpp
 		src/3rdParty/efsw/platform/posix/MutexImpl.cpp
 		src/3rdParty/efsw/platform/posix/SystemImpl.cpp
@@ -117,7 +117,7 @@ else ()
 endif()
 
 if (APPLE)
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/FileWatcherFSEvents.cpp
 		src/3rdParty/efsw/FileWatcherKqueue.cpp
 		src/3rdParty/efsw/WatcherFSEvents.cpp
@@ -125,53 +125,53 @@ if (APPLE)
 	)
 
 	if (NOT CMAKE_SYSTEM_VERSION GREATER 9)
-		target_compile_definitions(yue PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
+		target_compile_definitions(e PRIVATE EFSW_FSEVENTS_NOT_SUPPORTED)
 	endif()
 elseif (WIN32)
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/FileWatcherWin32.cpp
 		src/3rdParty/efsw/WatcherWin32.cpp
 	)
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "Linux")
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/FileWatcherInotify.cpp
 		src/3rdParty/efsw/WatcherInotify.cpp
 	)
 
 	if (NOT EXISTS "/usr/include/sys/inotify.h" AND NOT EXISTS "/usr/local/include/sys/inotify.h")
-		target_compile_definitions(yue PRIVATE EFSW_INOTIFY_NOSYS)
+		target_compile_definitions(e PRIVATE EFSW_INOTIFY_NOSYS)
 	endif()
 elseif (${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD")
-	target_sources(yue PRIVATE
+	target_sources(e PRIVATE
 		src/3rdParty/efsw/FileWatcherKqueue.cpp
 		src/3rdParty/efsw/WatcherKqueue.cpp
 	)
 endif()
 
 if (MSVC)
-	target_compile_definitions(yue PRIVATE _SCL_SECURE_NO_WARNINGS)
+	target_compile_definitions(e PRIVATE _SCL_SECURE_NO_WARNINGS)
 else ()
-	target_compile_options(yue PRIVATE -Wall -Wno-long-long -fPIC)
+	target_compile_options(e PRIVATE -Wall -Wno-long-long -fPIC)
 endif()
 
 if (${CMAKE_BUILD_TYPE} MATCHES "Debug")
-	target_compile_definitions(yue PRIVATE DEBUG)
+	target_compile_definitions(e PRIVATE DEBUG)
 elseif (${CMAKE_BUILD_TYPE} MATCHES "Release")
-	target_compile_definitions(yue PRIVATE NDEBUG)
+	target_compile_definitions(e PRIVATE NDEBUG)
 endif()
 
 find_package(Threads REQUIRED)
 if (APPLE)
 	set(MAC_LIBS "-framework CoreFoundation" "-framework CoreServices")
-	target_link_libraries(yue PRIVATE ${LUA_LIBRARIES} ${MAC_LIBS} Threads::Threads)
+	target_link_libraries(e PRIVATE ${LUA_LIBRARIES} ${MAC_LIBS} Threads::Threads)
 elseif (NOT (${CMAKE_SYSTEM_NAME} MATCHES "Haiku") AND NOT WIN32)
-	target_link_libraries(yue PRIVATE ${LUA_LIBRARIES} Threads::Threads)
+	target_link_libraries(e PRIVATE ${LUA_LIBRARIES} Threads::Threads)
 else ()
-	target_link_libraries(yue PRIVATE ${LUA_LIBRARIES})
+	target_link_libraries(e PRIVATE ${LUA_LIBRARIES})
 endif()
 	
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-	target_link_options(yue PRIVATE -lstdc++fs -ldl)
+	target_link_options(e PRIVATE -lstdc++fs -ldl)
 endif (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 
 install(CODE "")

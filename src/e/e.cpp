@@ -6,15 +6,15 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#include "yuescript/yue_compiler.h"
-#include "yuescript/yue_parser.h"
+#include "e/e_compiler.h"
+#include "e/e_parser.h"
 
 using namespace std::string_literals;
 
-#if defined(YUE_BUILD_AS_DLL)
-#define YUE_API __declspec(dllexport)
+#if defined(E_BUILD_AS_DLL)
+#define E_API __declspec(dllexport)
 #else
-#define YUE_API
+#define E_API
 #endif
 
 extern "C" {
@@ -30,25 +30,25 @@ extern "C" {
 #endif // LUA_COMPAT_5_1
 #endif // LUA_VERSION_NUM
 
-static const char yuescriptCodes[] =
-#include "yuescript/yuescript.h"
+static const char e_codes[] =
+#include "e/e.h"
 	;
 
-static void init_yuescript(lua_State* L) {
-	if (luaL_loadbuffer(L, yuescriptCodes, sizeof(yuescriptCodes) / sizeof(yuescriptCodes[0]) - 1, "=(yuescript)") != 0) {
-		std::string err = "failed to load yuescript module.\n"s + lua_tostring(L, -1);
+static void init_e(lua_State* L) {
+	if (luaL_loadbuffer(L, e_codes, sizeof(e_codes) / sizeof(e_codes[0]) - 1, "=(e)") != 0) {
+		std::string err = "failed to load e module.\n"s + lua_tostring(L, -1);
 		luaL_error(L, err.c_str());
 	} else {
 		lua_insert(L, -2);
 		if (lua_pcall(L, 1, 0, 0) != 0) {
-			std::string err = "failed to init yuescript module.\n"s + lua_tostring(L, -1);
+			std::string err = "failed to init e module.\n"s + lua_tostring(L, -1);
 			luaL_error(L, err.c_str());
 		}
 	}
 }
 
 static const char stpCodes[] =
-#include "yuescript/stacktraceplus.h"
+#include "e/stacktraceplus.h"
 	;
 
 static int init_stacktraceplus(lua_State* L) {
@@ -62,7 +62,7 @@ static int init_stacktraceplus(lua_State* L) {
 	return 1;
 }
 
-static void get_config(lua_State* L, yue::YueConfig& config) {
+static void get_config(lua_State* L, e::EConfig& config) {
 	lua_pushliteral(L, "lint_global");
 	lua_gettable(L, -2);
 	if (lua_isboolean(L, -1) != 0) {
@@ -121,7 +121,7 @@ static int yuetolua(lua_State* L) {
 	size_t len = 0;
 	auto input = luaL_checklstring(L, 1, &len);
 	std::string_view codes(input, len);
-	yue::YueConfig config;
+	e::EConfig config;
 	bool sameModule = false;
 	if (lua_gettop(L) >= 2) {
 		luaL_checktype(L, 2, LUA_TTABLE);
@@ -146,7 +146,7 @@ static int yuetolua(lua_State* L) {
 		}
 		lua_pop(L, 2);
 	}
-	auto result = yue::YueCompiler(L, nullptr, sameModule).compile(codes, config);
+	auto result = e::ECompiler(L, nullptr, sameModule).compile(codes, config);
 	if (result.error) {
 		lua_pushnil(L);
 	} else {
@@ -186,7 +186,7 @@ static int yueformat(lua_State* L) {
 		tabSize = static_cast<int>(luaL_checkinteger(L, 2));
 	}
 	std::string_view codes(input, len);
-	auto info = yue::YueParser::shared().parse<yue::File_t>(codes, false);
+	auto info = e::EParser::shared().parse<e::File_t>(codes, false);
 	if (info.error) {
 		const auto& error = info.error.value();
 		if (!info.codes) {
@@ -199,7 +199,7 @@ static int yueformat(lua_State* L) {
 		lua_pushlstring(L, displayMessage.c_str(), displayMessage.size());
 		return 2;
 	}
-	yue::YueFormat formatter{};
+	e::EFormat formatter{};
 	if (tabSize > 0) {
 		formatter.spaceOverTab = true;
 		formatter.tabSpaces = tabSize;
@@ -215,7 +215,7 @@ static int yuecheck(lua_State* L) {
 	size_t len = 0;
 	auto input = luaL_checklstring(L, 1, &len);
 	std::string_view codes(input, len);
-	yue::YueConfig config;
+	e::EConfig config;
 	config.lintGlobalVariable = true;
 	if (lua_gettop(L) >= 2) {
 		luaL_checktype(L, 2, LUA_TTABLE);
@@ -223,7 +223,7 @@ static int yuecheck(lua_State* L) {
 		get_config(L, config);
 		lua_pop(L, 1);
 	}
-	auto result = yue::YueCompiler(L).compile(codes, config);
+	auto result = e::ECompiler(L).compile(codes, config);
 	lua_createtable(L, 0, 0);
 	int i = 0;
 	if (result.error) {
@@ -265,7 +265,7 @@ static int yuecheck(lua_State* L) {
 	}
 }
 
-struct yue_stack {
+struct e_stack {
 	int continuation;
 	yue::ast_node* node;
 	int i;
@@ -273,7 +273,7 @@ struct yue_stack {
 	bool hasSep;
 };
 
-static int yuetoast(lua_State* L) {
+static int etoast(lua_State* L) {
 	size_t size = 0;
 	const char* input = luaL_checklstring(L, 1, &size);
 	int flattenLevel = 0;
@@ -293,8 +293,8 @@ static int yuetoast(lua_State* L) {
 		luaL_checktype(L, 4, LUA_TBOOLEAN);
 		lax = lua_toboolean(L, 4) != 0;
 	}
-	auto& yueParser = yue::YueParser::shared();
-	auto info = ruleName.empty() ? yueParser.parse<yue::File_t>({input, size}, lax) : yueParser.parse(ruleName, {input, size}, lax);
+	auto& yueParser = e::EParser::shared();
+	auto info = ruleName.empty() ? yueParser.parse<e::File_t>({input, size}, lax) : yueParser.parse(ruleName, {input, size}, lax);
 	if (!info.error) {
 		lua_createtable(L, 0, 0);
 		int tableIndex = lua_gettop(L);
@@ -311,7 +311,7 @@ static int yuetoast(lua_State* L) {
 				lua_rawseti(L, cacheIndex, id);
 			}
 		};
-		std::stack<yue_stack> stack;
+		std::stack<e_stack> stack;
 		auto do_call = [&](yue::ast_node* node) {
 			stack.push({0, node, 0, nullptr, false});
 		};
@@ -319,19 +319,19 @@ static int yuetoast(lua_State* L) {
 			stack.pop();
 		};
 		do_call(info.node);
-		yue::YueFormat formatter{};
+		e::EFormat formatter{};
 		while (!stack.empty()) {
 			auto& current = stack.top();
 			int continuation = current.continuation;
 			auto node = current.node;
-			if (auto comment = yue::ast_cast<yue::YueMultilineComment_t>(node)) {
+			if (auto comment = e::ast_cast<e::EMultilineComment_t>(node)) {
 				node = comment->inner.get();
 			}
 			switch (continuation) {
 				case 0: {
 					if (!current.children) {
 						node->visit_child([&](yue::ast_node* child) {
-							if (yue::ast_is<yue::Seperator_t>(child)) {
+							if (e::ast_is<e::Seperator_t>(child)) {
 								current.hasSep = true;
 								return false;
 							}
@@ -373,7 +373,7 @@ static int yuetoast(lua_State* L) {
 							lua_rawseti(L, -2, 3);
 							formatter.indent = 0;
 							auto str = node->to_string(&formatter);
-							yue::Utils::trim(str);
+							e::Utils::trim(str);
 							lua_pushlstring(L, str.c_str(), str.length());
 							lua_rawseti(L, -2, 4);
 							lua_rawseti(L, tableIndex, static_cast<int>(lua_objlen(L, tableIndex)) + 1);
@@ -431,20 +431,20 @@ static int yuetoast(lua_State* L) {
 	}
 }
 
-static int yueisast(lua_State* L) {
+static int eisast(lua_State* L) {
 	size_t nameLen = 0;
 	auto name = lua_tolstring(L, 1, &nameLen);
 	size_t codeLen = 0;
 	auto code = lua_tolstring(L, 2, &codeLen);
-	bool result = yue::YueParser::shared().match({name, nameLen}, {code, codeLen});
+	bool result = e::EParser::shared().match({name, nameLen}, {code, codeLen});
 	lua_pushboolean(L, result ? 1 : 0);
 	return 1;
 }
 
-static const luaL_Reg yuelib[] = {
+static const luaL_Reg elib[] = {
 	{"to_lua", yuetolua},
-	{"to_ast", yuetoast},
-	{"is_ast", yueisast},
+	{"to_ast", etoast},
+	{"is_ast", eisast},
 	{"check", yuecheck},
 	{"format", yueformat},
 	{"version", nullptr},
@@ -452,21 +452,21 @@ static const luaL_Reg yuelib[] = {
 	{"load_stacktraceplus", nullptr},
 	{nullptr, nullptr}};
 
-YUE_API int luaopen_yue(lua_State* L) {
+E_API int luaopen_e(lua_State* L) {
 #if LUA_VERSION_NUM > 501
-	luaL_newlib(L, yuelib); // yue
+	luaL_newlib(L, elib); // yue
 #else
 	lua_getglobal(L, "package"); // package
 	lua_getfield(L, -1, "loaded"); // package loaded
 	lua_createtable(L, 0, 0); // package loaded yue
 	lua_pushvalue(L, -1); // package loaded yue yue
-	lua_setfield(L, -3, "yue"); // loaded["yue"] = yue, package loaded yue
-	luaL_register(L, nullptr, yuelib); // package loaded yue
+	lua_setfield(L, -3, "e"); // loaded["e"] = e, package loaded e
+	luaL_register(L, nullptr, elib); // package loaded yue
 #endif
-	lua_pushlstring(L, &yue::version.front(), yue::version.size()); // yue version
+	lua_pushlstring(L, &yue::version.front()e::version.front(), e::version.size()); // yue version
 	lua_setfield(L, -2, "version"); // yue["version"] = version, yue
 	lua_createtable(L, 0, 0); // yue options
-	lua_pushlstring(L, &yue::extension.front(), yue::extension.size()); // yue options ext
+	lua_pushlstring(L, &e::extension.front()e::extension.front(), e::extension.size()); // yue options ext
 	lua_setfield(L, -2, "extension"); // options["extension"] = ext, yue options
 	lua_pushliteral(L, LUA_DIRSEP);
 	lua_setfield(L, -2, "dirsep"); // options["dirsep"] = dirsep, yue options
@@ -474,7 +474,7 @@ YUE_API int luaopen_yue(lua_State* L) {
 	lua_pushcfunction(L, init_stacktraceplus); // yue func1
 	lua_setfield(L, -2, "load_stacktraceplus"); // yue["load_stacktraceplus"] = func1, yue
 	lua_pushvalue(L, -1); // yue yue
-	init_yuescript(L); // yue
+	init_e(L); // yue
 	return 1;
 }
 

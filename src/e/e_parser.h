@@ -19,14 +19,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <unordered_map>
 #include <unordered_set>
 
-#include "yuescript/ast.hpp"
-#include "yuescript/yue_ast.h"
+#include "e/ast.hpp"
+#include "e/e_ast.h"
 
-namespace yue {
+namespace e {
 using namespace std::string_view_literals;
 using namespace std::string_literals;
 using namespace parserlib;
-using namespace parserlib::yue;
+using namespace parserlib::e;
 
 struct ParseInfo {
 	struct Error {
@@ -71,7 +71,7 @@ struct identity {
 extern std::unordered_set<std::string> LuaKeywords;
 extern std::unordered_set<std::string> Keywords;
 
-class YueParser {
+class EParser {
 public:
 	template <class AST>
 	ParseInfo parse(std::string_view codes, bool lax) {
@@ -98,10 +98,10 @@ public:
 
 	bool hasAST(std::string_view name) const;
 
-	static YueParser& shared();
+	static EParser& shared();
 
 protected:
-	YueParser();
+	EParser();
 	ParseInfo parse(std::string_view codes, rule& r, bool lax);
 	bool startWith(std::string_view codes, rule& r);
 
@@ -284,8 +284,8 @@ private:
 	NONE_AST_RULE(exp_not_tab);
 	NONE_AST_RULE(local_const_item);
 	NONE_AST_RULE(empty_line_break);
-	NONE_AST_RULE(yue_comment);
-	NONE_AST_RULE(yue_line_comment);
+	NONE_AST_RULE(e_comment);
+	NONE_AST_RULE(e_line_comment);
 	NONE_AST_RULE(line);
 	NONE_AST_RULE(shebang);
 	NONE_AST_RULE(lax_line);
@@ -439,9 +439,9 @@ private:
 	AST_RULE(StatementAppendix);
 	AST_RULE(Statement);
 	AST_RULE(StatementSep);
-	AST_RULE(YueLineComment);
+	AST_RULE(ELineComment);
 	AST_RULE(MultilineCommentInner);
-	AST_RULE(YueMultilineComment);
+	AST_RULE(EMultilineComment);
 	AST_RULE(ChainAssign);
 	AST_RULE(Body);
 	AST_RULE(Block);
@@ -454,4 +454,4 @@ void replace(std::string& str, std::string_view from, std::string_view to);
 void trim(std::string& str);
 } // namespace Utils
 
-} // namespace yue
+} // namespace e

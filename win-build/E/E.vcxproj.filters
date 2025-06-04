@@ -8,7 +8,7 @@
     <Filter Include="src\lua">
       <UniqueIdentifier>{338bdf98-6a02-4589-a373-c7bca25c746b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="src\yuescript">
+    <Filter Include="src\e">
       <UniqueIdentifier>{af398a57-cb37-4862-a5e8-5ec539259611}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\efsw">
@@ -115,22 +115,22 @@
     <ClCompile Include="..\..\src\3rdParty\lua\lzio.c">
       <Filter>src\lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\ast.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\ast.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\parser.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\parser.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_compiler.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\e_compiler.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_parser.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\e_parser.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yuescript.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\e.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yue.cpp">
+    <ClCompile Include="..\..\src\e.cpp">
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\src\3rdParty\efsw\Debug.cpp">
@@ -202,8 +202,8 @@
     <ClCompile Include="..\..\src\3rdParty\efsw\platform\win\ThreadImpl.cpp">
       <Filter>src\efsw\win</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_ast.cpp">
-      <Filter>src\yuescript</Filter>
+    <ClCompile Include="..\..\src\e\e_ast.cpp">
+      <Filter>src\e</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,26 +291,26 @@
     <ClInclude Include="..\..\src\3rdParty\lua\lzio.h">
       <Filter>src\lua</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\ast.hpp">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\ast.hpp">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\parser.hpp">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\parser.hpp">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\stacktraceplus.h">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\stacktraceplus.h">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_ast.h">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\e_ast.h">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_compiler.h">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\e_compiler.h">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_parser.h">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\e_parser.h">
+      <Filter>src\e</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yuescript.h">
-      <Filter>src\yuescript</Filter>
+    <ClInclude Include="..\..\src\e\e.h">
+      <Filter>src\e</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\3rdParty\efsw\platform\win\FileSystemImpl.hpp">
       <Filter>src\efsw\win</Filter>

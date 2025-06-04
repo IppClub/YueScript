@@ -20,10 +20,10 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <variant>
 #include <vector>
 
-#include "yuescript/yue_compiler.h"
-#include "yuescript/yue_parser.h"
+#include "e/e_compiler.h"
+#include "e/e_parser.h"
 
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 
 extern "C" {
 #include "lauxlib.h"
@@ -32,7 +32,7 @@ extern "C" {
 } // extern "C"
 
 // name of table stored in lua registry
-#define YUE_MODULES "__yue_modules__"
+#define E_MODULES "__e_modules__"
 
 #if LUA_VERSION_NUM > 501
 #ifndef LUA_COMPAT_5_1
@@ -42,9 +42,9 @@ extern "C" {
 #endif // LUA_COMPAT_5_1
 #endif // LUA_VERSION_NUM
 
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
-namespace yue {
+namespace e {
 
 #define BLOCK_START do {
 #define BLOCK_END \
@@ -58,7 +58,7 @@ namespace yue {
 })
 #define DEFER(code) _DEFER(code, __LINE__)
 
-#define YUEE(msg, node) throw CompileError( \
+#define EE(msg, node) throw CompileError( \
 	"[File] "s + __FILE__ \
 		+ ",\n[Func] "s + __FUNCTION__ \
 		+ ",\n[Line] "s + std::to_string(__LINE__) \
@@ -79,7 +79,7 @@ static std::unordered_set<std::string> Metamethods = {
 };
 
 const std::string_view version = "0.28.7"sv;
-const std::string_view extension = "yue"sv;
+const std::string_view extension = "e"sv;
 
 class CompileError : public std::logic_error {
 public:
@@ -125,10 +125,10 @@ void CompileInfo::operator=(CompileInfo&& other) {
 	compileTime = other.compileTime;
 }
 
-class YueCompilerImpl {
+class ECompilerImpl {
 public:
-#ifndef YUE_NO_MACRO
-	YueCompilerImpl(lua_State* sharedState,
+#ifndef E_NO_MACRO
+	ECompilerImpl(lua_State* sharedState,
 		const std::function<void(void*)>& luaOpen,
 		bool sameModule)
 		: L(sharedState)
@@ -139,7 +139,7 @@ public:
 		_sameModule = true;
 		int top = lua_gettop(L);
 		DEFER(lua_settop(L, top));
-		lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+		lua_pushliteral(L, E_MODULES); // E_MODULES
 		lua_rawget(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES], tb
 		BREAK_IF(lua_istable(L, -1) == 0);
 		int idx = static_cast<int>(lua_objlen(L, -1)); // idx = #tb, tb
@@ -148,19 +148,19 @@ public:
 		BLOCK_END
 	}
 
-	~YueCompilerImpl() {
+	~ECompilerImpl() {
 		if (L && _stateOwner) {
 			lua_close(L);
 			L = nullptr;
 		}
 	}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
-	CompileInfo compile(std::string_view codes, const YueConfig& config) {
+	CompileInfo compile(std::string_view codes, const EConfig& config) {
 		_config = config;
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		if (L) passOptions();
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 		double parseTime = 0.0;
 		double compileTime = 0.0;
 		if (config.profiling) {
@@ -271,14 +271,14 @@ public:
 						}
 					});
 				}
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 				if (L) {
 					int top = lua_gettop(L);
 					DEFER(lua_settop(L, top));
 					if (!options) {
 						options = std::make_unique<Options>();
 					}
-					pushYue("options"sv);
+					pushE("options"sv);
 					lua_pushnil(L); // options startKey
 					while (lua_next(L, -2) != 0) { // options key value
 						size_t len = 0;
@@ -290,7 +290,7 @@ public:
 						lua_pop(L, 1); // options key
 					}
 				}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 				bool usedVar = _varArgs.top().usedVar;
 				return {std::move(out.back()), std::nullopt, std::move(globals), std::move(options), parseTime, compileTime, usedVar};
 			} catch (const CompileError& error) {
@@ -348,32 +348,32 @@ public:
 		_withVars = {};
 		_continueVars = {};
 		_funcStates = {};
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		if (_useModule) {
 			_useModule = false;
 			if (!_sameModule) {
 				int top = lua_gettop(L);
 				DEFER(lua_settop(L, top));
-				lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+				lua_pushliteral(L, E_MODULES); // E_MODULES
 				lua_rawget(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES], tb
 				int idx = static_cast<int>(lua_objlen(L, -1));
 				lua_pushnil(L); // tb nil
 				lua_rawseti(L, -2, idx); // tb[idx] = nil, tb
 			}
 		}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 	}
 
 private:
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 	bool _stateOwner = false;
 	bool _useModule = false;
 	bool _sameModule = false;
 	lua_State* L = nullptr;
 	std::function<void(void*)> _luaOpen;
-#endif // YUE_NO_MACRO
-	YueConfig _config;
-	YueParser& _parser = YueParser::shared();
+#endif // E_NO_MACRO
+	EConfig _config;
+	EParser& _parser = EParser::shared();
 	ParseInfo _info;
 	int _indentOffset = 0;
 	struct VarArgState {
@@ -436,7 +436,7 @@ private:
 	struct Scope {
 		GlobalMode mode = GlobalMode::None;
 		bool lastStatement = false;
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		bool macroScope = false;
 #endif
 		std::unique_ptr<std::unordered_map<std::string, VarType>> vars;
@@ -478,7 +478,7 @@ private:
 		Closure
 	};
 
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 	void pushMacro(int moduleIndex) {
 		int len = static_cast<int>(lua_objlen(L, moduleIndex)); // len = #cur
 		if (currentScope().macroScope) {
@@ -498,7 +498,7 @@ private:
 		lua_rawseti(L, -2, len); // cur[len] = nil, cur
 		lua_pop(L, 1);
 	}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
 	void pushScope() {
 		_scopes.emplace_back();
@@ -506,11 +506,11 @@ private:
 	}
 
 	void popScope() {
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		if (_scopes.back().macroScope) {
 			popMacro();
 		}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 		_scopes.pop_back();
 	}
 
@@ -817,7 +817,7 @@ private:
 				case id<DoubleString_t>():
 					return false;
 				default:
-					YUEE("AST node mismatch", strNode->str);
+					EE("AST node mismatch", strNode->str);
 					return false;
 			}
 		} else if (auto chainValue = value->item.as<ChainValue_t>()) {
@@ -1164,7 +1164,7 @@ private:
 			case id<Statement_t>(): {
 				return static_cast<Statement_t*>(body);
 			}
-			default: YUEE("AST node mismatch", body); break;
+			default: EE("AST node mismatch", body); break;
 		}
 		return nullptr;
 	}
@@ -1369,7 +1369,7 @@ private:
 			case id<UnicodeName_t>(): {
 				return unicodeVariableFrom(static_cast<UnicodeName_t*>(var->name.get()));
 			}
-			default: YUEE("AST node mismatch", var->name); return std::string();
+			default: EE("AST node mismatch", var->name); return std::string();
 		}
 	}
 
@@ -1700,7 +1700,7 @@ private:
 									expList->exprs.push_back(val);
 									break;
 								}
-								default: YUEE("AST node mismatch", val); break;
+								default: EE("AST node mismatch", val); break;
 							}
 						}
 						auto expListAssign = x->new_ptr<ExpListAssign_t>();
@@ -1723,7 +1723,7 @@ private:
 						throw CompileError("for-loop line decorator is not supported here"sv, appendix->item.get());
 						break;
 					}
-					default: YUEE("AST node mismatch", appendix->item.get()); break;
+					default: EE("AST node mismatch", appendix->item.get()); break;
 				}
 			} else if (!statement->appendix->item.is<IfLine_t>()) {
 				auto appendix = statement->appendix->item.get();
@@ -1798,7 +1798,7 @@ private:
 					statement->appendix.set(nullptr);
 					break;
 				}
-				default: YUEE("AST node mismatch", appendix->item.get()); break;
+				default: EE("AST node mismatch", appendix->item.get()); break;
 			}
 		}
 		auto content = statement->content.get();
@@ -1882,7 +1882,7 @@ private:
 				break;
 			}
 			case id<ChainAssign_t>(): transformChainAssign(static_cast<ChainAssign_t*>(content), out); break;
-			default: YUEE("AST node mismatch", content); break;
+			default: EE("AST node mismatch", content); break;
 		}
 	}
 
@@ -2066,7 +2066,7 @@ private:
 
 	bool transformAssignment(ExpListAssign_t* assignment, str_list& out, bool optionalDestruct = false) {
 		if (assignment->action.is<SubBackcall_t>()) {
-			YUEE("AST node mismatch", assignment->action);
+			EE("AST node mismatch", assignment->action);
 		}
 		checkAssignable(assignment->expList);
 		BLOCK_START
@@ -2776,7 +2776,7 @@ private:
 			case id<Switch_t>(): transformSwitch(static_cast<Switch_t*>(value), out, ExpUsage::Closure); break;
 			case id<TableBlock_t>(): transformTableBlock(static_cast<TableBlock_t*>(value), out); break;
 			case id<Exp_t>(): transformExp(static_cast<Exp_t*>(value), out, ExpUsage::Closure); break;
-			default: YUEE("AST node mismatch", value); break;
+			default: EE("AST node mismatch", value); break;
 		}
 	}
 
@@ -2827,7 +2827,7 @@ private:
 				tableItems = &table->items.objects();
 				break;
 			}
-			default: YUEE("AST node mismatch", node); break;
+			default: EE("AST node mismatch", node); break;
 		}
 		if (!tableItems) throw CompileError("invalid destructure value"sv, node);
 		std::list<DestructItem> pairs;
@@ -3057,7 +3057,7 @@ private:
 							case id<Exp_t>():
 								newPair->key.set(mp->key);
 								break;
-							default: YUEE("AST node mismatch", mp->key); break;
+							default: EE("AST node mismatch", mp->key); break;
 						}
 					}
 					newPair->value.set(mp->value);
@@ -3067,7 +3067,7 @@ private:
 					subMetaDestruct->values.push_back(newPairDef);
 					break;
 				}
-				default: YUEE("AST node mismatch", pair); break;
+				default: EE("AST node mismatch", pair); break;
 			}
 		}
 		if (!subMetaDestruct->values.empty()) {
@@ -3181,7 +3181,7 @@ private:
 					case id<Comprehension_t>():
 						dlist = &static_cast<Comprehension_t*>(destructNode)->items.objects();
 						break;
-					default: YUEE("AST node mismatch", destructNode); break;
+					default: EE("AST node mismatch", destructNode); break;
 				}
 				if (dlist->empty()) {
 					if (!optional) {
@@ -3222,7 +3222,7 @@ private:
 									case id<Exp_t>():
 										newPair->key.set(mp->key);
 										break;
-									default: YUEE("AST node mismatch", mp->key); break;
+									default: EE("AST node mismatch", mp->key); break;
 								}
 							}
 							newPair->value.set(mp->value);
@@ -3263,7 +3263,7 @@ private:
 										newPair->key.set(newExp(value, mp));
 										break;
 									}
-									default: YUEE("AST node mismatch", mp->key); break;
+									default: EE("AST node mismatch", mp->key); break;
 								}
 							}
 							newPair->value.set(mp->value);
@@ -3353,7 +3353,7 @@ private:
 								} else if (ast_is<Exp_t>(p)) {
 									parens->expr.set(p);
 								} else {
-									YUEE("AST node mismatch", p);
+									EE("AST node mismatch", p);
 								}
 								auto callable = p->new_ptr<Callable_t>();
 								callable->item.set(parens);
@@ -3600,7 +3600,7 @@ private:
 				}
 				break;
 			}
-			default: YUEE("AST node mismatch", action); break;
+			default: EE("AST node mismatch", action); break;
 		}
 	}
 
@@ -3671,7 +3671,7 @@ private:
 					ifCondPairs.back().second = node;
 					ifCondPairs.emplace_back();
 					break;
-				default: YUEE("AST node mismatch", node); break;
+				default: EE("AST node mismatch", node); break;
 			}
 		}
 		auto firstIfCond = ifCondPairs.front().first;
@@ -3896,7 +3896,7 @@ private:
 					transformExp(arg, out, ExpUsage::Closure);
 					return;
 				}
-				default: YUEE("invalid expression usage", x); return;
+				default: EE("invalid expression usage", x); return;
 			}
 		}
 	}
@@ -3908,7 +3908,7 @@ private:
 		}
 		if (exp->nilCoalesed) {
 			if (usage != ExpUsage::Closure) {
-				YUEE("invalid expression usage", exp);
+				EE("invalid expression usage", exp);
 			}
 			transformNilCoalesedExp(exp, out, ExpUsage::Closure);
 			return;
@@ -4122,7 +4122,7 @@ private:
 						break;
 					}
 					default:
-						YUEE("invalid expression usage", exp);
+						EE("invalid expression usage", exp);
 						break;
 				}
 			}
@@ -4197,15 +4197,15 @@ private:
 				if (!globals.empty()) {
 					codes.insert(0, "global "s + join(globals, ","sv) + '\n');
 				}
-				YueConfig config;
+				EConfig config;
 				config.lintGlobalVariable = true;
-#ifndef YUE_NO_MACRO
-				auto result = YueCompiler{L, _luaOpen, false}.compile(codes, config);
+#ifndef E_NO_MACRO
+				auto result = ECompiler{L, _luaOpen, false}.compile(codes, config);
 #else
-				auto result = YueCompiler{}.compile(codes, config);
-#endif // YUE_NO_MACRO
+				auto result = ECompiler{}.compile(codes, config);
+#endif // E_NO_MACRO
 				if (result.error) {
-					YUEE("failed to compile dues to Yue formatter", x);
+					EE("failed to compile dues to Yue formatter", x);
 				}
 				usedVar = result.usedVar;
 				if (result.globals) {
@@ -4326,7 +4326,7 @@ private:
 			left->pipeExprs.dup(exp->pipeExprs);
 		} else {
 			if (usage != ExpUsage::Closure) {
-				YUEE("invalid expression usage", exp);
+				EE("invalid expression usage", exp);
 			}
 			auto last = static_cast<ExpOpValue_t*>(exp->opValues.back());
 			left->pipeExprs.dup(last->pipeExprs);
@@ -4376,7 +4376,7 @@ private:
 		};
 		switch (usage) {
 			case ExpUsage::Common:
-				YUEE("AST node mismatch", x);
+				EE("AST node mismatch", x);
 				return;
 			case ExpUsage::Return:
 			case ExpUsage::Closure: {
@@ -4453,7 +4453,7 @@ private:
 			case id<SimpleTable_t>(): transform_simple_table(static_cast<SimpleTable_t*>(item), out); break;
 			case id<ChainValue_t>(): transformChainValue(static_cast<ChainValue_t*>(item), out, ExpUsage::Closure); break;
 			case id<String_t>(): transformString(static_cast<String_t*>(item), out); break;
-			default: YUEE("AST node mismatch", value); break;
+			default: EE("AST node mismatch", value); break;
 		}
 	}
 
@@ -4479,7 +4479,7 @@ private:
 				break;
 			}
 			case id<Parens_t>(): transformParens(static_cast<Parens_t*>(item), out); break;
-			default: YUEE("AST node mismatch", item); break;
+			default: EE("AST node mismatch", item); break;
 		}
 	}
 
@@ -4510,7 +4510,7 @@ private:
 			case id<FunLit_t>(): transformFunLit(static_cast<FunLit_t*>(value), out); break;
 			case id<Num_t>(): transformNum(static_cast<Num_t*>(value), out); break;
 			case id<VarArg_t>(): transformVarArg(static_cast<VarArg_t*>(value), out); break;
-			default: YUEE("AST node mismatch", value); break;
+			default: EE("AST node mismatch", value); break;
 		}
 	}
 
@@ -4544,7 +4544,7 @@ private:
 						newBlock->statements.push_back(content);
 						break;
 					}
-					default: YUEE("AST node mismatch", content); break;
+					default: EE("AST node mismatch", content); break;
 				}
 			}
 			if (funLit->defaultReturn.is<ExpListLow_t>()) {
@@ -4751,7 +4751,7 @@ private:
 							throw CompileError("for-loop line decorator is not supported here"sv, appendix->item.get());
 							break;
 						}
-						default: YUEE("AST node mismatch", appendix->item.get()); break;
+						default: EE("AST node mismatch", appendix->item.get()); break;
 					}
 				}
 				if (newInvoke->args.empty()) {
@@ -4969,7 +4969,7 @@ private:
 							}
 							break;
 						}
-						default: YUEE("AST node mismatch", local->item); break;
+						default: EE("AST node mismatch", local->item); break;
 					}
 				}
 			} else if (mode != LocalMode::None) {
@@ -5165,11 +5165,11 @@ private:
 	}
 
 	std::optional<std::string> getOption(std::string_view key) {
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		if (L) {
 			int top = lua_gettop(L);
 			DEFER(lua_settop(L, top));
-			pushYue("options"sv); // options
+			pushE("options"sv); // options
 			lua_pushlstring(L, key.data(), key.size());
 			lua_gettable(L, -2);
 			if (lua_isstring(L, -1) != 0) {
@@ -5178,7 +5178,7 @@ private:
 				return std::string(str, size);
 			}
 		}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 		auto it = _config.options.find(std::string(key));
 		if (it != _config.options.end()) {
 			return it->second;
@@ -5202,17 +5202,17 @@ private:
 				throw CompileError("get invalid Lua target \""s + target.value() + "\", should be from 5.1 to 5.5"s, x);
 			}
 		}
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 		return LUA_VERSION_NUM;
 #else
 		return 505;
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 	}
 
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 	void passOptions() {
 		if (!_config.options.empty()) {
-			pushYue("options"sv); // options
+			pushE("options"sv); // options
 			for (const auto& option : _config.options) {
 				lua_pushlstring(L, option.second.c_str(), option.second.size());
 				lua_setfield(L, -2, option.first.c_str());
@@ -5223,7 +5223,7 @@ private:
 
 	void pushCurrentModule() {
 		if (_useModule) {
-			lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+			lua_pushliteral(L, E_MODULES); // E_MODULES
 			lua_rawget(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES], mods
 			int idx = static_cast<int>(lua_objlen(L, -1)); // idx = #mods, mods
 			lua_rawgeti(L, -1, idx); // mods[idx], mods cur
@@ -5250,12 +5250,12 @@ private:
 			}
 			_stateOwner = true;
 		}
-		lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+		lua_pushliteral(L, E_MODULES); // E_MODULES
 		lua_rawget(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES], mods
 		if (lua_isnil(L, -1) != 0) { // mods == nil
 			lua_pop(L, 1);
 			lua_newtable(L); // mods
-			lua_pushliteral(L, YUE_MODULES); // mods YUE_MODULES
+			lua_pushliteral(L, E_MODULES); // mods YUE_MODULES
 			lua_pushvalue(L, -2); // mods YUE_MODULE mods
 			lua_rawset(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES] = mods, mods
 		} // tb
@@ -5268,10 +5268,10 @@ private:
 		lua_remove(L, -2); // cur
 	}
 
-	void pushYue(std::string_view name) {
+	void pushE(std::string_view name) {
 		lua_getglobal(L, "package"); // package
 		lua_getfield(L, -1, "loaded"); // package loaded
-		lua_getfield(L, -1, "yue"); // package loaded yue
+		lua_getfield(L, -1, "e"); // package loaded yue
 		lua_pushlstring(L, name.data(), name.size()); // package loaded yue name
 		lua_gettable(L, -2); // loaded[name], package loaded yue item
 		lua_insert(L, -4); // item package loaded yue
@@ -5281,7 +5281,7 @@ private:
 	bool isModuleLoaded(std::string_view name) {
 		int top = lua_gettop(L);
 		DEFER(lua_settop(L, top));
-		lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+		lua_pushliteral(L, E_MODULES); // E_MODULES
 		lua_rawget(L, LUA_REGISTRYINDEX); // modules
 		lua_pushlstring(L, &name.front(), name.size());
 		lua_rawget(L, -2); // modules module
@@ -5292,7 +5292,7 @@ private:
 	}
 
 	void pushModuleTable(std::string_view name) {
-		lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+		lua_pushliteral(L, E_MODULES); // E_MODULES
 		lua_rawget(L, LUA_REGISTRYINDEX); // modules
 		lua_pushlstring(L, &name.front(), name.size());
 		lua_rawget(L, -2); // modules module
@@ -5381,12 +5381,12 @@ private:
 				newArgs.emplace_back(_parser.toString(argsDef->varArg));
 			}
 		}
-		std::string macroCodes = "_ENV=require('yue').macro_env\n("s + join(newArgs, ","sv) + ")->"s + _parser.toString(macroLit->body);
+		std::string macroCodes = "_ENV=require('e').macro_env\n("s + join(newArgs, ","sv) + ")->"s + _parser.toString(macroLit->body);
 		auto chunkName = "=(macro "s + macroName + ')';
 		pushCurrentModule(); // cur
 		int top = lua_gettop(L) - 1;
 		DEFER(lua_settop(L, top));
-		pushYue("loadstring"sv); // cur loadstring
+		pushE("loadstring"sv); // cur loadstring
 		lua_pushlstring(L, macroCodes.c_str(), macroCodes.size()); // cur loadstring codes
 		lua_pushlstring(L, chunkName.c_str(), chunkName.size()); // cur loadstring codes chunk
 		pushOptions(macro->m_begin.m_line - 2); // cur loadstring codes chunk options
@@ -5399,7 +5399,7 @@ private:
 			throw CompileError("failed to load macro codes, at (macro "s + macroName + "): "s + err, macroLit);
 		}
 		lua_pop(L, 1); // cur f
-		pushYue("pcall"sv); // cur f pcall
+		pushE("pcall"sv); // cur f pcall
 		lua_insert(L, -2); // cur pcall f
 		if (lua_pcall(L, 1, 2, 0) != 0) { // f(), cur success macro
 			std::string err = lua_tostring(L, -1);
@@ -5429,7 +5429,7 @@ private:
 	void transformMacro(Macro_t* macro, str_list&, bool) {
 		throw CompileError("macro feature not supported"sv, macro);
 	}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
 	void transformReturn(Return_t* returnNode, str_list& out) {
 		if (!_funcStates.top().enableReturn) {
@@ -5608,7 +5608,7 @@ private:
 					}
 					break;
 				}
-				default: YUEE("AST node mismatch", def->name.get()); break;
+				default: EE("AST node mismatch", def->name.get()); break;
 			}
 			forceAddToScope(arg.name);
 			if (def->defaultValue) {
@@ -5702,7 +5702,7 @@ private:
 			case id<Self_t>():
 				out.push_back("self"s);
 				break;
-			default: YUEE("AST node mismatch", name); break;
+			default: EE("AST node mismatch", name); break;
 		}
 	}
 
@@ -6179,7 +6179,7 @@ private:
 						out.push_back(join(temp));
 						return true;
 					}
-					default: YUEE("AST node mismatch", meta->item); break;
+					default: EE("AST node mismatch", meta->item); break;
 				}
 				break;
 			}
@@ -6203,7 +6203,7 @@ private:
 						chain->items.push_back(newExp(str, x));
 						break;
 					}
-					default: YUEE("AST node mismatch", meta->item); break;
+					default: EE("AST node mismatch", meta->item); break;
 				}
 				break;
 			}
@@ -6413,7 +6413,7 @@ private:
 				case id<PlainItem_t>():
 					temp.push_back(_parser.toString(item));
 					break;
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		switch (usage) {
@@ -6423,7 +6423,7 @@ private:
 			case ExpUsage::Return:
 				out.push_back(indent() + "return "s + join(temp) + nll(x));
 				break;
-			case ExpUsage::Assignment: YUEE("invalid expression usage", x); break;
+			case ExpUsage::Assignment: EE("invalid expression usage", x); break;
 			default:
 				out.push_back(join(temp));
 				break;
@@ -6431,9 +6431,9 @@ private:
 	}
 
 	void transformMacroInPlace(MacroInPlace_t* macroInPlace) {
-#ifdef YUE_NO_MACRO
+#ifdef E_NO_MACRO
 		throw CompileError("macro feature not supported"sv, macroInPlace);
-#else // YUE_NO_MACRO
+#else // E_NO_MACRO
 		auto x = macroInPlace;
 		pushCurrentModule(); // cur
 		int top = lua_gettop(L) - 1;
@@ -6441,7 +6441,7 @@ private:
 		lua_pop(L, 1); // empty
 		auto fcodes = _parser.toString(macroInPlace).substr(1);
 		Utils::trim(fcodes);
-		pushYue("loadstring"sv); // loadstring
+		pushE("loadstring"sv); // loadstring
 		lua_pushlstring(L, fcodes.c_str(), fcodes.size()); // loadstring codes
 		lua_pushliteral(L, "=(macro in-place)"); // loadstring codes chunk
 		pushOptions(macroInPlace->m_begin.m_line - 1); // loadstring codes chunk options
@@ -6454,7 +6454,7 @@ private:
 			throw CompileError("failed to load macro codes, at (macro in-place): "s + err, x);
 		}
 		lua_pop(L, 1); // f
-		pushYue("pcall"sv); // f pcall
+		pushE("pcall"sv); // f pcall
 		lua_insert(L, -2); // pcall f
 		if (lua_pcall(L, 1, 2, 0) != 0) { // f(), success macroFunc
 			std::string err = lua_tostring(L, -1);
@@ -6465,7 +6465,7 @@ private:
 			throw CompileError("failed to generate macro function\n"s + err, x);
 		} // true macroFunc
 		lua_remove(L, -2); // macroFunc
-		pushYue("pcall"sv); // macroFunc pcall
+		pushE("pcall"sv); // macroFunc pcall
 		lua_insert(L, -2); // pcall macroFunc
 		bool success = lua_pcall(L, 1, 2, 0) == 0;
 		if (!success) { // err
@@ -6476,17 +6476,17 @@ private:
 			std::string err = lua_tostring(L, -1);
 			throw CompileError("failed to expand macro: "s + err, x);
 		}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 	}
 
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 	std::string expandBuiltinMacro(const std::string& name, ast_node* x) {
 		if (name == "LINE"sv) {
 			return std::to_string(x->m_begin.m_line + _config.lineOffset);
 		} else if (name == "FILE"sv) {
 			auto moduleName = _config.module;
 			Utils::replace(moduleName, "\\"sv, "\\\\"sv);
-			return moduleName.empty() ? "\"yuescript\""s : '"' + moduleName + '"';
+			return moduleName.empty() ? "\"e\""s : '"' + moduleName + '"';
 		}
 		return Empty;
 	}
@@ -6545,7 +6545,7 @@ private:
 						}
 					}
 					if (!rawString && str.empty()) {
-						str = YueFormat{}.toString(arg);
+						str = EFormat{}.toString(arg);
 					}
 					Utils::trim(str);
 					Utils::replace(str, "\r\n"sv, "\n"sv);
@@ -6608,7 +6608,7 @@ private:
 				throw CompileError("can not resolve macro"sv, x);
 			}
 		} // cur macroFunc
-		pushYue("pcall"sv); // cur macroFunc pcall
+		pushE("pcall"sv); // cur macroFunc pcall
 		lua_insert(L, -2); // cur pcall macroFunc
 		if (!lua_checkstack(L, argStrs.size())) {
 			throw CompileError("too much macro params"s, x);
@@ -6813,11 +6813,11 @@ private:
 			}
 		}
 	}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
 	void transformChainValue(ChainValue_t* chainValue, str_list& out, ExpUsage usage, ExpList_t* assignList = nullptr, bool allowBlockMacroReturn = false, bool optionalDestruct = false) {
 		if (isMacroChain(chainValue)) {
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 			ast_ptr<false, ast_node> node;
 			std::unique_ptr<input> codes;
 			std::string luaCodes;
@@ -6872,7 +6872,7 @@ private:
 #else
 			(void)allowBlockMacroReturn;
 			throw CompileError("macro feature not supported"sv, chainValue);
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 		}
 		const auto& chainList = chainValue->items.objects();
 		if (transformChainEndWithEOP(chainList, out, usage, assignList)) {
@@ -6929,7 +6929,7 @@ private:
 				case id<DoubleString_t>(): transformDoubleString(static_cast<DoubleString_t*>(arg), temp); break;
 				case id<LuaString_t>(): transformLuaString(static_cast<LuaString_t*>(arg), temp); break;
 				case id<TableLit_t>(): transformTableLit(static_cast<TableLit_t*>(arg), temp); break;
-				default: YUEE("AST node mismatch", arg); break;
+				default: EE("AST node mismatch", arg); break;
 			}
 		}
 		out.push_back('(' + join(temp, ", "sv) + ')');
@@ -7485,7 +7485,7 @@ private:
 							chainValue->items.push_back(strNode);
 							break;
 						}
-						default: YUEE("AST node mismatch", key); break;
+						default: EE("AST node mismatch", key); break;
 					}
 					auto assign = assignment->action.to<Assign_t>();
 					assign->values.clear();
@@ -7587,7 +7587,7 @@ private:
 						case id<String_t>():
 							chainValue->items.push_back(key);
 							break;
-						default: YUEE("AST node mismatch", key); break;
+						default: EE("AST node mismatch", key); break;
 					}
 					auto assign = assignment->action.to<Assign_t>();
 					assign->values.clear();
@@ -7595,7 +7595,7 @@ private:
 					transformAssignment(assignment, temp);
 					break;
 				}
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		switch (usage) {
@@ -7733,7 +7733,7 @@ private:
 								newPair->key.set(newExp(str, mp));
 								break;
 							}
-							default: YUEE("AST node mismatch", mp->key); break;
+							default: EE("AST node mismatch", mp->key); break;
 						}
 						newPair->value.set(mp->value);
 						metatable->pairs.push_back(newPair);
@@ -7745,7 +7745,7 @@ private:
 					}
 					break;
 				}
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 			if (!isMetamethod) {
 				temp.back() = indent() + (value == values.back() ? temp.back() : temp.back() + ',') + nll(value);
@@ -7820,7 +7820,7 @@ private:
 					temp.back() = indent() + "if "s + temp.back() + " then"s + nll(item);
 					pushScope();
 					break;
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		if (auto stmt = ast_cast<Statement_t>(comp->items.front())) {
@@ -7880,7 +7880,7 @@ private:
 					transformListTable(comp, out);
 					break;
 				default:
-					YUEE("invalid comprehension usage", comp);
+					EE("invalid comprehension usage", comp);
 					break;
 			}
 			return;
@@ -7931,7 +7931,7 @@ private:
 					temp.back() = indent() + "if "s + temp.back() + " then"s + nll(item);
 					pushScope();
 					break;
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		{
@@ -8026,7 +8026,7 @@ private:
 					varAfter.push_back(desVar);
 					break;
 				}
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		switch (loopTarget->get_id()) {
@@ -8141,7 +8141,7 @@ private:
 				_buf << indent() << "for "sv << join(vars, ", "sv) << " in "sv << temp.back() << " do"sv << nlr(loopTarget);
 				out.push_back(clearBuf());
 				break;
-			default: YUEE("AST node mismatch", loopTarget); break;
+			default: EE("AST node mismatch", loopTarget); break;
 		}
 		for (auto& var : varBefore) addToScope(var);
 		pushScope();
@@ -8209,7 +8209,7 @@ private:
 			switch (arg->get_id()) {
 				case id<Exp_t>(): transformExp(static_cast<Exp_t*>(arg), temp, ExpUsage::Closure); break;
 				case id<TableBlock_t>(): transformTableBlock(static_cast<TableBlock_t*>(arg), temp); break;
-				default: YUEE("AST node mismatch", arg); break;
+				default: EE("AST node mismatch", arg); break;
 			}
 		}
 		out.push_back('(' + join(temp, ", "sv) + ')');
@@ -8251,7 +8251,7 @@ private:
 				transformBlock(newBlock, out, usage, assignList);
 				break;
 			}
-			default: YUEE("AST node mismatch", bodyOrStmt); break;
+			default: EE("AST node mismatch", bodyOrStmt); break;
 		}
 	}
 
@@ -8752,17 +8752,17 @@ private:
 						transformLuaString(static_cast<LuaString_t*>(str), temp);
 						temp.back() = "[ "s + temp.back() + ']';
 						break;
-					default: YUEE("AST node mismatch", str); break;
+					default: EE("AST node mismatch", str); break;
 				}
 				break;
 			}
-			default: YUEE("AST node mismatch", key); break;
+			default: EE("AST node mismatch", key); break;
 		}
 		auto value = pair->value.get();
 		switch (value->get_id()) {
 			case id<Exp_t>(): transformExp(static_cast<Exp_t*>(value), temp, ExpUsage::Closure); break;
 			case id<TableBlock_t>(): transformTableBlock(static_cast<TableBlock_t*>(value), temp); break;
-			default: YUEE("AST node mismatch", value); break;
+			default: EE("AST node mismatch", value); break;
 		}
 		out.push_back(temp.front() + " = "s + temp.back());
 	}
@@ -8787,7 +8787,7 @@ private:
 				out.push_back("[\""s + nameStr + "\"]"s);
 				break;
 			}
-			default: YUEE("AST node mismatch", name); break;
+			default: EE("AST node mismatch", name); break;
 		}
 	}
 
@@ -8823,7 +8823,7 @@ private:
 					temp.back() = globalVar("tostring"sv, content, AccessType::Read) + '(' + temp.back() + ')';
 					break;
 				}
-				default: YUEE("AST node mismatch", content); break;
+				default: EE("AST node mismatch", content); break;
 			}
 		}
 		out.push_back(temp.empty() ? "\"\""s : join(temp, " .. "sv));
@@ -8835,7 +8835,7 @@ private:
 			case id<SingleString_t>(): transformSingleString(static_cast<SingleString_t*>(str), out); break;
 			case id<DoubleString_t>(): transformDoubleString(static_cast<DoubleString_t*>(str), out); break;
 			case id<LuaString_t>(): transformLuaString(static_cast<LuaString_t*>(str), out); break;
-			default: YUEE("AST node mismatch", str); break;
+			default: EE("AST node mismatch", str); break;
 		}
 	}
 
@@ -9006,7 +9006,7 @@ private:
 									value->item.set(simpleValue);
 									break;
 								}
-								default: YUEE("AST node mismatch", item); break;
+								default: EE("AST node mismatch", item); break;
 							}
 							explist->exprs.push_back(newExp(value, value));
 						}
@@ -9097,7 +9097,7 @@ private:
 						break;
 					}
 					case id<Statement_t>(): break;
-					default: YUEE("AST node mismatch", content); break;
+					default: EE("AST node mismatch", content); break;
 				}
 			}
 			for (const auto& classVar : classConstVars) {
@@ -9363,7 +9363,7 @@ private:
 				case id<NormalPair_t>():
 					transform_normal_pair(static_cast<NormalPair_t*>(keyValue), temp, true);
 					break;
-				default: YUEE("AST node mismatch", keyValue); break;
+				default: EE("AST node mismatch", keyValue); break;
 			}
 			if (type == MemType::Property) {
 				incIndentOffset();
@@ -9382,7 +9382,7 @@ private:
 			case id<AssignableChain_t>(): transformAssignableChain(static_cast<AssignableChain_t*>(item), out); break;
 			case id<Variable_t>(): transformVariable(static_cast<Variable_t*>(item), out); break;
 			case id<SelfItem_t>(): transformSelfName(static_cast<SelfItem_t*>(item), out); break;
-			default: YUEE("AST node mismatch", item); break;
+			default: EE("AST node mismatch", item); break;
 		}
 	}
 
@@ -9709,7 +9709,7 @@ private:
 				}
 				break;
 			}
-			default: YUEE("AST node mismatch", item); break;
+			default: EE("AST node mismatch", item); break;
 		}
 	}
 
@@ -9741,7 +9741,7 @@ private:
 						return _parser.toString(str->content);
 					}
 					default: {
-						YUEE("AST node mismatch", strNode->str);
+						EE("AST node mismatch", strNode->str);
 						return std::nullopt;
 					}
 				}
@@ -9946,7 +9946,7 @@ private:
 					temp.back() = indent() + "if "s + temp.back() + " then"s + nll(item);
 					pushScope();
 					break;
-				default: YUEE("AST node mismatch", item); break;
+				default: EE("AST node mismatch", item); break;
 			}
 		}
 		transformExp(comp->key, kv, ExpUsage::Closure);
@@ -10376,7 +10376,7 @@ private:
 					expList->exprs.push_back(exp);
 					break;
 				}
-				default: YUEE("AST node mismatch", name); break;
+				default: EE("AST node mismatch", name); break;
 			}
 		}
 		bool extraScope = false;
@@ -10441,14 +10441,14 @@ private:
 			if (auto tabLit = importNode->target.as<ImportTabLit_t>()) {
 				for (auto item : tabLit->items.objects()) {
 					switch (item->get_id()) {
-#ifdef YUE_NO_MACRO
+#ifdef E_NO_MACRO
 						case id<MacroName_t>():
 						case id<MacroNamePair_t>():
 						case id<ImportAllMacro_t>(): {
 							throw CompileError("macro feature not supported"sv, item);
 							break;
 						}
-#else // YUE_NO_MACRO
+#else // E_NO_MACRO
 						case id<MacroName_t>(): {
 							auto macroName = static_cast<MacroName_t*>(item);
 							auto name = _parser.toString(macroName->name);
@@ -10464,7 +10464,7 @@ private:
 							if (importAllMacro) throw CompileError("import all macro symbol duplicated"sv, item);
 							importAllMacro = true;
 							break;
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 						case id<VariablePair_t>():
 						case id<NormalPair_t>():
 						case id<MetaVariablePair_t>():
@@ -10472,11 +10472,11 @@ private:
 						case id<Exp_t>():
 							newTab->items.push_back(item);
 							break;
-						default: YUEE("AST node mismatch", item); break;
+						default: EE("AST node mismatch", item); break;
 					}
 				}
 			}
-#ifndef YUE_NO_MACRO
+#ifndef E_NO_MACRO
 			if (importAllMacro || !macroPairs.empty()) {
 				auto moduleName = _parser.toString(importNode->literal);
 				Utils::replace(moduleName, "'"sv, ""sv);
@@ -10486,7 +10486,7 @@ private:
 				int top = lua_gettop(L) - 1; // Lua state may be setup by pushCurrentModule()
 				DEFER(lua_settop(L, top));
 				pushMacro(lua_gettop(L)); // cur scope
-				pushYue("find_modulepath"sv); // cur scope find_modulepath
+				pushE("find_modulepath"sv); // cur scope find_modulepath
 				lua_pushlstring(L, moduleName.c_str(), moduleName.size()); // cur scope find_modulepath moduleName
 				if (lua_pcall(L, 1, 2, 0) != 0) { // find_modulepath(moduleName), cur scope result searchItems
 					std::string err = lua_tostring(L, -1);
@@ -10508,7 +10508,7 @@ private:
 				std::string moduleFullName = lua_tostring(L, -1);
 				lua_pop(L, 1); // cur scope
 				if (!isModuleLoaded(moduleFullName)) {
-					pushYue("read_file"sv); // cur scope read_file
+					pushE("read_file"sv); // cur scope read_file
 					lua_pushlstring(L, moduleFullName.c_str(), moduleFullName.size()); // cur scope load_text moduleFullName
 					if (lua_pcall(L, 1, 1, 0) != 0) {
 						std::string err = lua_tostring(L, -1);
@@ -10518,12 +10518,12 @@ private:
 						throw CompileError("failed to get module text"sv, x);
 					} // cur scope text
 					std::string text = lua_tostring(L, -1);
-#ifndef YUE_NO_MACRO
-					auto compiler = YueCompiler{L, _luaOpen, false};
+#ifndef E_NO_MACRO
+					auto compiler = ECompiler{L, _luaOpen, false};
 #else
-					auto compiler = YueCompiler{};
-#endif // YUE_NO_MACRO
-					YueConfig config;
+					auto compiler = ECompiler{};
+#endif // E_NO_MACRO
+					EConfig config;
 					config.lineOffset = 0;
 					config.lintGlobalVariable = false;
 					config.reserveLineNumber = false;
@@ -10558,11 +10558,11 @@ private:
 					lua_setfield(L, -3, pair.second.c_str()); // scope[second] = val, cur scope mod
 				}
 			}
-#else // YUE_NO_MACRO
+#else // E_NO_MACRO
 			if (importAllMacro) {
 				throw CompileError("macro feature not supported"sv, importNode->target);
 			}
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 			if (newTab->items.empty()) {
 				out.push_back(Empty);
 				return;
@@ -10614,7 +10614,7 @@ private:
 						tableLit->values.push_back(pairDef);
 						break;
 					}
-					default: YUEE("AST node mismatch", pair); break;
+					default: EE("AST node mismatch", pair); break;
 				}
 			}
 			simpleValue->value.set(tableLit);
@@ -10651,7 +10651,7 @@ private:
 			case id<FromImport_t>():
 				transformFromImport(static_cast<FromImport_t*>(content), out);
 				break;
-			default: YUEE("AST node mismatch", content); break;
+			default: EE("AST node mismatch", content); break;
 		}
 	}
 
@@ -11192,7 +11192,7 @@ private:
 				break;
 			}
 			case id<LocalFlag_t>(): break;
-			default: YUEE("AST node mismatch", local->item); break;
+			default: EE("AST node mismatch", local->item); break;
 		}
 		out.push_back(join(temp));
 	}
@@ -11235,7 +11235,7 @@ private:
 						value->item.set(simpleValue);
 						break;
 					}
-					default: YUEE("AST node mismatch", item); break;
+					default: EE("AST node mismatch", item); break;
 				}
 				auto exp = newExp(value, item);
 				listB->exprs.push_back(exp);
@@ -11580,38 +11580,38 @@ private:
 	}
 };
 
-const std::string YueCompilerImpl::Empty;
+const std::string ECompilerImpl::Empty;
 
-YueCompiler::YueCompiler(void* sharedState,
+ECompiler::ECompiler(void* sharedState,
 	const std::function<void(void*)>& luaOpen,
 	bool sameModule)
 	:
-#ifndef YUE_NO_MACRO
-	_compiler(std::make_unique<YueCompilerImpl>(static_cast<lua_State*>(sharedState), luaOpen, sameModule)) {
+#ifndef E_NO_MACRO
+	_compiler(std::make_unique<ECompilerImpl>(static_cast<lua_State*>(sharedState), luaOpen, sameModule)) {
 }
 #else
-	_compiler(std::make_unique<YueCompilerImpl>()) {
+	_compiler(std::make_unique<ECompilerImpl>()) {
 	(void)sharedState;
 	(void)luaOpen;
 	(void)sameModule;
 }
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 
-YueCompiler::~YueCompiler() { }
+ECompiler::~ECompiler() { }
 
-CompileInfo YueCompiler::compile(std::string_view codes, const YueConfig& config) {
+CompileInfo ECompiler::compile(std::string_view codes, const EConfig& config) {
 	return _compiler->compile(codes, config);
 }
 
-void YueCompiler::clear(void* luaState) {
-#ifndef YUE_NO_MACRO
+void ECompiler::clear(void* luaState) {
+#ifndef E_NO_MACRO
 	auto L = static_cast<lua_State*>(luaState);
-	lua_pushliteral(L, YUE_MODULES); // YUE_MODULES
+	lua_pushliteral(L, E_MODULES); // E_MODULES
 	lua_pushnil(L);
 	lua_rawset(L, LUA_REGISTRYINDEX); // reg[YUE_MODULES] = nil
 #else
 	(void)(luaState);
-#endif // YUE_NO_MACRO
+#endif // E_NO_MACRO
 }
 
-} // namespace yue
+} // namespace e

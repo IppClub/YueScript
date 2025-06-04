@@ -38,7 +38,7 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{08a9e377-ecc6-4acb-af99-8f683d5f48a5}</ProjectGuid>
-    <RootNamespace>YuescriptDLL</RootNamespace>
+    <RootNamespace>EDLL</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -128,49 +128,49 @@
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug53|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release53|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug53|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release53|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IntDir>$(SolutionDir)..\build\windows\$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
     <OutDir>$(SolutionDir)..\bin\windows\$(Platform)\$(Configuration)\</OutDir>
-    <TargetName>yue</TargetName>
+    <TargetName>e</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -274,7 +274,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;YUE_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;E_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\lua53;..\..\src;..\..\src\3rdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -316,7 +316,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;YUE_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>NDEBUG;_SILENCE_CXX17_CODECVT_HEADER_DEPRECATION_WARNING;E_BUILD_AS_DLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <AdditionalIncludeDirectories>..\lua53;..\..\src;..\..\src\3rdParty;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
@@ -333,21 +333,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\yuescript\ast.cpp" />
-    <ClCompile Include="..\..\src\yuescript\parser.cpp" />
-    <ClCompile Include="..\..\src\yuescript\yuescript.cpp" />
-    <ClCompile Include="..\..\src\yuescript\yue_ast.cpp" />
-    <ClCompile Include="..\..\src\yuescript\yue_compiler.cpp" />
-    <ClCompile Include="..\..\src\yuescript\yue_parser.cpp" />
+    <ClCompile Include="..\..\src\e\ast.cpp" />
+    <ClCompile Include="..\..\src\e\parser.cpp" />
+    <ClCompile Include="..\..\src\e\e.cpp" />
+    <ClCompile Include="..\..\src\e\e_ast.cpp" />
+    <ClCompile Include="..\..\src\e\e_compiler.cpp" />
+    <ClCompile Include="..\..\src\e\e_parser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\yuescript\ast.hpp" />
-    <ClInclude Include="..\..\src\yuescript\parser.hpp" />
-    <ClInclude Include="..\..\src\yuescript\stacktraceplus.h" />
-    <ClInclude Include="..\..\src\yuescript\yuescript.h" />
-    <ClInclude Include="..\..\src\yuescript\yue_ast.h" />
-    <ClInclude Include="..\..\src\yuescript\yue_compiler.h" />
-    <ClInclude Include="..\..\src\yuescript\yue_parser.h" />
+    <ClInclude Include="..\..\src\e\ast.hpp" />
+    <ClInclude Include="..\..\src\e\parser.hpp" />
+    <ClInclude Include="..\..\src\e\stacktraceplus.h" />
+    <ClInclude Include="..\..\src\e\e.h" />
+    <ClInclude Include="..\..\src\e\e_ast.h" />
+    <ClInclude Include="..\..\src\e\e_compiler.h" />
+    <ClInclude Include="..\..\src\e\e_parser.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

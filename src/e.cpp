@@ -6,8 +6,8 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#include "yuescript/yue_compiler.h"
-#include "yuescript/yue_parser.h"
+#include "e/e_compiler.h"
+#include "e/e_parser.h"
 
 #include <chrono>
 #include <cstdlib>
@@ -24,13 +24,13 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 using namespace std::string_view_literals;
 using namespace std::string_literals;
 using namespace std::chrono_literals;
-#ifndef YUE_NO_WATCHER
+#ifndef E_NO_WATCHER
 #include "efsw/efsw.hpp"
-#endif // YUE_NO_WATCHER
+#endif // E_NO_WATCHER
 #include "ghc/fs_std.hpp"
 #include "linenoise.hpp"
 
-#if not(defined YUE_NO_MACRO && defined YUE_COMPILER_ONLY)
+#if not(defined E_NO_MACRO && defined E_COMPILER_ONLY)
 #define _DEFER(code, line) std::shared_ptr<void> _defer_##line(nullptr, [&](auto) { \
 	code; \
 })
@@ -39,28 +39,28 @@ extern "C" {
 #include "lauxlib.h"
 #include "lua.h"
 #include "lualib.h"
-int luaopen_yue(lua_State* L);
+int luaopen_e(lua_State* L);
 } // extern "C"
 
 static void openlibs(void* state) {
 	lua_State* L = static_cast<lua_State*>(state);
 	luaL_openlibs(L);
 #if LUA_VERSION_NUM > 501
-	luaL_requiref(L, "yue", luaopen_yue, 0);
+	luaL_requiref(L,  "e", luaopen_e, 0);
 #else
-	lua_pushcfunction(L, luaopen_yue);
+	lua_pushcfunction(L, luaopen_e);
 	lua_call(L, 0, 0);
 #endif
 	lua_pop(L, 1);
 }
 
-void pushYue(lua_State* L, std::string_view name) {
+void pushE(lua_State* L, std::string_view name) {
 	lua_getglobal(L, "package"); // package
 	lua_getfield(L, -1, "loaded"); // package loaded
-	lua_getfield(L, -1, "yue"); // package loaded yue
-	lua_pushlstring(L, &name.front(), name.size()); // package loaded yue name
-	lua_gettable(L, -2); // loaded[name], package loaded yue item
-	lua_insert(L, -4); // item package loaded yue
+	lua_getfield(L, -1,  "e"); // package loaded e
+	lua_pushlstring(L, &name.front(), name.size()); // package loaded e name
+	lua_gettable(L, -2); // loaded[name], package loaded e item
+	lua_insert(L, -4); // item package loaded e
 	lua_pop(L, 3); // item
 }
 
@@ -85,15 +85,15 @@ void pushOptions(lua_State* L, int lineOffset) {
 	lua_pushinteger(L, lineOffset);
 	lua_rawset(L, -3);
 }
-#endif // not (defined YUE_NO_MACRO && defined YUE_COMPILER_ONLY)
+#endif // not (defined E_NO_MACRO && defined E_COMPILER_ONLY)
 
-#ifndef YUE_NO_MACRO
-#define YUE_ARGS nullptr, openlibs
+#ifndef E_NO_MACRO
+#define E_ARGS nullptr, openlibs
 #else
-#define YUE_ARGS
-#endif // YUE_NO_MACRO
+#define E_ARGS
+#endif // E_NO_MACRO
 
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 static const char luaminifyCodes[] =
 #include "LuaMinify.h"
 	;
@@ -107,13 +107,13 @@ static void pushLuaminify(lua_State* L) {
 		luaL_error(L, err.c_str());
 	}
 }
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 
 fs::path getTargetFile(const fs::path& file, const fs::path& workPath, const fs::path& targetPath) {
 	auto srcFile = fs::absolute(file);
 	auto ext = srcFile.extension().string();
 	for (auto& ch : ext) ch = std::tolower(ch);
-	if (!ext.empty() && ext.substr(1) == yue::extension) {
+	if (!ext.empty() && ext.substr(1) == e::extension) {
 		auto targetFile = targetPath / srcFile.lexically_relative(workPath);
 		targetFile.replace_extension("lua"s);
 		if (fs::exists(targetFile)) {
@@ -128,7 +128,7 @@ fs::path getTargetFileDirty(const fs::path& file, const fs::path& workPath, cons
 	auto srcFile = fs::absolute(file);
 	auto ext = srcFile.extension().string();
 	for (auto& ch : ext) ch = std::tolower(ch);
-	if (!fs::is_directory(srcFile) && !ext.empty() && ext.substr(1) == yue::extension) {
+	if (!fs::is_directory(srcFile) && !ext.empty() && ext.substr(1) == e::extension) {
 		auto targetFile = targetPath / srcFile.lexically_relative(workPath);
 		targetFile.replace_extension("lua"s);
 		if (fs::exists(targetFile)) {
@@ -144,13 +144,13 @@ fs::path getTargetFileDirty(const fs::path& file, const fs::path& workPath, cons
 	return fs::path();
 }
 
-#ifndef YUE_NO_WATCHER
+#ifndef E_NO_WATCHER
 
-#ifndef YUE_COMPILER_ONLY
-static std::string compileFile(const fs::path& file, yue::YueConfig conf, const fs::path& workPath, const fs::path& targetPath, bool minify, bool rewrite) {
+#ifndef E_COMPILER_ONLY
+static std::string compileFile(const fs::path& file, e::EConfig conf, const fs::path& workPath, const fs::path& targetPath, bool minify, bool rewrite) {
 #else
-static std::string compileFile(const fs::path& file, yue::YueConfig conf, const fs::path& workPath, const fs::path& targetPath) {
-#endif // YUE_COMPILER_ONLY
+static std::string compileFile(const fs::path& file, e::EConfig conf, const fs::path& workPath, const fs::path& targetPath) {
+#endif // E_COMPILER_ONLY
 	auto srcFile = fs::absolute(file);
 	auto targetFile = getTargetFileDirty(srcFile, workPath, targetPath);
 	if (targetFile.empty()) return std::string();
@@ -173,7 +173,7 @@ static std::string compileFile(const fs::path& file, yue::YueConfig conf, const 
 				conf.options["path"] = (workPath / "?.lua"sv).string();
 			}
 		}
-		auto result = yue::YueCompiler{YUE_ARGS}.compile(s, conf);
+		auto result = e::ECompiler{E_ARGS}.compile(s, conf);
 		if (!result.error) {
 			std::string targetExtension("lua"sv);
 			if (result.options) {
@@ -191,7 +191,7 @@ static std::string compileFile(const fs::path& file, yue::YueConfig conf, const 
 			std::ofstream output(targetFile, std::ios::trunc | std::ios::out);
 			if (output) {
 				const auto& codes = result.codes;
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 				if (minify || rewrite) {
 					lua_State* L = luaL_newstate();
 					DEFER(lua_close(L));
@@ -210,7 +210,7 @@ static std::string compileFile(const fs::path& file, yue::YueConfig conf, const 
 						return (rewrite ? "Rewritten built "s : "Minified built "s) + modulePath.string() + '\n';
 					}
 				}
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 				if (conf.reserveLineNumber) {
 					auto head = "-- [yue]: "s + modulePath.string() + '\n';
 					output.write(head.c_str(), head.size());
@@ -233,11 +233,11 @@ public:
 	void handleFileAction(efsw::WatchID, const std::string& dir, const std::string& filename, efsw::Action action, std::string) override {
 		switch (action) {
 			case efsw::Actions::Add:
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 				if (auto res = compileFile(fs::path(dir) / filename, config, workPath, targetPath, minify, rewrite); !res.empty()) {
-#else // YUE_COMPILER_ONLY
+#else // E_COMPILER_ONLY
 				if (auto res = compileFile(fs::path(dir) / filename, config, workPath, targetPath); !res.empty()) {
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 					std::cout << res;
 				}
 				break;
@@ -254,11 +254,11 @@ public:
 				break;
 			}
 			case efsw::Actions::Modified:
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 				if (auto res = compileFile(fs::path(dir) / filename, config, workPath, targetPath, minify, rewrite); !res.empty()) {
-#else // YUE_COMPILER_ONLY
+#else // E_COMPILER_ONLY
 				if (auto res = compileFile(fs::path(dir) / filename, config, workPath, targetPath); !res.empty()) {
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 					std::cout << res;
 				}
 				break;
@@ -268,25 +268,25 @@ public:
 				break;
 		}
 	}
-	yue::YueConfig config;
+	e::EConfig config;
 	fs::path workPath;
 	fs::path targetPath;
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 	bool rewrite = false;
 	bool minify = false;
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 };
-#endif // YUE_NO_WATCHER
+#endif // E_NO_WATCHER
 
 int main(int narg, const char** args) {
 	const char* help =
-		"Usage: yue [options|files|directories] ...\n\n"
+		"Usage: e [options|files|directories] ...\n\n"
 		"   -h       Print this message\n"
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 		"   -e str   Execute a file or raw codes\n"
 		"   -m       Generate minified codes\n"
 		"   -r       Rewrite output to match original line numbers\n"
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 		"   -t path  Specify where to place compiled files\n"
 		"   -o file  Write output to file\n"
 		"   -s       Use spaces in generated codes instead of tabs\n"
@@ -296,11 +296,11 @@ int main(int narg, const char** args) {
 		"   -l       Write line numbers from source codes\n"
 		"   -j       Disable implicit return at end of file\n"
 		"   -c       Reserve comments before statement from source codes\n"
-#ifndef YUE_NO_WATCHER
+#ifndef E_NO_WATCHER
 		"   -w path  Watch changes and compile every file under directory\n"
-#endif // YUE_NO_WATCHER
+#endif // E_NO_WATCHER
 		"   -v       Print version\n"
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 		"   --       Read from standard in, print to standard out\n"
 		"            (Must be first and only argument)\n\n"
 		"   --target=version  Specify the Lua version that codes will be generated to\n"
@@ -308,15 +308,15 @@ int main(int narg, const char** args) {
 		"   --path=path_str   Append an extra Lua search path string to package.path\n\n"
 		"   Execute without options to enter REPL, type symbol '$'\n"
 		"   in a single line to start/stop multi-line mode\n"
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 		;
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 	if (narg == 1) {
 		linenoise::SetMultiLine(false);
 		linenoise::SetCompletionCallback([](const char* editBuffer, std::vector<std::string>& completions) {
 			std::string buf = editBuffer;
 			std::string tmp = buf;
-			yue::Utils::trim(tmp);
+			e::Utils::trim(tmp);
 			if (tmp.empty()) return;
 			std::string pre;
 			auto pos = buf.find_first_not_of(" \t\n");
@@ -362,39 +362,39 @@ int main(int narg, const char** args) {
 		lua_State* L = luaL_newstate();
 		openlibs(L);
 		DEFER(lua_close(L));
-		pushYue(L, "insert_loader"sv);
+		pushE(L, "insert_loader"sv);
 		if (lua_pcall(L, 0, 0, 0) != 0) {
 			std::cout << lua_tostring(L, -1) << '\n';
 			return 1;
 		}
 		int count = 0;
-		std::cout << "Yuescript "sv << yue::version << '\n';
+		std::cout << "E "sv << e::version << '\n';
 		while (true) {
 			count++;
 			std::string codes;
 			bool quit = linenoise::Readline("> ", codes);
 			if (quit) return 0;
 			linenoise::AddHistory(codes.c_str());
-			yue::Utils::trim(codes);
+			e::Utils::trim(codes);
 			if (codes == "$"sv) {
 				codes.clear();
 				for (std::string line; !(quit = linenoise::Readline("", line));) {
 					auto temp = line;
-					yue::Utils::trim(temp);
+					e::Utils::trim(temp);
 					if (temp == "$"sv) {
 						break;
 					}
 					codes += '\n';
 					codes += line;
 					linenoise::AddHistory(line.c_str());
-					yue::Utils::trim(codes);
+					e::Utils::trim(codes);
 				}
 				if (quit) return 0;
 			}
 			codes.insert(0, "global *\n"sv);
 			int top = lua_gettop(L);
 			DEFER(lua_settop(L, top));
-			pushYue(L, "loadstring"sv);
+			pushE(L, "loadstring"sv);
 			lua_pushlstring(L, codes.c_str(), codes.size());
 			lua_pushstring(L, ("=(repl "s + std::to_string(count) + ')').c_str());
 			pushOptions(L, -1);
@@ -418,7 +418,7 @@ int main(int narg, const char** args) {
 				continue;
 			}
 			lua_pop(L, 1);
-			pushYue(L, "pcall"sv);
+			pushE(L, "pcall"sv);
 			lua_insert(L, -2);
 			int last = lua_gettop(L) - 2;
 			if (lua_pcall(L, 1, LUA_MULTRET, 0) != 0) {
@@ -451,8 +451,8 @@ int main(int narg, const char** args) {
 	}
 	bool minify = false;
 	bool rewrite = false;
-#endif // YUE_COMPILER_ONLY
-	yue::YueConfig config;
+#endif // E_COMPILER_ONLY
+	e::EConfig config;
 	config.implicitReturnRoot = true;
 	config.lintGlobalVariable = false;
 	config.reserveLineNumber = false;
@@ -477,12 +477,12 @@ int main(int narg, const char** args) {
 			while ((ch = std::cin.get()) && !std::cin.eof()) {
 				codes += ch;
 			}
-			yue::YueConfig conf;
+			e::EConfig conf;
 			conf.implicitReturnRoot = true;
 			conf.lintGlobalVariable = false;
 			conf.reserveLineNumber = false;
 			conf.useSpaceOverTab = true;
-			auto result = yue::YueCompiler{YUE_ARGS}.compile(codes, conf);
+			auto result = e::ECompiler{E_ARGS}.compile(codes, conf);
 			if (!result.error) {
 				std::cout << result.codes;
 				return 0;
@@ -491,14 +491,14 @@ int main(int narg, const char** args) {
 				std::cout << result.error.value().displayMessage << '\n';
 				return 1;
 			}
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 		} else if (arg == "-e"sv) {
 			++i;
 			if (i < narg) {
 				lua_State* L = luaL_newstate();
 				openlibs(L);
 				DEFER(lua_close(L));
-				pushYue(L, "insert_loader"sv);
+				pushE(L, "insert_loader"sv);
 				if (lua_pcall(L, 0, 0, 0) != 0) {
 					std::cout << lua_tostring(L, -1) << '\n';
 					return 1;
@@ -520,7 +520,7 @@ int main(int narg, const char** args) {
 					if (ext == ".lua") {
 						lua_getglobal(L, "load");
 					} else {
-						pushYue(L, "loadstring"sv);
+						pushE(L, "loadstring"sv);
 					}
 					std::string s(
 						(std::istreambuf_iterator<char>(input)),
@@ -535,13 +535,13 @@ int main(int narg, const char** args) {
 							std::string argItem = args[j];
 							if (argItem.size() > 2 && argItem.substr(0, 2) == "--"sv && argItem.substr(2, 1) != "-"sv) {
 								auto argStr = argItem.substr(2);
-								yue::Utils::trim(argStr);
+								e::Utils::trim(argStr);
 								size_t idx = argStr.find('=');
 								if (idx != std::string::npos) {
 									auto key = argStr.substr(0, idx);
 									auto value = argStr.substr(idx + 1);
-									yue::Utils::trim(key);
-									yue::Utils::trim(value);
+									e::Utils::trim(key);
+									e::Utils::trim(value);
 									lua_pushlstring(L, key.c_str(), key.size());
 									lua_pushlstring(L, value.c_str(), value.size());
 								} else {
@@ -554,7 +554,7 @@ int main(int narg, const char** args) {
 						lua_setfield(L, -2, "options");
 					}
 				} else {
-					pushYue(L, "loadstring"sv);
+					pushE(L, "loadstring"sv);
 					lua_pushlstring(L, evalStr.c_str(), evalStr.size());
 					lua_pushliteral(L, "=(eval str)");
 				}
@@ -567,7 +567,7 @@ int main(int narg, const char** args) {
 					return 1;
 				}
 				lua_pop(L, 1);
-				pushYue(L, "pcall"sv);
+				pushE(L, "pcall"sv);
 				lua_insert(L, -2);
 				int argCount = 0;
 				while (i < narg) {
@@ -593,7 +593,7 @@ int main(int narg, const char** args) {
 			minify = true;
 		} else if (arg == "-r"sv) {
 			rewrite = true;
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 		} else if (arg == "-s"sv) {
 			config.useSpaceOverTab = true;
 		} else if (arg == "-l"sv) {
@@ -621,7 +621,7 @@ int main(int narg, const char** args) {
 			std::cout << help;
 			return 0;
 		} else if (arg == "-v"sv) {
-			std::cout << "Yuescript version: "sv << yue::version << '\n';
+			std::cout << "E version: "sv << e::version << '\n';
 			return 0;
 		} else if (arg == "-o"sv) {
 			++i;
@@ -632,21 +632,21 @@ int main(int narg, const char** args) {
 				return 1;
 			}
 		} else if (arg == "-w"sv) {
-#ifndef YUE_NO_WATCHER
+#ifndef E_NO_WATCHER
 			watchFiles = true;
 #else
 			std::cout << "Error: -w is not supported\n"sv;
 			return 1;
-#endif // YUE_NO_WATCHER
+#endif // E_NO_WATCHER
 		} else if (arg.size() > 2 && arg.substr(0, 2) == "--"sv && arg.substr(2, 1) != "-"sv) {
 			auto argStr = arg.substr(2);
-			yue::Utils::trim(argStr);
+			e::Utils::trim(argStr);
 			size_t idx = argStr.find('=');
 			if (idx != std::string::npos) {
 				auto key = argStr.substr(0, idx);
 				auto value = argStr.substr(idx + 1);
-				yue::Utils::trim(key);
-				yue::Utils::trim(value);
+				e::Utils::trim(key);
+				e::Utils::trim(value);
 				config.options[key] = value;
 			} else {
 				config.options[argStr] = std::string();
@@ -658,7 +658,7 @@ int main(int narg, const char** args) {
 					if (!item.is_directory()) {
 						auto ext = item.path().extension().string();
 						for (char& ch : ext) ch = std::tolower(ch);
-						if (!ext.empty() && ext.substr(1) == yue::extension) {
+						if (!ext.empty() && ext.substr(1) == e::extension) {
 							files.emplace_back(item.path().string(), item.path().lexically_relative(arg).string());
 						}
 					}
@@ -680,7 +680,7 @@ int main(int narg, const char** args) {
 		std::cout << "Error: -o can not be used with multiple input files\n"sv;
 		return 1;
 	}
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 	if (minify || rewrite) {
 		if (minify) {
 			rewrite = false;
@@ -689,8 +689,8 @@ int main(int narg, const char** args) {
 			config.reserveLineNumber = true;
 		}
 	}
-#endif // YUE_COMPILER_ONLY
-#ifndef YUE_NO_WATCHER
+#endif // E_COMPILER_ONLY
+#ifndef E_NO_WATCHER
 	if (watchFiles) {
 		auto fullWorkPath = fs::absolute(fs::path(workPath)).string();
 		auto fullTargetPath = fullWorkPath;
@@ -700,11 +700,11 @@ int main(int narg, const char** args) {
 		std::list<std::future<std::string>> results;
 		for (const auto& file : files) {
 			auto task = std::async(std::launch::async, [=]() {
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 				return compileFile(fs::absolute(file.first), config, fullWorkPath, fullTargetPath, minify, rewrite);
 #else
 					return compileFile(fs::absolute(file.first), config, fullWorkPath, fullTargetPath);
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 			});
 			results.push_back(std::move(task));
 		}
@@ -719,14 +719,14 @@ int main(int narg, const char** args) {
 		listener.config = config;
 		listener.workPath = fullWorkPath;
 		listener.targetPath = fullTargetPath;
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 		listener.minify = minify;
 		if (minify) {
 			listener.rewrite = false;
 		} else {
 			listener.rewrite = rewrite;
 		}
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 		fileWatcher.addWatch(workPath, &listener, true);
 		fileWatcher.watch();
 		while (true) {
@@ -734,7 +734,7 @@ int main(int narg, const char** args) {
 		}
 		return 0;
 	}
-#endif // YUE_NO_WATCHER
+#endif // E_NO_WATCHER
 	std::list<std::future<std::tuple<int, std::string, std::string>>> results;
 	for (const auto& file : files) {
 		auto task = std::async(std::launch::async, [=]() {
@@ -756,7 +756,7 @@ int main(int narg, const char** args) {
 				}
 				if (dumpCompileTime) {
 					conf.profiling = true;
-					auto result = yue::YueCompiler{YUE_ARGS}.compile(s, conf);
+					auto result = e::ECompiler{E_ARGS}.compile(s, conf);
 					if (!result.error) {
 						std::ostringstream buf;
 						buf << file.first << " \n"sv;
@@ -771,7 +771,7 @@ int main(int narg, const char** args) {
 					}
 				}
 				conf.lintGlobalVariable = lintGlobal;
-				auto result = yue::YueCompiler{YUE_ARGS}.compile(s, conf);
+				auto result = e::ECompiler{E_ARGS}.compile(s, conf);
 				if (!result.error) {
 					if (!writeToFile) {
 						if (lintGlobal) {
@@ -834,7 +834,7 @@ int main(int narg, const char** args) {
 		results.push_back(std::move(task));
 	}
 	int ret = 0;
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 	lua_State* L = nullptr;
 	DEFER({
 		if (L) lua_close(L);
@@ -844,7 +844,7 @@ int main(int narg, const char** args) {
 		luaL_openlibs(L);
 		pushLuaminify(L);
 	}
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 	std::list<std::string> errs;
 	for (auto& result : results) {
 		int val = 0;
@@ -860,7 +860,7 @@ int main(int narg, const char** args) {
 			ret = val;
 			errs.push_back(msg);
 		} else {
-#ifndef YUE_COMPILER_ONLY
+#ifndef E_COMPILER_ONLY
 			if (minify || rewrite) {
 				std::ifstream input(file, std::ios::in);
 				if (input) {
@@ -899,7 +899,7 @@ int main(int narg, const char** args) {
 			}
 #else
 			std::cout << msg;
-#endif // YUE_COMPILER_ONLY
+#endif // E_COMPILER_ONLY
 		}
 	}
 	for (const auto& err : errs) {

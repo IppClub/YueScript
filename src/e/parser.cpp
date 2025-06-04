@@ -16,7 +16,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <unordered_map>
 #include <unordered_set>
 
-#include "yuescript/parser.hpp"
+#include "e/parser.hpp"
 
 namespace parserlib {
 

@@ -6,7 +6,7 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#include "yuescript/yue_ast.h"
+#include "e/e_ast.h"
 
 #include <sstream>
 
@@ -14,26 +14,26 @@ namespace parserlib {
 using namespace std::string_view_literals;
 using namespace std::string_literals;
 
-void YueFormat::pushScope() {
+void EFormat::pushScope() {
 	indent++;
 }
 
-void YueFormat::popScope() {
+void EFormat::popScope() {
 	indent--;
 }
 
-std::string YueFormat::ind() const {
+std::string EFormat::ind() const {
 	if (spaceOverTab) {
 		return std::string(indent * tabSpaces, ' ');
 	}
 	return std::string(indent, '\t');
 }
 
-std::string YueFormat::convert(const ast_node* node) {
+std::string EFormat::convert(const ast_node* node) {
 	return converter.to_bytes(std::wstring(node->m_begin.m_it, node->m_end.m_it));
 }
 
-std::string YueFormat::toString(ast_node* node) {
+std::string EFormat::toString(ast_node* node) {
 	return node->to_string(this);
 }
 
@@ -59,18 +59,18 @@ static std::string join(const str_list& items, std::string_view sep = {}) {
 	return joinBuf.str();
 }
 
-namespace yue {
+namespace e {
 
 std::string Num_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string Name_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string UnicodeName_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string Self_t::to_string(void*) const {
@@ -86,7 +86,7 @@ std::string Seperator_t::to_string(void*) const {
 	return {};
 }
 std::string LocalFlag_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string ConstAttrib_t::to_string(void*) const {
@@ -96,30 +96,30 @@ std::string CloseAttrib_t::to_string(void*) const {
 	return "close"s;
 }
 std::string ImportLiteralInner_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string ImportAllMacro_t::to_string(void*) const {
 	return "$"s;
 }
 std::string FnArrowBack_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string IfType_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string WhileType_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string UpdateOp_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string BinaryOperator_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto op = info->convert(this);
 	if (op == "!="sv) {
 		return "~="s;
@@ -127,7 +127,7 @@ std::string BinaryOperator_t::to_string(void* ud) const {
 	return op;
 }
 std::string UnaryOperator_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto op = info->convert(this);
 	if (op == "not"sv) {
 		return "not "s;
@@ -135,27 +135,27 @@ std::string UnaryOperator_t::to_string(void* ud) const {
 	return op;
 }
 std::string LuaStringOpen_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string LuaStringContent_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string LuaStringClose_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string SingleString_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string DoubleStringInner_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string Metatable_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string DefaultValue_t::to_string(void*) const {
@@ -177,11 +177,11 @@ std::string ExportDefault_t::to_string(void*) const {
 	return "default"s;
 }
 std::string FnArrow_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string ConstValue_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string NotIn_t::to_string(void*) const {
@@ -199,12 +199,12 @@ std::string BreakLoop_t::to_string(void* ud) const {
 	}
 	return type->to_string(ud);
 }
-std::string YueLineComment_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+std::string ELineComment_t::to_string(void* ud) const {
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return "--"s + info->convert(this);
 }
 std::string MultilineCommentInner_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	return info->convert(this);
 }
 std::string Variable_t::to_string(void* ud) const {
@@ -338,7 +338,7 @@ std::string SubBackcall_t::to_string(void* ud) const {
 	return join(temp, " "sv);
 }
 std::string PipeBody_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	for (auto value : values.objects()) {
 		temp.emplace_back(info->ind() + "|> "s + value->to_string(ud));
@@ -368,7 +368,7 @@ std::string Return_t::to_string(void* ud) const {
 	return join(temp);
 }
 std::string With_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp{
 		eop ? "with?"s : "with"s,
 		valueList->to_string(ud)};
@@ -399,7 +399,7 @@ std::string SwitchList_t::to_string(void* ud) const {
 	return join(temp, ", "sv);
 }
 std::string SwitchCase_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	if (body.is<Statement_t>()) {
 		return "when "s + condition->to_string(ud) + " then "s + body->to_string(ud);
 	} else {
@@ -417,7 +417,7 @@ std::string SwitchCase_t::to_string(void* ud) const {
 	}
 }
 std::string Switch_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp{"switch "s + target->to_string(ud)};
 	if (assignment) {
 		temp.back().append(assignment->to_string(ud));
@@ -457,7 +457,7 @@ std::string IfCond_t::to_string(void* ud) const {
 	}
 }
 std::string If_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto it = nodes.objects().begin();
 	str_list temp{
 		type->to_string(ud) + ' ' + (*it)->to_string(ud)};
@@ -507,7 +507,7 @@ std::string If_t::to_string(void* ud) const {
 	return join(temp, "\n"sv);
 }
 std::string While_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp{
 		type->to_string(ud) + ' ' + condition->to_string(ud) + (assignment ? assignment->to_string(ud) : std::string())};
 	if (body.is<Statement_t>()) {
@@ -526,7 +526,7 @@ std::string While_t::to_string(void* ud) const {
 	return join(temp, "\n"sv);
 }
 std::string Repeat_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	if (body.is<Statement_t>()) {
 		return "repeat "s + body->to_string(ud) + " until "s + condition->to_string(ud);
 	} else {
@@ -546,7 +546,7 @@ std::string ForStepValue_t::to_string(void* ud) const {
 	return value->to_string(ud);
 }
 std::string For_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto line = "for "s + varName->to_string(ud) + " = "s + startValue->to_string(ud) + ", "s + stopValue->to_string(ud);
 	if (stepValue) {
 		line += ", "s + stepValue->to_string(ud);
@@ -567,7 +567,7 @@ std::string For_t::to_string(void* ud) const {
 	}
 }
 std::string ForEach_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto line = "for "s + nameList->to_string(ud) + " in "s + loopValue->to_string(ud);
 	if (body.is<Statement_t>()) {
 		return line + " do "s + body->to_string(ud);
@@ -585,7 +585,7 @@ std::string ForEach_t::to_string(void* ud) const {
 	}
 }
 std::string Do_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	if (body->content.is<Statement_t>()) {
 		return "do "s + body->to_string(ud);
 	} else {
@@ -599,7 +599,7 @@ std::string Do_t::to_string(void* ud) const {
 	}
 }
 std::string CatchBlock_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto line = "catch "s + err->to_string(ud);
 	info->pushScope();
 	auto blockStr = block->to_string(ud);
@@ -610,7 +610,7 @@ std::string CatchBlock_t::to_string(void* ud) const {
 	return line + '\n' + blockStr;
 }
 std::string Try_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	temp.emplace_back("try"s);
 	if (eop) {
@@ -754,7 +754,7 @@ std::string Comprehension_t::to_string(void* ud) const {
 				}
 			}
 			if (hasInBlockExp) {
-				auto info = reinterpret_cast<YueFormat*>(ud);
+				auto info = reinterpret_cast<EFormat*>(ud);
 				str_list temp;
 				temp.emplace_back("["s);
 				info->pushScope();
@@ -892,7 +892,7 @@ std::string ChainValue_t::to_string(void* ud) const {
 			temp.emplace_back(node->to_string(ud));
 		}
 		++it;
-		auto info = reinterpret_cast<YueFormat*>(ud);
+		auto info = reinterpret_cast<EFormat*>(ud);
 		info->pushScope();
 		for (; it != items.objects().end(); ++it) {
 			node = *it;
@@ -1004,7 +1004,7 @@ std::string Invoke_t::to_string(void* ud) const {
 			return arg->to_string(ud);
 		}
 	} else {
-		auto info = reinterpret_cast<YueFormat*>(ud);
+		auto info = reinterpret_cast<EFormat*>(ud);
 		bool hasInBlockExp = false;
 		for (auto arg : args.objects()) {
 			if (isInBlockExp(arg, arg == args.back())) {
@@ -1037,7 +1037,7 @@ std::string SpreadListExp_t::to_string(void* ud) const {
 	return "..."s + exp->to_string(ud);
 }
 std::string TableLit_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	if (values.empty()) {
 		return "{ }"s;
 	}
@@ -1067,7 +1067,7 @@ std::string TableLit_t::to_string(void* ud) const {
 	}
 }
 std::string TableBlock_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	info->pushScope();
 	for (auto value : values.objects()) {
@@ -1088,7 +1088,7 @@ std::string TableBlock_t::to_string(void* ud) const {
 	return join(temp, "\n"sv);
 }
 std::string TableBlockIndent_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	info->pushScope();
 	for (auto value : values.objects()) {
@@ -1106,7 +1106,7 @@ std::string TableBlockIndent_t::to_string(void* ud) const {
 	return "*"s + join(temp, "\n"sv);
 }
 std::string ClassMemberList_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	for (auto value : values.objects()) {
 		temp.emplace_back(info->ind() + value->to_string(ud));
@@ -1114,7 +1114,7 @@ std::string ClassMemberList_t::to_string(void* ud) const {
 	return join(temp, ", "sv);
 }
 std::string ClassBlock_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	info->pushScope();
 	for (auto content : contents.objects()) {
@@ -1260,7 +1260,7 @@ std::string FnArgDef_t::to_string(void* ud) const {
 	return line;
 }
 std::string FnArgDefList_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	bool hasInBlockExp = false;
 	for (auto def : definitions.objects()) {
@@ -1296,7 +1296,7 @@ std::string OuterVarShadow_t::to_string(void* ud) const {
 	}
 }
 std::string FnArgsDef_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	bool hasInBlockExp = false;
 	if (defList) {
 		for (auto def : defList->definitions.objects()) {
@@ -1330,7 +1330,7 @@ std::string FnArgsDef_t::to_string(void* ud) const {
 	}
 }
 std::string FunLit_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	std::string line;
 	if (argsDef) {
 		line = argsDef->to_string(ud);
@@ -1365,7 +1365,7 @@ std::string MacroName_t::to_string(void* ud) const {
 	return '$' + name->to_string(ud);
 }
 std::string MacroLit_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	std::string line;
 	if (argsDef) {
 		line = '(' + argsDef->to_string(ud) + ") "s;
@@ -1391,7 +1391,7 @@ std::string Macro_t::to_string(void* ud) const {
 	return "macro "s + name->to_string(ud) + " = "s + decl->to_string(ud);
 }
 std::string MacroInPlace_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	auto line = "$ ->"s;
 	if (body->content.is<Statement_t>()) {
 		line += ' ' + body->to_string(ud);
@@ -1417,7 +1417,7 @@ std::string AssignableNameList_t::to_string(void* ud) const {
 	return join(temp, ", "sv);
 }
 std::string InvokeArgs_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	bool hasInBlockExp = false;
 	for (auto arg : args.objects()) {
 		if (isInBlockExp(arg, arg == args.back())) {
@@ -1496,7 +1496,7 @@ std::string StatementAppendix_t::to_string(void* ud) const {
 std::string Statement_t::to_string(void* ud) const {
 	std::string line;
 	if (!comments.empty()) {
-		auto info = reinterpret_cast<YueFormat*>(ud);
+		auto info = reinterpret_cast<EFormat*>(ud);
 		str_list temp;
 		for (ast_node* comment : comments.objects()) {
 			if (comment == comments.front()) {
@@ -1523,7 +1523,7 @@ std::string Statement_t::to_string(void* ud) const {
 std::string StatementSep_t::to_string(void*) const {
 	return {};
 }
-std::string YueMultilineComment_t::to_string(void* ud) const {
+std::string EMultilineComment_t::to_string(void* ud) const {
 	return "--[["s + inner->to_string(ud) + "]]"s;
 }
 std::string ChainAssign_t::to_string(void* ud) const {
@@ -1537,7 +1537,7 @@ std::string Body_t::to_string(void* ud) const {
 	return content->to_string(ud);
 }
 std::string Block_t::to_string(void* ud) const {
-	auto info = reinterpret_cast<YueFormat*>(ud);
+	auto info = reinterpret_cast<EFormat*>(ud);
 	str_list temp;
 	for (auto stmt_ : statements.objects()) {
 		auto stmt = static_cast<Statement_t*>(stmt_);
@@ -1562,6 +1562,6 @@ std::string File_t::to_string(void* ud) const {
 	}
 }
 
-} // namespace yue
+} // namespace e
 
 } // namespace parserlib

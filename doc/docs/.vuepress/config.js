@@ -4,7 +4,7 @@ module.exports = {
 	/**
 	 * Ref：https://v1.vuepress.vuejs.org/config/#title
 	 */
-	title: 'YueScript',
+	title: 'E',
 	/**
 	 * Ref：https://v1.vuepress.vuejs.org/config/#description
 	 */
@@ -19,12 +19,12 @@ module.exports = {
 		['meta', { name: 'theme-color', content: '#3eaf7c' }],
 		['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
 		['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'black' }],
-		['meta', { property: 'og:title', content: 'YueScript' }],
+		['meta', { property: 'og:title', content: 'E' }],
 		['meta', { property: 'og:description', content: description }],
 		// Should probably have a og:url but I'm not sure how to add that without it being the same on all pages
 		['meta', { property: 'og:type', content: 'website' }],
-		['meta', { property: 'og:image', content: '/image/yuescript.png' }],
-		['meta', { property: 'og:image:secure_url', content: '/image/yuescript.png' }],
+		['meta', { property: 'og:image', content: '/image/e.png' }],
+		['meta', { property: 'og:image:secure_url', content: '/image/e.png' }],
 		['meta', { property: 'og:image:type', content: 'image/png' }],
 		['meta', { property: 'og:image:width', content: '1200' }],
 		['meta', { property: 'og:image:height', content: '1200' }],
@@ -37,19 +37,19 @@ module.exports = {
 		['script', {}, `
 			var Module = {
 				onRuntimeInitialized: function() {
-					window.yue = Module;
+					window.e = Module;
 					window.Vue.$data.readonly = false;
 					window.Vue.$data.info = Module.version();
 				}
 			};
 		`],
-		['script', { src: '/js/yuescript.js' }],
+		['script', { src: '/js/e.js' }],
 	],
 
 	locales: {
 		'/': {
 			lang: 'en-US',
-			title: 'YueScript',
+			title: 'E',
 			description: 'A language that compiles to Lua'
 		},
 
@@ -81,12 +81,12 @@ module.exports = {
 						link: '/doc/'
 					},
 					{
-						text: 'Try yue!',
+						text: 'Try e!',
 						link: '/try/',
 					},
 					{
 						text: 'Github',
-						link: 'https://github.com/pigpigyyy/Yuescript'
+						link: 'https://github.com/pigpigyyy/E'
 					}
 				],
 			},
@@ -110,7 +110,7 @@ module.exports = {
 					},
 					{
 						text: 'Github',
-						link: 'https://github.com/pigpigyyy/Yuescript'
+						link: 'https://github.com/pigpigyyy/E'
 					}
 				],
 			},

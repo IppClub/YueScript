@@ -8,7 +8,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 #pragma once
 
-#include "yuescript/ast.hpp"
+#include "e/ast.hpp"
 
 namespace parserlib {
 
@@ -17,7 +17,7 @@ std::string_view ast_name() { return {}; }
 
 #define AST_LEAF(type) \
 	COUNTER_INC; \
-	namespace yue { \
+	namespace e { \
 	class type##_t : public ast_node { \
 	public: \
 		virtual int get_id() const override { return COUNTER_READ; } \
@@ -26,7 +26,7 @@ std::string_view ast_name() { return {}; }
 
 #define AST_NODE(type) \
 	COUNTER_INC; \
-	namespace yue { \
+	namespace e { \
 	class type##_t : public ast_container { \
 	public: \
 		virtual int get_id() const override { return COUNTER_READ; } \
@@ -43,13 +43,13 @@ std::string_view ast_name() { return {}; }
 	; \
 	} \
 	template <> \
-	constexpr int id<yue::type##_t>() { return COUNTER_READ; } \
+	constexpr int id<e::type##_t>() { return COUNTER_READ; } \
 	template <> \
-	constexpr std::string_view ast_name<yue::type##_t>() { return #type ""sv; }
+	constexpr std::string_view ast_name<e::type##_t>() { return #type ""sv; }
 
 // clang-format off
 
-namespace yue {
+namespace e {
 class ExpListLow_t;
 class TableBlock_t;
 class SimpleTable_t;
@@ -87,7 +87,7 @@ class NormalDef_t;
 class SpreadListExp_t;
 class Comprehension_t;
 class Value_t;
-} // namespace yue
+} // namespace e
 
 AST_LEAF(Num)
 AST_END(Num)
@@ -894,16 +894,16 @@ AST_END(StatementAppendix)
 AST_LEAF(StatementSep)
 AST_END(StatementSep)
 
-AST_LEAF(YueLineComment)
-AST_END(YueLineComment)
+AST_LEAF(ELineComment)
+AST_END(ELineComment)
 
 AST_LEAF(MultilineCommentInner)
 AST_END(MultilineCommentInner)
 
-AST_NODE(YueMultilineComment)
+AST_NODE(EMultilineComment)
 	ast_ptr<true, MultilineCommentInner_t> inner;
-	AST_MEMBER(YueMultilineComment, &inner)
-AST_END(YueMultilineComment)
+	AST_MEMBER(EMultilineComment, &inner)
+AST_END(EMultilineComment)
 
 AST_NODE(ChainAssign)
 	ast_ptr<true, Seperator_t> sep;
@@ -914,7 +914,7 @@ AST_END(ChainAssign)
 
 AST_NODE(Statement)
 	ast_ptr<true, Seperator_t> sep;
-	ast_sel_list<false, YueLineComment_t, YueMultilineComment_t> comments;
+	ast_sel_list<false, ELineComment_t, EMultilineComment_t> comments;
 	ast_sel<true,
 		Import_t, While_t, Repeat_t, For_t, ForEach_t,
 		Return_t, Local_t, Global_t, Export_t, Macro_t, MacroInPlace_t,
@@ -948,7 +948,7 @@ AST_END(File)
 
 // clang-format on
 
-struct YueFormat {
+struct EFormat {
 	int indent = 0;
 	bool spaceOverTab = false;
 	int tabSpaces = 4;

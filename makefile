@@ -1,6 +1,6 @@
 #### PROJECT SETTINGS ####
 # The name of the executable to be created
-BIN_NAME := yue
+BIN_NAME := e
 # Compiler used
 CXX ?= g++
 # Extension of source files used in the project
@@ -46,16 +46,16 @@ PLAT = macos
 UNAME_S:=$(shell uname -s)
 
 ifeq ($(NO_LUA),true)
-	COMPILE_FLAGS += -DYUE_NO_MACRO -DYUE_COMPILER_ONLY
+	COMPILE_FLAGS += -DE_NO_MACRO -DE_COMPILER_ONLY
 else
 ifeq ($(NO_MACRO),true)
-	COMPILE_FLAGS += -DYUE_NO_MACRO
+	COMPILE_FLAGS += -DE_NO_MACRO
 endif
 	INCLUDES += -I $(SRC_PATH)/3rdParty/lua
 	LINK_FLAGS += -L $(SRC_PATH)/3rdParty/lua -llua -ldl
 endif
 ifeq ($(NO_WATCHER),true)
-	COMPILE_FLAGS += -DYUE_NO_WATCHER
+	COMPILE_FLAGS += -DE_NO_WATCHER
 endif
 
 # Add platform related linker flag
@@ -127,11 +127,11 @@ ifeq ($(SOURCES),)
 	SOURCES := $(call rwildcard, $(SRC_PATH), *.$(SRC_EXT))
 endif
 
-SOURCES := $(filter-out $(SRC_PATH)/yue_wasm.cpp, $(SOURCES))
+SOURCES := $(filter-out $(SRC_PATH)/e_wasm.cpp, $(SOURCES))
 SOURCES := $(filter-out $(SRC_PATH)/3rdParty/%, $(SOURCES))
 
 ifeq ($(NO_LUA),true)
-	SOURCES := $(filter-out $(SRC_PATH)/yuescript/yuescript.cpp, $(SOURCES))
+	SOURCES := $(filter-out $(SRC_PATH)/e/e.cpp, $(SOURCES))
 endif
 
 # Set the object file names, with the source directory stripped
@@ -214,16 +214,16 @@ wasm-node: clean
 	@mkdir -p wasm/dist/esm
 	@mkdir -p wasm/dist/cjs
 	@echo "Build ESM Module"
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
-		$(SRC_PATH)/yuescript/ast.cpp \
-		$(SRC_PATH)/yuescript/yue_ast.cpp \
-		$(SRC_PATH)/yuescript/parser.cpp \
-		$(SRC_PATH)/yuescript/yue_compiler.cpp \
-		$(SRC_PATH)/yuescript/yue_parser.cpp \
-		$(SRC_PATH)/yuescript/yuescript.cpp \
+	@emcc $(SRC_PATH)/e_wasm.cpp \
+		$(SRC_PATH)/e/ast.cpp \
+		$(SRC_PATH)/e/e_ast.cpp \
+		$(SRC_PATH)/e/parser.cpp \
+		$(SRC_PATH)/e/e_compiler.cpp \
+		$(SRC_PATH)/e/e_parser.cpp \
+		$(SRC_PATH)/e/e.cpp \
 		$(SRC_PATH)/3rdParty/lua/liblua.a \
 		-O2 \
-		-o wasm/dist/esm/yuescript.mjs \
+		-o wasm/dist/esm/e.mjs \
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
@@ -231,8 +231,8 @@ wasm-node: clean
 		-fexceptions \
 		-Wno-deprecated-declarations \
 		-gsource-map \
-		--emit-tsd="yuescript.d.ts" \
-		-s EXPORT_NAME="'_createYuescriptModule'" \
+		--emit-tsd="e.d.ts" \
+		-s EXPORT_NAME="'_createEModule'" \
 		-s EXPORT_EXCEPTION_HANDLING_HELPERS \
 		-s EXCEPTION_CATCHING_ALLOWED=['we only want to allow exception handling in side modules'] \
 		-s EXPORTED_RUNTIME_METHODS='wasmTable,ERRNO_CODES' \
@@ -253,17 +253,17 @@ wasm-node: clean
 		-s MODULARIZE=1 \
 		-s LZ4=1
 	@echo "Build CommonJS Module"
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
-		$(SRC_PATH)/yuescript/ast.cpp \
-		$(SRC_PATH)/yuescript/yue_ast.cpp \
-		$(SRC_PATH)/yuescript/parser.cpp \
-		$(SRC_PATH)/yuescript/yue_compiler.cpp \
-		$(SRC_PATH)/yuescript/yue_parser.cpp \
-		$(SRC_PATH)/yuescript/yuescript.cpp \
+	@emcc $(SRC_PATH)/e_wasm.cpp \
+		$(SRC_PATH)/e/ast.cpp \
+		$(SRC_PATH)/e/e_ast.cpp \
+		$(SRC_PATH)/e/parser.cpp \
+		$(SRC_PATH)/e/e_compiler.cpp \
+		$(SRC_PATH)/e/e_parser.cpp \
+		$(SRC_PATH)/e/e.cpp \
 		$(SRC_PATH)/3rdParty/lua/liblua.a \
 		-O2 \
-		-o wasm/dist/cjs/yuescript.cjs \
-		--emit-tsd="yuescript.d.ts" \
+		-o wasm/dist/cjs/e.cjs \
+		--emit-tsd="e.d.ts" \
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
@@ -271,7 +271,7 @@ wasm-node: clean
 		-fexceptions \
 		-Wno-deprecated-declarations \
 		-gsource-map \
-		-s EXPORT_NAME="'_createYuescriptModule'" \
+		-s EXPORT_NAME="'_createEModule'" \
 		-s EXPORT_EXCEPTION_HANDLING_HELPERS \
 		-s EXCEPTION_CATCHING_ALLOWED=['we only want to allow exception handling in side modules'] \
 		-s EXPORTED_RUNTIME_METHODS='wasmTable,ERRNO_CODES' \
@@ -298,16 +298,16 @@ wasm-node: clean
 wasm: clean
 	@$(MAKE) generic CC='emcc' AR='emar rcu' RANLIB='emranlib' -C $(SRC_PATH)/3rdParty/lua
 	@mkdir -p doc/docs/.vuepress/public/js
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
-		$(SRC_PATH)/yuescript/ast.cpp \
-		$(SRC_PATH)/yuescript/yue_ast.cpp \
-		$(SRC_PATH)/yuescript/parser.cpp \
-		$(SRC_PATH)/yuescript/yue_compiler.cpp \
-		$(SRC_PATH)/yuescript/yue_parser.cpp \
-		$(SRC_PATH)/yuescript/yuescript.cpp \
+	@emcc $(SRC_PATH)/e_wasm.cpp \
+		$(SRC_PATH)/e/ast.cpp \
+		$(SRC_PATH)/e/e_ast.cpp \
+		$(SRC_PATH)/e/parser.cpp \
+		$(SRC_PATH)/e/e_compiler.cpp \
+		$(SRC_PATH)/e/e_parser.cpp \
+		$(SRC_PATH)/e/e.cpp \
 		$(SRC_PATH)/3rdParty/lua/liblua.a \
 		-O2 \
-		-o doc/docs/.vuepress/public/js/yuescript.js \
+		-o doc/docs/.vuepress/public/js/e.js \
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/lua \
 		-std=c++17 \
@@ -332,7 +332,7 @@ endif
 	@echo -n "Total build time: "
 	@$(END_TIME)
 
-$(BUILD_PATH)/yue.so: $(SRC_PATH)/yuescript/ast.cpp $(SRC_PATH)/yuescript/yue_ast.cpp $(SRC_PATH)/yuescript/yue_compiler.cpp $(SRC_PATH)/yuescript/yue_parser.cpp $(SRC_PATH)/yuescript/yuescript.cpp $(SRC_PATH)/yuescript/parser.cpp
+$(BUILD_PATH)/e.so: $(SRC_PATH)/e/ast.cpp $(SRC_PATH)/e/e_ast.cpp $(SRC_PATH)/e/e_compiler.cpp $(SRC_PATH)/e/e_parser.cpp $(SRC_PATH)/e/e.cpp $(SRC_PATH)/e/parser.cpp
 	$(CMD_PREFIX)$(CXX) $(CXXFLAGS) -I $(SRC_PATH) -I $(SRC_PATH)/3rdParty -I $(LUAI) -L $(LUAL) -llua -o $@ -fPIC -shared $?
 
 # Standard, non-optimized release build
@@ -344,10 +344,10 @@ else
 	@echo "Beginning release build"
 endif
 	@$(START_TIME)
-	@$(MAKE) $(BUILD_PATH)/yue.so --no-print-directory
+	@$(MAKE) $(BUILD_PATH)/e.so --no-print-directory
 	@echo -n "Total build time: "
 	@$(END_TIME)
-	@mv $(BUILD_PATH)/yue.so $(BIN_PATH)/yue.so
+	@mv $(BUILD_PATH)/e.so $(BIN_PATH)/e.so
 
 # Create the directories used in the build
 .PHONY: dirs
@@ -379,19 +379,19 @@ clean:
 	@$(RM) -r bin
 	@$(RM) -r $(TEST_OUTPUT)
 
-# Test Yuescript compiler
+# Test E compiler
 .PHONY: test
 test: debug
 	@mkdir -p $(TEST_OUTPUT)/5.1/test
-	@echo "Compiling Yuescript codes..."
+	@echo "Compiling E codes..."
 	@$(START_TIME)
 	@./$(BIN_NAME) $(TEST_INPUT) -t $(TEST_OUTPUT) --tl_enabled
-	@./$(BIN_NAME) $(TEST_INPUT)/teal_lang.yue -o $(TEST_OUTPUT)/teal_lang.lua
-	@./$(BIN_NAME) $(TEST_INPUT)/loops.yue -o $(TEST_OUTPUT)/5.1/loops.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/try_catch.yue -o $(TEST_OUTPUT)/5.1/try_catch.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/attrib.yue -o $(TEST_OUTPUT)/5.1/attrib.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(TEST_OUTPUT)/5.1/test/loops_spec.lua --target=5.1
-	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(TEST_OUTPUT)
+	@./$(BIN_NAME) $(TEST_INPUT)/teal_lang.e -o $(TEST_OUTPUT)/teal_lang.lua
+	@./$(BIN_NAME) $(TEST_INPUT)/loops.e -o $(TEST_OUTPUT)/5.1/loops.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/try_catch.e -o $(TEST_OUTPUT)/5.1/try_catch.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/attrib.e -o $(TEST_OUTPUT)/5.1/attrib.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.e -o $(TEST_OUTPUT)/5.1/test/loops_spec.lua --target=5.1
+	@./$(BIN_NAME) -e spec/inputs/compile_doc.e $(TEST_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
 	@./$(BIN_NAME) -e "$$(printf "r = io.popen('git diff --no-index $(TEST_OUTPUT) $(GEN_OUTPUT) | head -5')\\\\read '*a'\nif r ~= ''\n print r\n os.exit 1")"
@@ -399,18 +399,18 @@ test: debug
 	@busted
 	@echo "Done!"
 
-# Test Yuescript compiler
+# Test E compiler
 .PHONY: gen
 gen: release
-	@echo "Compiling Yuescript codes..."
+	@echo "Compiling E codes..."
 	@$(START_TIME)
 	@./$(BIN_NAME) $(TEST_INPUT) -t $(GEN_OUTPUT) --tl_enabled
-	@./$(BIN_NAME) $(TEST_INPUT)/teal_lang.yue -o $(GEN_OUTPUT)/teal_lang.lua
-	@./$(BIN_NAME) $(TEST_INPUT)/loops.yue -o $(GEN_OUTPUT)/5.1/loops.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/try_catch.yue -o $(GEN_OUTPUT)/5.1/try_catch.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/attrib.yue -o $(GEN_OUTPUT)/5.1/attrib.lua --target=5.1
-	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.yue -o $(GEN_OUTPUT)/5.1/test/loops_spec.lua --target=5.1
-	@./$(BIN_NAME) -e spec/inputs/compile_doc.yue $(GEN_OUTPUT)
+	@./$(BIN_NAME) $(TEST_INPUT)/teal_lang.e -o $(GEN_OUTPUT)/teal_lang.lua
+	@./$(BIN_NAME) $(TEST_INPUT)/loops.e -o $(GEN_OUTPUT)/5.1/loops.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/try_catch.e -o $(GEN_OUTPUT)/5.1/try_catch.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/attrib.e -o $(GEN_OUTPUT)/5.1/attrib.lua --target=5.1
+	@./$(BIN_NAME) $(TEST_INPUT)/test/loops_spec.e -o $(GEN_OUTPUT)/5.1/test/loops_spec.lua --target=5.1
+	@./$(BIN_NAME) -e spec/inputs/compile_doc.e $(GEN_OUTPUT)
 	@echo -en "Compile time: "
 	@$(END_TIME)
 

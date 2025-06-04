@@ -1,6 +1,6 @@
-# YueScript
+# E
 
-> YueScript Documentation
+> E Documentation
 
 ## Development
 

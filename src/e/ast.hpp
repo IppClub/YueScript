@@ -17,7 +17,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #include <string_view>
 #include <type_traits>
 
-#include "yuescript/parser.hpp"
+#include "e/parser.hpp"
 
 namespace parserlib {
 

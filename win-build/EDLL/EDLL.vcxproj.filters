@@ -7,45 +7,45 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\src\yuescript\ast.cpp">
+    <ClCompile Include="..\..\src\e\ast.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\parser.cpp">
+    <ClCompile Include="..\..\src\e\parser.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_compiler.cpp">
+    <ClCompile Include="..\..\src\e\e_compiler.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_parser.cpp">
+    <ClCompile Include="..\..\src\e\e_parser.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yuescript.cpp">
+    <ClCompile Include="..\..\src\e\e.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\yuescript\yue_ast.cpp">
+    <ClCompile Include="..\..\src\e\e_ast.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\yuescript\ast.hpp">
+    <ClInclude Include="..\..\src\e\ast.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\parser.hpp">
+    <ClInclude Include="..\..\src\e\parser.hpp">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\stacktraceplus.h">
+    <ClInclude Include="..\..\src\e\stacktraceplus.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_ast.h">
+    <ClInclude Include="..\..\src\e\e_ast.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_compiler.h">
+    <ClInclude Include="..\..\src\e\e_compiler.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yue_parser.h">
+    <ClInclude Include="..\..\src\e\e_parser.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\yuescript\yuescript.h">
+    <ClInclude Include="..\..\src\e\e.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

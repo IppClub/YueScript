@@ -6,11 +6,11 @@ The above copyright notice and this permission notice shall be included in all c
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 
-#include "yuescript/yue_parser.h"
+#include "e/e_parser.h"
 
 namespace pl = parserlib;
 
-namespace yue {
+namespace e {
 
 std::unordered_set<std::string> LuaKeywords = {
 	"and"s, "break"s, "do"s, "else"s, "elseif"s,
@@ -42,7 +42,7 @@ public:
 };
 
 // clang-format off
-YueParser::YueParser() {
+EParser::EParser() {
 	plain_space = *set(" \t");
 	line_break = nl(-expr('\r') >> '\n');
 	any_char = line_break | any();
@@ -1043,7 +1043,7 @@ YueParser::YueParser() {
 }
 // clang-format on
 
-bool YueParser::startWith(std::string_view codes, rule& r) {
+bool EParser::startWith(std::string_view codes, rule& r) {
 	std::unique_ptr<input> converted;
 	if (codes.substr(0, 3) == "\xEF\xBB\xBF"sv) {
 		codes = codes.substr(3);
@@ -1060,7 +1060,7 @@ bool YueParser::startWith(std::string_view codes, rule& r) {
 	error_list errors;
 	try {
 		State state;
-		return ::yue::start_with(*converted, r, errors, &state);
+		return ::e::start_with(*converted, r, errors, &state);
 	} catch (const ParserError&) {
 		return false;
 	} catch (const std::logic_error&) {
@@ -1069,7 +1069,7 @@ bool YueParser::startWith(std::string_view codes, rule& r) {
 	return true;
 }
 
-ParseInfo YueParser::parse(std::string_view codes, rule& r, bool lax) {
+ParseInfo EParser::parse(std::string_view codes, rule& r, bool lax) {
 	ParseInfo res;
 	if (codes.substr(0, 3) == "\xEF\xBB\xBF"sv) {
 		codes = codes.substr(3);
@@ -1088,7 +1088,7 @@ ParseInfo YueParser::parse(std::string_view codes, rule& r, bool lax) {
 	try {
 		State state;
 		state.lax = lax;
-		res.node.set(::yue::parse(*(res.codes), r, errors, &state));
+		res.node.set(::e::parse(*(res.codes), r, errors, &state));
 		if (state.exportCount > 0) {
 			int index = 0;
 			std::string moduleName;
@@ -1125,7 +1125,7 @@ ParseInfo YueParser::parse(std::string_view codes, rule& r, bool lax) {
 	return res;
 }
 
-ParseInfo YueParser::parse(std::string_view astName, std::string_view codes, bool lax) {
+ParseInfo EParser::parse(std::string_view astName, std::string_view codes, bool lax) {
 	auto it = _rules.find(astName);
 	if (it != _rules.end()) {
 		return parse(codes, *it->second, lax);
@@ -1135,7 +1135,7 @@ ParseInfo YueParser::parse(std::string_view astName, std::string_view codes, boo
 	return info;
 }
 
-bool YueParser::match(std::string_view astName, std::string_view codes) {
+bool EParser::match(std::string_view astName, std::string_view codes) {
 	auto it = _rules.find(astName);
 	if (it != _rules.end()) {
 		auto rEnd = rule(*it->second >> eof());
@@ -1144,20 +1144,20 @@ bool YueParser::match(std::string_view astName, std::string_view codes) {
 	return false;
 }
 
-std::string YueParser::toString(ast_node* node) {
+std::string EParser::toString(ast_node* node) {
 	return _converter.to_bytes(std::wstring(node->m_begin.m_it, node->m_end.m_it));
 }
 
-std::string YueParser::toString(input::iterator begin, input::iterator end) {
+std::string EParser::toString(input::iterator begin, input::iterator end) {
 	return _converter.to_bytes(std::wstring(begin, end));
 }
 
-bool YueParser::hasAST(std::string_view name) const {
+bool EParser::hasAST(std::string_view name) const {
 	return _rules.find(name) != _rules.end();
 }
 
-YueParser& YueParser::shared() {
-	thread_local static YueParser parser;
+EParser& EParser::shared() {
+	thread_local static EParser parser;
 	return parser;
 }
 
@@ -1221,4 +1221,4 @@ std::string ParseInfo::errorMessage(std::string_view msg, int errLine, int errCo
 	return buf.str();
 }
 
-} // namespace yue
+} // namespace e

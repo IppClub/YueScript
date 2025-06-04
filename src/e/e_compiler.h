@@ -18,14 +18,14 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include <unordered_map>
 #include <vector>
 
-namespace yue {
+namespace e {
 
 extern const std::string_view version;
 extern const std::string_view extension;
 
 using Options = std::unordered_map<std::string, std::string>;
 
-struct YueConfig {
+struct EConfig {
 	bool lintGlobalVariable = false;
 	bool implicitReturnRoot = true;
 	bool reserveLineNumber = true;
@@ -84,19 +84,19 @@ struct CompileInfo {
 	void operator=(CompileInfo&& other);
 };
 
-class YueCompilerImpl;
+class ECompilerImpl;
 
-class YueCompiler {
+class ECompiler {
 public:
-	YueCompiler(void* luaState = nullptr,
+	ECompiler(void* luaState = nullptr,
 		const std::function<void(void*)>& luaOpen = nullptr,
 		bool sameModule = false);
-	virtual ~YueCompiler();
-	CompileInfo compile(std::string_view codes, const YueConfig& config = {});
+	virtual ~ECompiler();
+	CompileInfo compile(std::string_view codes, const EConfig& config = {});
 	static void clear(void* luaState);
 
 private:
-	std::unique_ptr<YueCompilerImpl> _compiler;
+	std::unique_ptr<ECompilerImpl> _compiler;
 };
 
-} // namespace yue
+} // namespace e

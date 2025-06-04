@@ -1,4 +1,4 @@
-R"yuescript_codes(
+R"e_codes(
 --[[
 Copyright (C) 2020 by Leaf Corcoran, modified by Li Jin, 2022
 
@@ -20,11 +20,11 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.]]
 
-local yue = select(1, ...)
+local e = select(1, ...)
 local concat, insert = table.concat, table.insert
 local unpack = unpack or table.unpack
-yue.yue_compiled = { }
-yue.file_exist = function(fname)
+e.e_compiled = { }
+e.file_exist = function(fname)
 	local file = io.open(fname)
 	if file then
 		file:close()
@@ -33,7 +33,7 @@ yue.file_exist = function(fname)
 		return false
 	end
 end
-yue.read_file = function(fname)
+e.read_file = function(fname)
 	local file, err = io.open(fname)
 	if not file then
 		return nil, err
@@ -54,8 +54,8 @@ local function get_options(...)
 	end
 end
 local function find_modulepath(name)
-	local suffix = "." .. yue.options.extension
-	local dirsep = yue.options.dirsep
+	local suffix = "." .. e.options.extension
+	local dirsep = e.options.dirsep
 	local name_path
 	if name:match("[\\/]") then
 		name_path = name:gsub("%" .. suffix .. "$", "")
@@ -65,13 +65,13 @@ local function find_modulepath(name)
 	local file_exist, file_path
 	local tried = {}
 	local paths = {}
-	paths[#paths + 1] = yue.options.path
+	paths[#paths + 1] = e.options.path
 	paths[#paths + 1] = package.path
 	for i = 1, #paths do
-		local yue_path = paths[i]
-		for path in yue_path:gmatch("[^;]+") do
+		local e_path = paths[i]
+		for path in e_path:gmatch("[^;]+") do
 			file_path = path:gsub("?", name_path):gsub("%.lua$", suffix)
-			file_exist = yue.file_exist(file_path)
+			file_exist = e.file_exist(file_path)
 			if file_exist then
 				break
 			else
@@ -85,13 +85,13 @@ local function find_modulepath(name)
 		return nil, tried
 	end
 end
-local yue_loadstring
-local function yue_loader(name)
-	local file_path, tried = yue.find_modulepath(name)
+local e_loadstring
+local function e_loader(name)
+	local file_path, tried = e.find_modulepath(name)
 	if file_path then
-		local text = yue.read_file(file_path)
+		local text = e.read_file(file_path)
 		if text then
-			local res, err = yue_loadstring(text, file_path)
+			local res, err = e_loadstring(text, file_path)
 			if not res then
 				error(file_path .. ": " .. err)
 			end
@@ -105,36 +105,36 @@ local function yue_loader(name)
 	end
 	return concat(tried, "\n\t")
 end
-local function yue_call(f, ...)
+local function e_call(f, ...)
 	local args = {...}
 	return xpcall(function()
 		return f(unpack(args))
 	end, function(err)
-		return yue.traceback(err, 2)
+		return e.traceback(err, 2)
 	end)
 end
-yue_loadstring = function(...)
+e_loadstring = function(...)
 	local options, str, chunk_name, env = get_options(...)
-	chunk_name = chunk_name or "=(yuescript.loadstring)"
+	chunk_name = chunk_name or "=(e.loadstring)"
 	options.module = chunk_name
-	local code, err = yue.to_lua(str, options)
+	local code, err = e.to_lua(str, options)
 	if not code then
 		return nil, err
 	end
 	if chunk_name then
-		yue.yue_compiled["@" .. chunk_name] = code
+		e.e_compiled["@" .. chunk_name] = code
 	end
 	return (loadstring or load)(code, chunk_name, "t", unpack({env}))
 end
-local function yue_loadfile(fname, ...)
-	local res, err = yue.read_file(fname)
+local function e_loadfile(fname, ...)
+	local res, err = e.read_file(fname)
 	if not res then
 		return nil, err
 	end
-	return yue_loadstring(res, fname, ...)
+	return e_loadstring(res, fname, ...)
 end
-local function yue_dofile(...)
-	local f = assert(yue_loadfile(...))
+local function e_dofile(...)
+	local f = assert(e_loadfile(...))
 	return f()
 end
 local function insert_loader(pos)
@@ -144,33 +144,33 @@ local function insert_loader(pos)
 	local loaders = package.loaders or package.searchers
 	for i = 1, #loaders do
 		local loader = loaders[i]
-		if loader == yue_loader then
+		if loader == e_loader then
 			return false
 		end
 	end
-	insert(loaders, pos, yue_loader)
+	insert(loaders, pos, e_loader)
 	return true
 end
-yue.options.dump_locals = false
-yue.options.simplified = true
-local load_stacktraceplus = yue.load_stacktraceplus
-yue.load_stacktraceplus = nil
+e.options.dump_locals = false
+e.options.simplified = true
+local load_stacktraceplus = e.load_stacktraceplus
+e.load_stacktraceplus = nil
 local stp
-local function yue_traceback(err, level)
+local function e_traceback(err, level)
 	if not stp then
 		stp = load_stacktraceplus()
 	end
-	stp.dump_locals = yue.options.dump_locals
-	stp.simplified = yue.options.simplified
+	stp.dump_locals = e.options.dump_locals
+	stp.simplified = e.options.simplified
 	return stp.stacktrace(err, level)
 end
-setmetatable(yue, {
+setmetatable(e, {
 	__call = function(self, name)
 		insert_loader()
 		local success, res = xpcall(function()
 			return require(name)
 		end, function(err)
-			return yue_traceback(err, 3)
+			return e_traceback(err, 3)
 		end)
 		if success then
 			return res
@@ -213,19 +213,19 @@ local function p(...)
 	end
 	print(concat(args))
 end
-yue.find_modulepath = find_modulepath
-yue.insert_loader = insert_loader
-yue.dofile = yue_dofile
-yue.loadfile = yue_loadfile
-yue.loadstring = yue_loadstring
-yue.pcall = yue_call
-yue.require = yue_require
-yue.p = p
-yue.traceback = yue_traceback
-yue.macro_env = setmetatable({yue = yue}, {
+e.find_modulepath = find_modulepath
+e.insert_loader = insert_loader
+e.dofile = e_dofile
+e.loadfile = e_loadfile
+e.loadstring = e_loadstring
+e.pcall = e_call
+e.require = e_require
+e.p = p
+e.traceback = e_traceback
+e.macro_env = setmetatable({e = e}, {
 	__index = _G,
 	__newindex = function(_, k, v)
 		_G[k] = v
 	end
 })
-)yuescript_codes";
+)e_codes";
