@@ -37,15 +37,14 @@
 }
 
 /* Hero image - enlarge container to fit 450px image without overflow */
-@media (max-width: 960px) {
+@media (min-width: 960px) {
   .VPHero .image-container {
-    max-width: 450px !important;
+    width: 450px !important;
   }
-
-  .VPHero :deep(.image-src) {
-    max-width: 450px;
-    max-height: 450px;
-  }
+}
+.VPHero :deep(.image-src) {
+  max-width: 450px;
+  max-height: 450px;
 }
 
 /* --- DARK MODE THEME (Midnight Blue) --- */
