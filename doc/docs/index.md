@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: YueScript
-  text: A language that compiles to Lua
+  tagline: A language that compiles to Lua
   image:
     src: /image/yuescript.svg
     alt: YueScript

@@ -1,9 +1,13 @@
-import { defineConfig } from 'vitepress'
-import { resolve, dirname } from 'path'
-import { readFileSync } from 'fs'
-import { fileURLToPath } from 'url'
-import lightPlus from '@shikijs/themes/light-plus'
-import darkPlus from '@shikijs/themes/dark-plus'
+import { readFileSync } from 'fs';
+import {
+  dirname,
+  resolve,
+} from 'path';
+import { fileURLToPath } from 'url';
+import { defineConfig } from 'vitepress';
+
+import darkPlus from '@shikijs/themes/dark-plus';
+import lightPlus from '@shikijs/themes/light-plus';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const moonscriptGrammarPath = resolve(__dirname, 'grammars/moonscript.tmLanguage.json')
@@ -143,8 +147,8 @@ function createSidebar(basePath: string, zh: boolean) {
       link: `${basePath}/the-yuescript-library`,
     },
     {
-      text: zh ? 'MIT 许可证' : 'Licence: MIT',
-      link: `${basePath}/licence-mit`,
+      text: zh ? 'MIT 许可证' : 'License: MIT',
+      link: `${basePath}/license-mit`,
     },
   ]
 }
@@ -217,7 +221,7 @@ export default defineConfig({
         nav: [
           { text: 'Document', link: '/doc/' },
           { text: 'Try yue!', link: '/try/' },
-          { text: 'Github', link: 'https://github.com/IppClub/Yuescript' }
+          { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
         ],
         sidebar: createSidebar('/doc', false),
       }
@@ -230,7 +234,7 @@ export default defineConfig({
         nav: [
           { text: '文档', link: '/zh/doc/' },
           { text: '试一试!', link: '/zh/try/' },
-          { text: 'Github', link: 'https://github.com/IppClub/Yuescript' }
+          { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
         ],
         sidebar: createSidebar('/zh/doc', true),
       }

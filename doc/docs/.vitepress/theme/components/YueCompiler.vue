@@ -446,7 +446,8 @@ export default {
 .childTitle {
   width: 100%;
   font-size: 1.2em;
-  color: #b7ae8f;
+  color: var(--vp-c-text-2);
+  font-weight: bold;
   text-align: center;
   padding: 0.2em;
   height: 2.5em;

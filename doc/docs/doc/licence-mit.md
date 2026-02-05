@@ -1,4 +1,4 @@
-# Licence: MIT
+# License: MIT
 
 Copyright (c) 2017-2026 Li Jin \<dragon-fly@qq.com\>
 

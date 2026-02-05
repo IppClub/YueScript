@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: 月之脚本
-  text: 一门编译到 Lua 的语言
+  tagline: 一门编译到 Lua 的语言
   image:
     src: /image/yuescript.svg
     alt: 月之脚本

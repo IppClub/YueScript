@@ -1,4 +1,19 @@
+@import '@fontsource/merriweather/300.css';
+@import '@fontsource/merriweather/400.css';
+@import '@fontsource/merriweather/700.css';
+@import '@fontsource/merriweather/900.css';
+@import '@fontsource/merriweather/300-italic.css';
+@import '@fontsource/merriweather/400-italic.css';
+@import '@fontsource/merriweather/700-italic.css';
+@import '@fontsource/merriweather/900-italic.css';
+
 :root {
+  /* --- TYPOGRAPHY --- */
+  /* Keep standard sans-serif for body text for readability */
+  --vp-font-family-base: system-ui, sans-serif;
+  --vp-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+  /* --- BRAND COLORS (Original Moon Gold) --- */
   --vp-c-brand-1: #b4ac8f;
   --vp-button-brand-bg: #b4ac8f;
   --vp-button-brand-hover-bg: #b4ac8f;
@@ -7,12 +22,86 @@
   --vp-button-brand-hover-border: #b4ac8f;
   --vp-button-brand-active-border: #b4ac8f;
   --vp-button-brand-text: #fff;
+
+  /* --- LIGHT MODE THEME --- */
+  /* A warmer, "creamy" paper feel instead of harsh white */
+  --vp-c-bg: #FDFBF7;
+  --vp-c-bg-soft: #F7F5F0;
+  /* Slightly darker for sidebars */
+  --vp-c-bg-alt: #F0EDE5;
+  /* For code blocks/inputs */
+
+  /* Text Colors: Deep Navy instead of pure black for softer contrast */
+  --vp-c-text-1: #1a202c;
+  --vp-c-text-2: #4a5568;
 }
 
-.VPHomeHero .image img {
-  width: 450px;
-  max-width: 450px !important;
+/* Hero image - enlarge container to fit 450px image without overflow */
+@media (max-width: 960px) {
+  .VPHero .image-container {
+    max-width: 450px !important;
+  }
+
+  .VPHero :deep(.image-src) {
+    max-width: 450px;
+    max-height: 450px;
+  }
 }
+
+/* --- DARK MODE THEME (Midnight Blue) --- */
+.dark {
+  /* Deep Midnight Blue background (replaces standard grey) */
+  --vp-c-bg: #0B0E14;
+  --vp-c-bg-soft: #131722;
+  /* Sidebar/Nav */
+  --vp-c-bg-alt: #1A1F2E;
+  /* Code blocks/inputs */
+
+  /* Text Colors: Moonlight Silver */
+  --vp-c-text-1: #E2E8F0;
+  --vp-c-text-2: #94A3B8;
+
+  /* Adjust border colors to blend with blue, not grey */
+  --vp-c-border: #1E293B;
+  --vp-c-divider: #1E293B;
+  --vp-c-gutter: #1E293B;
+}
+
+/* --- HEADINGS: Apply the Serif Font --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.VPFeature .title,
+.VPHero .name,
+.VPNavBarTitle .title {
+  font-family: 'Merriweather', serif !important;
+  letter-spacing: -0.02em;
+  /* Tighter tracking looks more professional on serifs */
+}
+
+/* Make the Hero Title (YueScript) feel more "Editorial" */
+.VPHero .name {
+  font-weight: 900 !important;
+  color: var(--vp-c-brand-1);
+  /* Optional: Adds a subtle glow in dark mode */
+  text-shadow: 0 0 20px rgba(180, 172, 143, 0.2);
+}
+
+/* --- BUTTONS --- */
+/* Ensure the "Brand" buttons use our Gold color with white text for contrast */
+.VPButton.brand {
+  color: #fff !important;
+  background-color: var(--vp-c-brand-1) !important;
+  border-color: var(--vp-c-brand-1) !important;
+}
+
+.VPButton.brand:hover {
+  background-color: var(--vp-c-brand-1) !important;
+}
+
 
 /* Prism theme for YueCompiler output (shikijs/themes light-plus & dark-plus) */
 .code-output,
@@ -120,4 +209,10 @@
 
 .dark .code-output .token.invalid {
   color: #f44747;
+}
+
+/* --- CODE BLOCKS --- */
+/* Slight adjustment to code block background to fit the midnight theme */
+.dark .vp-code-group .tabs label {
+  background-color: #1A1F2E;
 }
