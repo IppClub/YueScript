@@ -1,11 +1,13 @@
-@import '@fontsource/merriweather/300.css';
 @import '@fontsource/merriweather/400.css';
 @import '@fontsource/merriweather/700.css';
 @import '@fontsource/merriweather/900.css';
-@import '@fontsource/merriweather/300-italic.css';
 @import '@fontsource/merriweather/400-italic.css';
 @import '@fontsource/merriweather/700-italic.css';
 @import '@fontsource/merriweather/900-italic.css';
+
+@import '@fontsource/noto-serif-sc/400.css';
+@import '@fontsource/noto-serif-sc/700.css';
+@import '@fontsource/noto-serif-sc/900.css';
 
 :root {
   /* --- TYPOGRAPHY --- */
@@ -76,7 +78,7 @@ h6,
 .VPFeature .title,
 .VPHero .name,
 .VPNavBarTitle .title {
-  font-family: 'Merriweather', serif !important;
+  font-family: 'Merriweather', 'Noto Serif SC', serif !important;
   letter-spacing: -0.02em;
   /* Tighter tracking looks more professional on serifs */
 }
