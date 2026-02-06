@@ -1,3 +1,9 @@
+---
+aside: false
+prev: false
+next: false
+---
+
 # YueScript Online Compiler
 ---
 

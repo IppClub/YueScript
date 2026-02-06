@@ -582,6 +582,10 @@ export default {
   background: var(--vp-c-bg-alt);
 }
 
+.editor-section:first-child {
+  border-right: 1px solid var(--vp-c-divider);
+}
+
 .editor-container {
   height: 55vh;
 }
