@@ -23,132 +23,89 @@ const yuescriptLanguage = {
 function createSidebar(basePath: string, zh: boolean) {
   return [
     {
-      text: zh ? '介绍' : 'Introduction',
-      link: `${basePath}/introduction`,
+      text: zh ? '起步' : 'Getting Started',
+      items: [
+        { text: zh ? '介绍' : 'Introduction', link: `${basePath}/getting-started/introduction` },
+        { text: zh ? '安装' : 'Installation', link: `${basePath}/getting-started/installation` },
+        { text: zh ? '使用方法' : 'Usage', link: `${basePath}/getting-started/usage` },
+      ]
     },
     {
-      text: zh ? '安装' : 'Installation',
-      link: `${basePath}/installation`,
-    },
-    {
-      text: zh ? '使用方法' : 'Usage',
-      link: `${basePath}/usage`,
-    },
-    {
-      text: zh ? '宏' : 'Macro',
-      link: `${basePath}/macro`,
-    },
-    {
-      text: zh ? '操作符' : 'Operator',
-      link: `${basePath}/operator`,
-    },
-    {
-      text: zh ? '模块' : 'Module',
-      link: `${basePath}/module`,
+      text: zh ? '语言基础' : 'Language Basics',
+      collapsed: true,
+      items: [
+        { text: zh ? '空白' : 'Whitespace', link: `${basePath}/language-basics/whitespace` },
+        { text: zh ? '注释' : 'Comment', link: `${basePath}/language-basics/comment` },
+        { text: zh ? '字面量' : 'Literals', link: `${basePath}/language-basics/literals` },
+        { text: zh ? '操作符' : 'Operator', link: `${basePath}/language-basics/operator` },
+        { text: zh ? '属性' : 'Attributes', link: `${basePath}/language-basics/attributes` },
+      ]
     },
     {
       text: zh ? '赋值' : 'Assignment',
-      link: `${basePath}/assignment`,
+      collapsed: true,
+      items: [
+        { text: zh ? '赋值' : 'Assignment', link: `${basePath}/assignment/assignment` },
+        { text: zh ? '解构赋值' : 'Destructuring Assignment', link: `${basePath}/assignment/destructuring-assignment` },
+        { text: zh ? 'if 赋值' : 'If Assignment', link: `${basePath}/assignment/if-assignment` },
+        { text: zh ? '可变参数赋值' : 'Varargs Assignment', link: `${basePath}/assignment/varargs-assignment` },
+        { text: zh ? '使用 using 语句' : 'The Using Clause', link: `${basePath}/assignment/the-using-clause-controlling-destructive-assignment` },
+      ]
     },
     {
-      text: zh ? '解构赋值' : 'Destructuring Assignment',
-      link: `${basePath}/destructuring-assignment`,
+      text: zh ? '函数' : 'Functions',
+      collapsed: true,
+      items: [
+        { text: zh ? '函数字面量' : 'Function Literals', link: `${basePath}/functions/function-literals` },
+        { text: zh ? '反向回调' : 'Backcalls', link: `${basePath}/functions/backcalls` },
+        { text: zh ? '函数存根' : 'Function Stubs', link: `${basePath}/functions/function-stubs` },
+      ]
     },
     {
-      text: zh ? 'if 赋值' : 'If Assignment',
-      link: `${basePath}/if-assignment`,
+      text: zh ? '控制流' : 'Control Flow',
+      collapsed: true,
+      items: [
+        { text: zh ? '条件语句' : 'Conditionals', link: `${basePath}/control-flow/conditionals` },
+        { text: zh ? 'for 循环' : 'For Loop', link: `${basePath}/control-flow/for-loop` },
+        { text: zh ? 'while 循环' : 'While Loop', link: `${basePath}/control-flow/while-loop` },
+        { text: zh ? 'continue 语句' : 'Continue Statement', link: `${basePath}/control-flow/continue` },
+        { text: zh ? 'switch 语句' : 'Switch', link: `${basePath}/control-flow/switch` },
+      ]
     },
     {
-      text: zh ? '可变参数赋值' : 'Varargs Assignment',
-      link: `${basePath}/varargs-assignment`,
+      text: zh ? '数据结构' : 'Data Structures',
+      collapsed: true,
+      items: [
+        { text: zh ? '表格字面量' : 'Table Literals', link: `${basePath}/data-structures/table-literals` },
+        { text: zh ? '推导式' : 'Comprehensions', link: `${basePath}/data-structures/comprehensions` },
+      ]
     },
     {
-      text: zh ? '空白' : 'Whitespace',
-      link: `${basePath}/whitespace`,
+      text: zh ? '面向对象' : 'Objects',
+      collapsed: true,
+      items: [
+        { text: zh ? '面向对象编程' : 'Object Oriented Programming', link: `${basePath}/objects/object-oriented-programming` },
+        { text: zh ? 'with 语句' : 'With Statement', link: `${basePath}/objects/with-statement` },
+      ]
     },
     {
-      text: zh ? '注释' : 'Comment',
-      link: `${basePath}/comment`,
+      text: zh ? '高级特性' : 'Advanced Features',
+      collapsed: true,
+      items: [
+        { text: zh ? '宏' : 'Macro', link: `${basePath}/advanced/macro` },
+        { text: zh ? '模块' : 'Module', link: `${basePath}/advanced/module` },
+        { text: zh ? '代码行修饰符' : 'Line Decorators', link: `${basePath}/advanced/line-decorators` },
+        { text: zh ? 'do 语句' : 'Do', link: `${basePath}/advanced/do` },
+        { text: zh ? '错误处理' : 'Try', link: `${basePath}/advanced/try` },
+      ]
     },
     {
-      text: zh ? '错误处理' : 'Try',
-      link: `${basePath}/try`,
-    },
-    {
-      text: zh ? '属性' : 'Attributes',
-      link: `${basePath}/attributes`,
-    },
-    {
-      text: zh ? '字面量' : 'Literals',
-      link: `${basePath}/literals`,
-    },
-    {
-      text: zh ? '函数字面量' : 'Function Literals',
-      link: `${basePath}/function-literals`,
-    },
-    {
-      text: zh ? '反向回调' : 'Backcalls',
-      link: `${basePath}/backcalls`,
-    },
-    {
-      text: zh ? '表格字面量' : 'Table Literals',
-      link: `${basePath}/table-literals`,
-    },
-    {
-      text: zh ? '推导式' : 'Comprehensions',
-      link: `${basePath}/comprehensions`,
-    },
-    {
-      text: zh ? 'for 循环' : 'For Loop',
-      link: `${basePath}/for-loop`,
-    },
-    {
-      text: zh ? 'while 循环' : 'While Loop',
-      link: `${basePath}/while-loop`,
-    },
-    {
-      text: zh ? 'continue 语句' : 'Continue Statement',
-      link: `${basePath}/continue`,
-    },
-    {
-      text: zh ? '条件语句' : 'Conditionals',
-      link: `${basePath}/conditionals`,
-    },
-    {
-      text: zh ? '代码行修饰符' : 'Line Decorators',
-      link: `${basePath}/line-decorators`,
-    },
-    {
-      text: zh ? 'switch 语句' : 'Switch',
-      link: `${basePath}/switch`,
-    },
-    {
-      text: zh ? '面向对象编程' : 'Object Oriented Programming',
-      link: `${basePath}/object-oriented-programming`,
-    },
-    {
-      text: zh ? 'with 语句' : 'With Statement',
-      link: `${basePath}/with-statement`,
-    },
-    {
-      text: zh ? 'do 语句' : 'Do',
-      link: `${basePath}/do`,
-    },
-    {
-      text: zh ? '函数存根' : 'Function Stubs',
-      link: `${basePath}/function-stubs`,
-    },
-    {
-      text: zh ? '使用 using 语句：防止破坏性赋值' : 'The Using Clause; Controlling Destructive Assignment',
-      link: `${basePath}/the-using-clause-controlling-destructive-assignment`,
-    },
-    {
-      text: zh ? '月之脚本语言库' : 'The YueScript Library',
-      link: `${basePath}/the-yuescript-library`,
-    },
-    {
-      text: zh ? 'MIT 许可证' : 'License: MIT',
-      link: `${basePath}/license-mit`,
+      text: zh ? '参考' : 'Reference',
+      collapsed: true,
+      items: [
+        { text: zh ? '月之脚本语言库' : 'The YueScript Library', link: `${basePath}/reference/the-yuescript-library` },
+        { text: zh ? 'MIT 许可证' : 'License: MIT', link: `${basePath}/reference/license-mit` },
+      ]
     },
   ]
 }
@@ -219,7 +176,7 @@ export default defineConfig({
       description: 'A language that compiles to Lua',
       themeConfig: {
         nav: [
-          { text: 'Document', link: '/doc/' },
+          { text: 'Documentation', link: '/doc/' },
           { text: 'Try yue!', link: '/try/' },
           { text: 'GitHub', link: 'https://github.com/IppClub/Yuescript' }
         ],
