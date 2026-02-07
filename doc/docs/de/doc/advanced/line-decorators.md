@@ -5,6 +5,7 @@ Zur Vereinfachung können `for`-Schleifen und `if`-Anweisungen auf einzelne Anwe
 ```yuescript
 print "Hallo Welt" if name == "Rob"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -18,6 +19,7 @@ Und mit einfachen Schleifen:
 ```yuescript
 print "Element: ", item for item in *items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +35,7 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
+
 <YueDisplay>
 
 ```yue

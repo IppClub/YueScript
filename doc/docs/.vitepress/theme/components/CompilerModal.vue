@@ -7,41 +7,41 @@
 </template>
 
 <script>
-import YueCompiler from './YueCompiler.vue'
+import YueCompiler from "./YueCompiler.vue";
 
 export default {
   components: {
-    YueCompiler
+    YueCompiler,
   },
   data() {
     return {
       isOpen: false,
-      content: ''
-    }
+      content: "",
+    };
   },
   mounted() {
     this.handleOpen = (event) => {
-      this.content = event?.detail || ''
-      this.isOpen = true
-    }
+      this.content = event?.detail || "";
+      this.isOpen = true;
+    };
     this.handleKeydown = (event) => {
-      if (event.key === 'Escape' && this.isOpen) {
-        this.close()
+      if (event.key === "Escape" && this.isOpen) {
+        this.close();
       }
-    }
-    window.addEventListener('yue:open-compiler', this.handleOpen)
-    window.addEventListener('keydown', this.handleKeydown)
+    };
+    window.addEventListener("yue:open-compiler", this.handleOpen);
+    window.addEventListener("keydown", this.handleKeydown);
   },
   beforeUnmount() {
-    window.removeEventListener('yue:open-compiler', this.handleOpen)
-    window.removeEventListener('keydown', this.handleKeydown)
+    window.removeEventListener("yue:open-compiler", this.handleOpen);
+    window.removeEventListener("keydown", this.handleKeydown);
   },
   methods: {
     close() {
-      this.isOpen = false
-    }
-  }
-}
+      this.isOpen = false;
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -63,5 +63,4 @@ export default {
   background: #ffffff;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
-
 </style>

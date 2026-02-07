@@ -6,6 +6,7 @@ Backcalls são usados para desaninhar callbacks. Eles são definidos usando seta
 x <- f
 print "hello" .. x
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Funções seta "fat" também estão disponíveis.
 <= f
 print @value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ Você pode especificar um placeholder para onde deseja que a função backcall v
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ result, msg = do
   check info
 print result, msg
 ```
+
 <YueDisplay>
 
 ```yue

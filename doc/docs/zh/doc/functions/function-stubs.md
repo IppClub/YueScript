@@ -24,6 +24,7 @@ run_callback my_object.write
 -- 让我们把对象捆绑到一个新函数中
 run_callback my_object\write
 ```
+
 <YueDisplay>
 
 ```yue

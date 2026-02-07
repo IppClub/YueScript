@@ -6,6 +6,7 @@ Blok `if` dan `elseif` dapat menerima assignment sebagai ganti ekspresi kondisio
 if user := database.find_user "moon"
   print user.name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -23,6 +24,7 @@ elseif world := os.getenv "world"
 else
   print "nothing :("
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,11 +39,13 @@ else
 </YueDisplay>
 
 Assignment if dengan beberapa nilai return. Hanya nilai pertama yang dicek, nilai lainnya tetap berada dalam scope.
+
 ```yuescript
 if success, result := pcall -> "get result without problems"
   print result -- variabel result berada dalam scope
 print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -61,6 +65,7 @@ while byte := stream\read_one!
   -- lakukan sesuatu dengan byte
   print byte
 ```
+
 <YueDisplay>
 
 ```yue

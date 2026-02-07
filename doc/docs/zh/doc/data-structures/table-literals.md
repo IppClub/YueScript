@@ -5,6 +5,7 @@
 ```yuescript
 some_values = [1, 2, 3, 4]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -22,6 +23,7 @@ some_values = {
   ["favorite food"]: "rice"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ profile =
   shoe_size: 13,
   favorite_foods: ["冰淇淋", "甜甜圈"]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -63,6 +66,7 @@ values = {
   occupation: "打击犯罪"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -83,6 +87,7 @@ my_function dance: "探戈", partner: "无"
 
 y = type: "狗", legs: 4, tails: 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -101,6 +106,7 @@ tbl = {
   end: "饥饿"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -121,6 +127,7 @@ person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -141,6 +148,7 @@ t = {
   "你好 世界": true
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -158,6 +166,7 @@ t = {
 some_values = [ 1, 2, 3, 4 ]
 list_with_one_element = [ 1, ]
 ```
+
 <YueDisplay>
 
 ```yue

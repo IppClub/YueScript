@@ -28,6 +28,7 @@ do
   import "lpeg" as :C, :Ct, :Cmt
   import "export" as {one, two, Something:{umm:{ch}}}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -67,6 +68,7 @@ do
   import table.concat
   print concat ["a", tostring 1]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -98,6 +100,7 @@ do
   print FLAG
   FLAG = 123
 ```
+
 <YueDisplay>
 
 ```yue
@@ -140,6 +143,7 @@ export y = ->
 export class Something
   umm: "cool"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -166,6 +170,7 @@ Benannter Export mit Destructuring.
 export :loadstring, to_lua: tolua = yue
 export {itemA: {:fieldA = 'default'}} = tb
 ```
+
 <YueDisplay>
 
 ```yue
@@ -182,6 +187,7 @@ export.itemA = tb
 export.<index> = items
 export["a-b-c"] = 123
 ```
+
 <YueDisplay>
 
 ```yue
@@ -208,6 +214,7 @@ else
 export with tmp
   j = 2000
 ```
+
 <YueDisplay>
 
 ```yue
@@ -234,6 +241,7 @@ export default ->
   print "hallo"
   123
 ```
+
 <YueDisplay>
 
 ```yue

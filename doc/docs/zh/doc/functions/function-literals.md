@@ -6,6 +6,7 @@
 my_function = ->
 my_function() -- 调用空函数
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ func_b = ->
   value = 100
   print "这个值是：", value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ func_b = ->
 func_a!
 func_b()
 ```
+
 <YueDisplay>
 
 ```yue
@@ -56,6 +59,7 @@ func_b()
 ```yuescript
 sum = (x, y) -> print "数字的和", x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -72,6 +76,7 @@ print sum 10, 20
 
 a b c "a", "b", "c"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -88,6 +93,7 @@ a b c "a", "b", "c"
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +110,7 @@ print "x:", sum(10, 20), "y:", sum(30, 40)
 sum = (x, y) -> x + y
 print "数字的和是", sum 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +125,7 @@ print "数字的和是", sum 10, 20
 ```yuescript
 sum = (x, y) -> return x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -132,6 +140,7 @@ sum = (x, y) -> return x + y
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -148,6 +157,7 @@ a, b = mystery 10, 20
 ```yuescript
 func = (num) => @value + num
 ```
+
 <YueDisplay>
 
 ```yue
@@ -165,6 +175,7 @@ my_function = (name = "某物", height = 100) ->
   print "你好，我是", name
   print "我的高度是", height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +192,7 @@ my_function = (name = "某物", height = 100) ->
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -202,6 +214,7 @@ b = x-10
 c = x -y
 d = x- z
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +236,7 @@ d = x- z
 x = func"hello" + 100
 y = func "hello" + 100
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +261,7 @@ cool_func 1, 2,
   5, 6,
   7, 8
 ```
+
 <YueDisplay>
 
 ```yue
@@ -269,6 +284,7 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -289,6 +305,7 @@ x = [
   8, 9, 10
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -309,6 +326,7 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -335,6 +353,7 @@ if func 1, 2, 3,
   print "hello"
   print "我在if内部"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -373,6 +392,7 @@ f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
 arg1 = {a: 0}
 f2 arg1, arg2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -402,6 +422,7 @@ findFirstEven = (list): nil ->
         if sub % 2 == 0
           return sub
 ```
+
 <YueDisplay>
 
 ```yue
@@ -426,6 +447,7 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +489,7 @@ process = (...args) ->
 
 process 1, nil, 3, nil, 5
 ```
+
 <YueDisplay>
 
 ```yue

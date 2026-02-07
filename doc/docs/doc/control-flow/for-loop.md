@@ -12,6 +12,7 @@ for k = 1, 15, 2 -- an optional step provided
 for key, value in pairs object
   print key, value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +34,7 @@ The slicing and **\*** operators can be used, just like with comprehensions:
 for item in *items[2, 4]
   print item
 ```
+
 <YueDisplay>
 
 ```yue
@@ -49,6 +51,7 @@ for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
+
 <YueDisplay>
 
 ```yue
@@ -70,6 +73,7 @@ doubled_evens = for i = 1, 20
   else
     i
 ```
+
 <YueDisplay>
 
 ```yue
@@ -90,6 +94,7 @@ For example, to find the first number greater than 10:
 first_large = for n in *numbers
   break n if n > 10
 ```
+
 <YueDisplay>
 
 ```yue
@@ -112,6 +117,7 @@ func_b = -> return for i = 1, 10 do i
 print func_a! -- prints nil
 print func_b! -- prints table object
 ```
+
 <YueDisplay>
 
 ```yue

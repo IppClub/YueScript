@@ -4,49 +4,51 @@
 
 Use YueScript module in Lua:
 
-* **Case 1**
+- **Case 1**
 
-	Require "your_yuescript_entry.yue" in Lua.
-	```Lua
-	require("yue")("your_yuescript_entry")
-	```
-	And this code still works when you compile "your_yuescript_entry.yue"  to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
+  Require "your_yuescript_entry.yue" in Lua.
 
-* **Case 2**
+  ```Lua
+  require("yue")("your_yuescript_entry")
+  ```
 
-	Require YueScript module and rewite message by hand.
+  And this code still works when you compile "your_yuescript_entry.yue" to "your_yuescript_entry.lua" in the same path. In the rest YueScript files just use the normal **require** or **import**. The code line numbers in error messages will also be handled correctly.
 
-	```lua
-	local yue = require("yue")
-	yue.insert_loader()
-	local success, result = xpcall(function()
-	  return require("yuescript_module_name")
-	end, function(err)
-	  return yue.traceback(err)
-	end)
-	```
+- **Case 2**
 
-* **Case 3**
+  Require YueScript module and rewite message by hand.
 
-	Use the YueScript compiler function in Lua.
+  ```lua
+  local yue = require("yue")
+  yue.insert_loader()
+  local success, result = xpcall(function()
+    return require("yuescript_module_name")
+  end, function(err)
+    return yue.traceback(err)
+  end)
+  ```
 
-	```lua
-	local yue = require("yue")
-	local codes, err, globals = yue.to_lua([[
-	  f = ->
-	    print "hello world"
-	  f!
-	]],{
-	  implicit_return_root = true,
-	  reserve_line_number = true,
-	  lint_global = true,
-	  space_over_tab = false,
-	  options = {
-	    target = "5.4",
-	    path = "/script"
-	  }
-	})
-	```
+- **Case 3**
+
+  Use the YueScript compiler function in Lua.
+
+  ```lua
+  local yue = require("yue")
+  local codes, err, globals = yue.to_lua([[
+    f = ->
+      print "hello world"
+    f!
+  ]],{
+    implicit_return_root = true,
+    reserve_line_number = true,
+    lint_global = true,
+    space_over_tab = false,
+    options = {
+      target = "5.4",
+      path = "/script"
+    }
+  })
+  ```
 
 ## YueScript Tool
 
@@ -96,16 +98,17 @@ Options:
    Execute without options to enter REPL, type symbol '$'
    in a single line to start/stop multi-line mode
 ```
+
 Use cases:
 
-Recursively compile every YueScript file with extension **.yue** under current path:  **yue .**
+Recursively compile every YueScript file with extension **.yue** under current path: **yue .**
 
-Compile and save results to a target path:  **yue -t /target/path/ .**
+Compile and save results to a target path: **yue -t /target/path/ .**
 
-Compile and reserve debug info:  **yue -l .**
+Compile and reserve debug info: **yue -l .**
 
-Compile and generate minified codes:  **yue -m .**
+Compile and generate minified codes: **yue -m .**
 
-Execute raw codes:  **yue -e 'print 123'**
+Execute raw codes: **yue -e 'print 123'**
 
-Execute a YueScript file:  **yue -e main.yue**
+Execute a YueScript file: **yue -e main.yue**

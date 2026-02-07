@@ -5,6 +5,7 @@
 ```yuescript
 print "你好，世界" if name == "Rob"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -18,6 +19,7 @@ print "你好，世界" if name == "Rob"
 ```yuescript
 print "项目: ", item for item in *items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +35,7 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
+
 <YueDisplay>
 
 ```yue

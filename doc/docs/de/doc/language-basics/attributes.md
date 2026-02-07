@@ -6,6 +6,7 @@ Syntax-Unterstützung für Lua-5.4-Attribute. Du kannst weiterhin die Deklaratio
 const a = 123
 close _ = <close>: -> print "Außerhalb des Gültigkeitsbereichs."
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Du kannst Destructuring mit als konstant markierten Variablen verwenden.
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ Du kannst auch eine globale Variable als `const` deklarieren.
 global const Constant = 123
 -- Constant = 1
 ```
+
 <YueDisplay>
 
 ```yue

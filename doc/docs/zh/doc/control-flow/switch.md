@@ -11,6 +11,7 @@ switch name := "Dan"
   else
     print "我不认识你，你的名字是#{name}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -39,6 +40,7 @@ next_number = switch b
   else
     error "数字数得太大了！"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +64,7 @@ msg = switch math.random(1, 5)
   when 2 then "你差点很幸运"
   else "不太幸运"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -87,6 +90,7 @@ switch math.random(1, 5) when 1
 else
   print "不太幸运"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -124,6 +128,7 @@ for item in *items
     when :width, :height
       print "尺寸 #{width}, #{height}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -154,6 +159,7 @@ switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- 表格解构仍然会通过
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +187,7 @@ switch tb
   when [1, 2, b = 3] -- 变量b有默认值
     print "1, 2, #{b}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -206,6 +213,7 @@ switch tb
   else
     print "无效值"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -231,6 +239,7 @@ switch tb
   else
     print "无效值"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -257,6 +266,7 @@ switch tb
     ]
     print "匹配成功", fourth
 ```
+
 <YueDisplay>
 
 ```yue
@@ -282,6 +292,7 @@ switch segments
     print "Resource:", resource -- 打印: "logs"
     print "Action:", action -- 打印: "view"
 ```
+
 <YueDisplay>
 
 ```yue

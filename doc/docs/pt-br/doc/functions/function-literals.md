@@ -6,6 +6,7 @@ Todas as funções são criadas usando uma expressão de função. Uma função 
 my_function = ->
 my_function() -- chama a função vazia
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ func_b = ->
   value = 100
   print "The value:", value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ Se uma função não tem argumentos, ela pode ser chamada usando o operador !, e
 func_a!
 func_b()
 ```
+
 <YueDisplay>
 
 ```yue
@@ -56,6 +59,7 @@ Funções com argumentos podem ser criadas precedendo a seta com uma lista de no
 ```yuescript
 sum = (x, y) -> print "sum", x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -72,6 +76,7 @@ print sum 10, 20
 
 a b c "a", "b", "c"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -88,6 +93,7 @@ Para evitar ambiguidade ao chamar funções, parênteses também podem ser usado
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +110,7 @@ As funções convertem a última instrução em seu corpo em uma instrução de 
 sum = (x, y) -> x + y
 print "The sum is ", sum 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +125,7 @@ E se você precisar retornar explicitamente, pode usar a palavra-chave return:
 ```yuescript
 sum = (x, y) -> return x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -132,6 +140,7 @@ Assim como no Lua, as funções podem retornar múltiplos valores. A última ins
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -148,6 +157,7 @@ Como é um idioma em Lua enviar um objeto como primeiro argumento ao chamar um m
 ```yuescript
 func = (num) => @value + num
 ```
+
 <YueDisplay>
 
 ```yue
@@ -165,6 +175,7 @@ my_function = (name = "something", height = 100) ->
   print "Hello I am", name
   print "My height is", height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +192,7 @@ Uma expressão de valor padrão de argumento é avaliada no corpo da função na
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -202,6 +214,7 @@ b = x-10
 c = x -y
 d = x- z
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +236,7 @@ Quando há um espaço após uma variável e um literal de string, a chamada de f
 x = func"hello" + 100
 y = func "hello" + 100
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +261,7 @@ cool_func 1, 2,
   5, 6,
   7, 8
 ```
+
 <YueDisplay>
 
 ```yue
@@ -269,6 +284,7 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -289,6 +305,7 @@ x = [
   8, 9, 10
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -309,6 +326,7 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -335,6 +353,7 @@ if func 1, 2, 3,
   print "hello"
   print "I am inside if"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -357,9 +376,9 @@ if func 1, 2, 3,
 
 YueScript agora suporta desestruturação de parâmetros de função quando o argumento é um objeto. Duas formas de literais de tabela de desestruturação estão disponíveis:
 
-* **Literais/parâmetros de objeto envolvidos em chaves**, permitindo valores padrão opcionais quando os campos estão ausentes (ex.: `{:a, :b}`, `{a: a1 = 123}`).
+- **Literais/parâmetros de objeto envolvidos em chaves**, permitindo valores padrão opcionais quando os campos estão ausentes (ex.: `{:a, :b}`, `{a: a1 = 123}`).
 
-* **Sintaxe de tabela simples não envolvida**, começando com uma sequência de ligações chave-valor ou abreviadas e continuando até outra expressão terminá-la (ex.: `:a, b: b1, :c`). Esta forma extrai múltiplos campos do mesmo objeto.
+- **Sintaxe de tabela simples não envolvida**, começando com uma sequência de ligações chave-valor ou abreviadas e continuando até outra expressão terminá-la (ex.: `:a, b: b1, :c`). Esta forma extrai múltiplos campos do mesmo objeto.
 
 ```yuescript
 f1 = (:a, :b, :c) ->
@@ -373,6 +392,7 @@ f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
 arg1 = {a: 0}
 f2 arg1, arg2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -402,6 +422,7 @@ findFirstEven = (list): nil ->
         if sub % 2 == 0
           return sub
 ```
+
 <YueDisplay>
 
 ```yue
@@ -426,6 +447,7 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +489,7 @@ process = (...args) ->
 
 process 1, nil, 3, nil, 5
 ```
+
 <YueDisplay>
 
 ```yue

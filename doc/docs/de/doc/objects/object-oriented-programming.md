@@ -15,6 +15,7 @@ class Inventory
     else
       @items[name] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -46,6 +47,7 @@ inv = Inventory!
 inv\add_item "T-Shirt"
 inv\add_item "Hose"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -77,6 +79,7 @@ b\give_item "Hemd"
 -- gibt sowohl Hose als auch Hemd aus
 print item for item in *a.clothes
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +107,7 @@ class Person
   new: =>
     @clothes = []
 ```
+
 <YueDisplay>
 
 ```yue
@@ -125,6 +129,7 @@ class BackPack extends Inventory
     if #@items > size then error "Rucksack ist voll"
     super name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -151,6 +156,7 @@ class Shelf
 -- gibt aus: Shelf wurde von Cupboard geerbt
 class Cupboard extends Shelf
 ```
+
 <YueDisplay>
 
 ```yue
@@ -189,6 +195,7 @@ class MyClass extends ParentClass
     -- super als Wert entspricht der Elternklasse:
     assert super == ParentClass
 ```
+
 <YueDisplay>
 
 ```yue
@@ -217,6 +224,7 @@ assert b.__class == BackPack
 
 print BackPack.size -- gibt 10 aus
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +255,7 @@ Der Name der Klasse, wie sie deklariert wurde, wird im Feld `__name` gespeichert
 ```yuescript
 print BackPack.__name -- gibt Backpack aus
 ```
+
 <YueDisplay>
 
 ```yue
@@ -272,6 +281,7 @@ Things\some_func!
 -- Klassenvariablen in Instanzen nicht sichtbar
 assert Things().some_func == nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -300,6 +310,7 @@ Counter!
 
 print Counter.count -- gibt 2 aus
 ```
+
 <YueDisplay>
 
 ```yue
@@ -322,6 +333,7 @@ Die Aufrufsemantik von `@@` ist ähnlich wie bei `@`. Wenn du einen `@@`-Namen a
 ```yuescript
 @@hello 1,2,3,4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -340,6 +352,7 @@ Hier ist eine alternative Möglichkeit, eine Klassenvariable zu erstellen:
 class Things
   @class_var = "Hallo Welt"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -361,6 +374,7 @@ class MoreThings
   some_method: =>
     log "Hallo Welt: " .. secret
 ```
+
 <YueDisplay>
 
 ```yue
@@ -384,6 +398,7 @@ Wenn sie alleine verwendet werden, sind sie Aliase für `self` und `self.__class
 assert @ == self
 assert @@ == self.__class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -398,6 +413,7 @@ Zum Beispiel kannst du mit `@@` in einer Instanzmethode schnell eine neue Instan
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
+
 <YueDisplay>
 
 ```yue
@@ -423,6 +439,7 @@ class Something
     @@biz = biz
     @@baz = baz
 ```
+
 <YueDisplay>
 
 ```yue
@@ -448,6 +465,7 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +485,7 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -487,6 +506,7 @@ BigBucket = class extends Bucket
 
 assert Bucket.__name == "BigBucket"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -503,6 +523,7 @@ Du kannst sogar den Körper weglassen und eine leere anonyme Klasse schreiben:
 ```yuescript
 x = class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -532,6 +553,7 @@ y\func!
 
 assert y.__class.__parent ~= X -- X ist nicht die Elternklasse von Y
 ```
+
 <YueDisplay>
 
 ```yue

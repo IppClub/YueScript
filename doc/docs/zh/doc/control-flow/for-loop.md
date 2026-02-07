@@ -12,6 +12,7 @@ for k = 1, 15, 2 -- 提供了一个遍历的步长
 for key, value in pairs object
   print key, value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +34,7 @@ for key, value in pairs object
 for item in *items[2, 4]
   print item
 ```
+
 <YueDisplay>
 
 ```yue
@@ -49,6 +51,7 @@ for item in *items do print item
 
 for j = 1, 10, 3 do print j
 ```
+
 <YueDisplay>
 
 ```yue
@@ -70,6 +73,7 @@ doubled_evens = for i = 1, 20
   else
     i
 ```
+
 <YueDisplay>
 
 ```yue
@@ -90,6 +94,7 @@ doubled_evens = for i = 1, 20
 first_large = for n in *numbers
   break n if n > 10
 ```
+
 <YueDisplay>
 
 ```yue
@@ -110,6 +115,7 @@ func_b = -> return for i = 1, 10 do i
 print func_a! -- 打印 nil
 print func_b! -- 打印 table 对象
 ```
+
 <YueDisplay>
 
 ```yue

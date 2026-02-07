@@ -12,6 +12,7 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +38,7 @@ print hello, the_day
 
 :day = obj -- OK fazer desestruturação simples sem chaves
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +70,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
+
 <YueDisplay>
 
 ```yue
@@ -95,6 +98,7 @@ Se a instrução de desestruturação for complicada, sinta-se à vontade para e
   }
 } = obj2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -113,6 +117,7 @@ Se a instrução de desestruturação for complicada, sinta-se à vontade para e
 ```yuescript
 {:concat, :insert} = table
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +131,7 @@ Isso é efetivamente o mesmo que import, mas podemos renomear campos que queremo
 ```yuescript
 {:mix, :max, random: rand} = math
 ```
+
 <YueDisplay>
 
 ```yue
@@ -139,6 +145,7 @@ Você pode escrever valores padrão ao fazer desestruturação:
 ```yuescript
 {:name = "sem nome", :job = "sem emprego"} = person
 ```
+
 <YueDisplay>
 
 ```yue
@@ -152,6 +159,7 @@ Você pode usar `_` como placeholder ao fazer desestruturação de lista:
 ```yuescript
 [_, two, _, four] = items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -171,6 +179,7 @@ print first  -- imprime: first
 print bulk   -- imprime: {"second", "third", "fourth"}
 print last   -- imprime: last
 ```
+
 <YueDisplay>
 
 ```yue
@@ -195,6 +204,7 @@ O operador spread pode ser usado em diferentes posições para capturar diferent
 -- Capturar tudo exceto os elementos do meio
 [first, ..._, last] = orders
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +233,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
+
 <YueDisplay>
 
 ```yue

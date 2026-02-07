@@ -32,6 +32,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -94,6 +95,7 @@ if cond then
 end
 ]==]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -142,6 +144,7 @@ import "utils" as {
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
+
 <YueDisplay>
 
 ```yue
@@ -172,6 +175,7 @@ import "utils" as {
 print $FILE -- 获取当前模块名称的字符串
 print $LINE -- 获取当前代码行数：2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -202,6 +206,7 @@ macro BodyType = $Enum(
 print "有效的枚举类型:", $BodyType Static
 -- print "编译报错的枚举类型:", $BodyType Unknown
 ```
+
 <YueDisplay>
 
 ```yue
@@ -237,6 +242,7 @@ macro printNumAndStr = (num `Num, str `String) -> |
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -261,6 +267,7 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue

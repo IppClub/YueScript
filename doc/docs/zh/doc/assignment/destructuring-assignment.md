@@ -12,8 +12,8 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 thing = [1, 2]
@@ -38,6 +38,7 @@ print hello, the_day
 
 :day = obj -- 可以不带大括号进行简单的解构
 ```
+
 <YueDisplay>
 
 ```yue
@@ -69,6 +70,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +98,7 @@ print first, second, color
   }
 } = obj2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -114,6 +117,7 @@ print first, second, color
 ```yuescript
 {:concat, :insert} = table
 ```
+
 <YueDisplay>
 
 ```yue
@@ -127,6 +131,7 @@ print first, second, color
 ```yuescript
 {:mix, :max, random: rand} = math
 ```
+
 <YueDisplay>
 
 ```yue
@@ -140,6 +145,7 @@ print first, second, color
 ```yuescript
 {:name = "nameless", :job = "jobless"} = person
 ```
+
 <YueDisplay>
 
 ```yue
@@ -153,6 +159,7 @@ print first, second, color
 ```yuescript
 [_, two, _, four] = items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -172,6 +179,7 @@ print first  -- 打印: first
 print bulk   -- 打印: {"second", "third", "fourth"}
 print last   -- 打印: last
 ```
+
 <YueDisplay>
 
 ```yue
@@ -196,6 +204,7 @@ print last   -- 打印: last
 -- 跳过中间的元素，只捕获第一个和最后一个元素
 [first, ..._, last] = orders
 ```
+
 <YueDisplay>
 
 ```yue
@@ -224,6 +233,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
+
 <YueDisplay>
 
 ```yue

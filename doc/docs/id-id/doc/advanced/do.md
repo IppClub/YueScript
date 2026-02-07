@@ -8,6 +8,7 @@ do
   print var
 print var -- nil di sini
 ```
+
 <YueDisplay>
 
 ```yue
@@ -31,6 +32,7 @@ counter = do
 print counter!
 print counter!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -53,6 +55,7 @@ tbl = {
     1234
 }
 ```
+
 <YueDisplay>
 
 ```yue

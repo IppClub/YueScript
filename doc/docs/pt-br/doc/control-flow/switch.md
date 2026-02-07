@@ -11,6 +11,7 @@ switch name := "Dan"
   else
     print "Não sei quem você é com o nome #{name}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -39,6 +40,7 @@ next_number = switch b
   else
     error "não consigo contar tão alto!"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +64,7 @@ msg = switch math.random(1, 5)
   when 2 then "você quase tem sorte"
   else "não tão sortudo"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -87,6 +90,7 @@ switch math.random(1, 5) when 1
 else
   print "não tão sortudo"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -124,6 +128,7 @@ for item in *items
     when :width, :height
       print "tamanho #{width}, #{height}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -154,6 +159,7 @@ switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- a desestruturação de tabela ainda passará
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +187,7 @@ switch tb
   when [1, 2, b = 3] -- b tem valor padrão
     print "1, 2, #{b}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -206,6 +213,7 @@ switch tb
   else
     print "inválido"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -231,6 +239,7 @@ switch tb
   else
     print "inválido"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -257,6 +266,7 @@ switch tb
     ]
     print "correspondido", fourth
 ```
+
 <YueDisplay>
 
 ```yue
@@ -282,6 +292,7 @@ switch segments
     print "Recurso:", resource -- imprime: "logs"
     print "Ação:", action -- imprime: "view"
 ```
+
 <YueDisplay>
 
 ```yue

@@ -6,6 +6,7 @@
 if user := database.find_user "moon"
   print user.name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -23,6 +24,7 @@ elseif world := os.getenv "world"
 else
   print "什么都没有 :("
 ```
+
 <YueDisplay>
 
 ```yue
@@ -43,6 +45,7 @@ if success, result := pcall -> "无报错地获取结果"
   print result -- 变量 result 是有作用域的
 print "好的"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +65,7 @@ while byte := stream\read_one!
   -- 对 byte 做一些操作
   print byte
 ```
+
 <YueDisplay>
 
 ```yue

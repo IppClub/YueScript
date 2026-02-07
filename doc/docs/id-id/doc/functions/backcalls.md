@@ -6,6 +6,7 @@ Backcall digunakan untuk meratakan callback yang bersarang. Backcall didefinisik
 x <- f
 print "hello" .. x
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Fungsi panah tebal juga tersedia.
 <= f
 print @value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ Anda dapat menentukan placeholder untuk posisi fungsi backcall sebagai parameter
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ result, msg = do
   check info
 print result, msg
 ```
+
 <YueDisplay>
 
 ```yue

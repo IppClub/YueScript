@@ -12,6 +12,7 @@ some_string = "这是一个字符串
 -- 字符串插值只在双引号字符串中可用。
 print "我有#{math.random! * 100}%的把握。"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -34,8 +35,8 @@ integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 integer = 1_000_000
@@ -56,6 +57,7 @@ str = |
     - item1
     - #{expr}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -79,6 +81,7 @@ fn = ->
       bar: baz
   return str
 ```
+
 <YueDisplay>
 
 ```yue
@@ -100,6 +103,7 @@ str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
 ```
+
 <YueDisplay>
 
 ```yue

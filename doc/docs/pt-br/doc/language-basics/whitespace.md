@@ -9,6 +9,7 @@ Uma instrução normalmente termina em uma quebra de linha. Você também pode u
 ```yuescript
 a = 1; b = 2; print a + b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -29,6 +30,7 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
+
 <YueDisplay>
 
 ```yue

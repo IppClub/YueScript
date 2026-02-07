@@ -32,6 +32,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +69,7 @@ if $and f1!, f2!, f3!
 ## Inserir códigos brutos
 
 Uma função macro pode retornar uma string YueScript ou uma tabela de configuração contendo códigos Lua.
+
 ```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
@@ -93,6 +95,7 @@ if cond then
 end
 ]==]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +129,7 @@ end
 ## Exportar macro
 
 Funções macro podem ser exportadas de um módulo e importadas em outro módulo. Você deve colocar funções export macro em um único arquivo para uso, e apenas definição de macro, importação de macro e expansão de macro inline podem ser colocadas no módulo exportador de macro.
+
 ```yuescript
 -- arquivo: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
@@ -140,6 +144,7 @@ import "utils" as {
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
+
 <YueDisplay>
 
 ```yue
@@ -164,10 +169,12 @@ import "utils" as {
 ## Macro embutida
 
 Existem algumas macros embutidas, mas você pode sobrescrevê-las declarando macros com os mesmos nomes.
+
 ```yuescript
 print $FILE -- obtém string do nome do módulo atual
 print $LINE -- obtém número 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -234,6 +241,7 @@ macro printNumAndStr = (num `Num, str `String) -> |
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -258,6 +266,7 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue

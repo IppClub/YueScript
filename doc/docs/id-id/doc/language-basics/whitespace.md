@@ -9,6 +9,7 @@ Sebuah pernyataan biasanya berakhir pada pergantian baris. Anda juga bisa memaka
 ```yuescript
 a = 1; b = 2; print a + b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -29,6 +30,7 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
+
 <YueDisplay>
 
 ```yue

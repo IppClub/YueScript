@@ -6,6 +6,7 @@ Semua fungsi dibuat menggunakan ekspresi fungsi. Fungsi sederhana ditandai denga
 my_function = ->
 my_function() -- memanggil fungsi kosong
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ func_b = ->
   value = 100
   print "The value:", value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ Jika fungsi tidak memiliki argumen, ia dapat dipanggil menggunakan operator `!`,
 func_a!
 func_b()
 ```
+
 <YueDisplay>
 
 ```yue
@@ -56,6 +59,7 @@ Fungsi dengan argumen dapat dibuat dengan menaruh daftar nama argumen dalam tand
 ```yuescript
 sum = (x, y) -> print "sum", x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -72,6 +76,7 @@ print sum 10, 20
 
 a b c "a", "b", "c"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -88,6 +93,7 @@ Untuk menghindari ambiguitas saat memanggil fungsi, tanda kurung juga bisa digun
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +110,7 @@ Fungsi akan memaksa pernyataan terakhir di badannya menjadi pernyataan return, i
 sum = (x, y) -> x + y
 print "The sum is ", sum 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +125,7 @@ Dan jika Anda perlu return secara eksplisit, Anda bisa menggunakan kata kunci `r
 ```yuescript
 sum = (x, y) -> return x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -132,6 +140,7 @@ Seperti di Lua, fungsi dapat mengembalikan beberapa nilai. Pernyataan terakhir h
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -148,6 +157,7 @@ Karena sudah menjadi idiom di Lua untuk mengirim objek sebagai argumen pertama s
 ```yuescript
 func = (num) => @value + num
 ```
+
 <YueDisplay>
 
 ```yue
@@ -165,6 +175,7 @@ my_function = (name = "something", height = 100) ->
   print "Hello I am", name
   print "My height is", height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +192,7 @@ Ekspresi nilai default argumen dievaluasi di dalam badan fungsi sesuai urutan de
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -202,6 +214,7 @@ b = x-10
 c = x -y
 d = x- z
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +236,7 @@ Ketika ada spasi setelah variabel dan literal string, pemanggilan fungsi bertind
 x = func"hello" + 100
 y = func "hello" + 100
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +261,7 @@ cool_func 1, 2,
   5, 6,
   7, 8
 ```
+
 <YueDisplay>
 
 ```yue
@@ -269,6 +284,7 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -289,6 +305,7 @@ x = [
   8, 9, 10
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -309,6 +326,7 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -335,6 +353,7 @@ if func 1, 2, 3,
   print "hello"
   print "I am inside if"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -357,9 +376,9 @@ if func 1, 2, 3,
 
 YueScript kini mendukung destrukturisasi parameter fungsi ketika argumen berupa objek. Dua bentuk destrukturisasi literal tabel tersedia:
 
-* **Literal berkurung kurawal/parameter objek**, memungkinkan nilai default opsional ketika field hilang (misalnya, `{:a, :b}`, `{a: a1 = 123}`).
+- **Literal berkurung kurawal/parameter objek**, memungkinkan nilai default opsional ketika field hilang (misalnya, `{:a, :b}`, `{a: a1 = 123}`).
 
-* **Sintaks tabel sederhana tanpa pembungkus**, dimulai dengan urutan key-value atau binding singkat dan berlanjut sampai ekspresi lain menghentikannya (misalnya, `:a, b: b1, :c`). Bentuk ini mengekstrak beberapa field dari objek yang sama.
+- **Sintaks tabel sederhana tanpa pembungkus**, dimulai dengan urutan key-value atau binding singkat dan berlanjut sampai ekspresi lain menghentikannya (misalnya, `:a, b: b1, :c`). Bentuk ini mengekstrak beberapa field dari objek yang sama.
 
 ```yuescript
 f1 = (:a, :b, :c) ->
@@ -373,6 +392,7 @@ f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
 arg1 = {a: 0}
 f2 arg1, arg2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -402,6 +422,7 @@ findFirstEven = (list): nil ->
         if sub % 2 == 0
           return sub
 ```
+
 <YueDisplay>
 
 ```yue
@@ -426,6 +447,7 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +489,7 @@ process = (...args) ->
 
 process 1, nil, 3, nil, 5
 ```
+
 <YueDisplay>
 
 ```yue

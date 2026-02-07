@@ -6,6 +6,7 @@ Suporte de sintaxe para atributos do Lua 5.4. E você ainda pode usar tanto a de
 const a = 123
 close _ = <close>: -> print "Fora do escopo."
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Você pode fazer desestruturação com variáveis atribuídas como constante.
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ Você também pode declarar uma variável global como `const`.
 global const Constant = 123
 -- Constant = 1
 ```
+
 <YueDisplay>
 
 ```yue

@@ -15,6 +15,7 @@ class Inventory
     else
       @items[name] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -46,6 +47,7 @@ inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -77,6 +79,7 @@ b\give_item "shirt"
 -- vai imprimir tanto pants quanto shirt
 print item for item in *a.clothes
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +107,7 @@ class Person
   new: =>
     @clothes = []
 ```
+
 <YueDisplay>
 
 ```yue
@@ -125,6 +129,7 @@ class BackPack extends Inventory
     if #@items > size then error "backpack is full"
     super name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -141,7 +146,7 @@ Aqui estendemos nossa classe Inventory e limitamos a quantidade de itens que ela
 
 Neste exemplo, não definimos um construtor na subclasse, então o construtor da classe pai é chamado quando criamos uma nova instância. Se definirmos um construtor, podemos usar o método super para chamar o construtor pai.
 
-Sempre que uma classe herda de outra, ela envia uma mensagem à classe pai chamando o método __inherited na classe pai se ele existir. A função recebe dois argumentos: a classe que está sendo herdada e a classe filha.
+Sempre que uma classe herda de outra, ela envia uma mensagem à classe pai chamando o método \_\_inherited na classe pai se ele existir. A função recebe dois argumentos: a classe que está sendo herdada e a classe filha.
 
 ```yuescript
 class Shelf
@@ -151,6 +156,7 @@ class Shelf
 -- vai imprimir: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
+
 <YueDisplay>
 
 ```yue
@@ -189,6 +195,7 @@ class MyClass extends ParentClass
     -- super como valor é igual à classe pai:
     assert super == ParentClass
 ```
+
 <YueDisplay>
 
 ```yue
@@ -209,7 +216,7 @@ class MyClass extends ParentClass
 
 ## Tipos
 
-Cada instância de uma classe carrega seu tipo consigo. Isso é armazenado na propriedade especial __class. Esta propriedade contém o objeto da classe. O objeto da classe é o que chamamos para construir uma nova instância. Também podemos indexar o objeto da classe para recuperar métodos e propriedades da classe.
+Cada instância de uma classe carrega seu tipo consigo. Isso é armazenado na propriedade especial \_\_class. Esta propriedade contém o objeto da classe. O objeto da classe é o que chamamos para construir uma nova instância. Também podemos indexar o objeto da classe para recuperar métodos e propriedades da classe.
 
 ```yuescript
 b = BackPack!
@@ -217,6 +224,7 @@ assert b.__class == BackPack
 
 print BackPack.size -- imprime 10
 ```
+
 <YueDisplay>
 
 ```yue
@@ -238,15 +246,16 @@ Uma classe é composta por duas tabelas. A própria tabela da classe e a tabela 
 
 A metatable do objeto da classe lê propriedades da base se não existirem no objeto da classe. Isso significa que podemos acessar funções e propriedades diretamente da classe.
 
-É importante notar que atribuir ao objeto da classe não atribui à base, então não é uma forma válida de adicionar novos métodos às instâncias. Em vez disso, a base deve ser alterada explicitamente. Veja o campo __base abaixo.
+É importante notar que atribuir ao objeto da classe não atribui à base, então não é uma forma válida de adicionar novos métodos às instâncias. Em vez disso, a base deve ser alterada explicitamente. Veja o campo \_\_base abaixo.
 
 O objeto da classe tem algumas propriedades especiais:
 
-O nome da classe quando foi declarada é armazenado como string no campo __name do objeto da classe.
+O nome da classe quando foi declarada é armazenado como string no campo \_\_name do objeto da classe.
 
 ```yuescript
 print BackPack.__name -- imprime Backpack
 ```
+
 <YueDisplay>
 
 ```yue
@@ -255,9 +264,9 @@ print BackPack.__name -- imprime Backpack
 
 </YueDisplay>
 
-O objeto base é armazenado em __base. Podemos modificar esta tabela para adicionar funcionalidade a instâncias que já foram criadas e às que ainda serão criadas.
+O objeto base é armazenado em \_\_base. Podemos modificar esta tabela para adicionar funcionalidade a instâncias que já foram criadas e às que ainda serão criadas.
 
-Se a classe estende de algo, o objeto da classe pai é armazenado em __parent.
+Se a classe estende de algo, o objeto da classe pai é armazenado em \_\_parent.
 
 ## Variáveis de classe
 
@@ -272,6 +281,7 @@ Things\some_func!
 -- variáveis de classe não visíveis em instâncias
 assert Things().some_func == nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -286,7 +296,7 @@ assert Things().some_func == nil
 
 </YueDisplay>
 
-Em expressões, podemos usar @@ para acessar um valor armazenado no __class de self. Assim, @@hello é abreviação para self.__class.hello.
+Em expressões, podemos usar @@ para acessar um valor armazenado no **class de self. Assim, @@hello é abreviação para self.**class.hello.
 
 ```yuescript
 class Counter
@@ -300,6 +310,7 @@ Counter!
 
 print Counter.count -- imprime 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -322,6 +333,7 @@ A semântica de chamada de @@ é semelhante a @. Chamar um nome @@ passará a cl
 ```yuescript
 @@hello 1,2,3,4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -340,6 +352,7 @@ Aqui está uma forma alternativa de criar variável de classe comparada ao descr
 class Things
   @class_var = "hello world"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -361,6 +374,7 @@ class MoreThings
   some_method: =>
     log "hello world: " .. secret
 ```
+
 <YueDisplay>
 
 ```yue
@@ -376,14 +390,15 @@ class MoreThings
 
 ## Valores @ e @@
 
-Quando @ e @@ são prefixados na frente de um nome, eles representam, respectivamente, esse nome acessado em self e self.__class.
+Quando @ e @@ são prefixados na frente de um nome, eles representam, respectivamente, esse nome acessado em self e self.\_\_class.
 
-Se forem usados sozinhos, são aliases para self e self.__class.
+Se forem usados sozinhos, são aliases para self e self.\_\_class.
 
 ```yuescript
 assert @ == self
 assert @@ == self.__class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -398,6 +413,7 @@ Por exemplo, uma forma rápida de criar uma nova instância da mesma classe a pa
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
+
 <YueDisplay>
 
 ```yue
@@ -423,6 +439,7 @@ class Something
     @@biz = biz
     @@baz = baz
 ```
+
 <YueDisplay>
 
 ```yue
@@ -448,6 +465,7 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +485,7 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -479,7 +498,7 @@ x = class Bucket
 
 ## Classes anônimas
 
-O nome pode ser omitido ao declarar uma classe. O atributo __name será nil, a menos que a expressão da classe esteja em uma atribuição. O nome no lado esquerdo da atribuição é usado em vez de nil.
+O nome pode ser omitido ao declarar uma classe. O atributo \_\_name será nil, a menos que a expressão da classe esteja em uma atribuição. O nome no lado esquerdo da atribuição é usado em vez de nil.
 
 ```yuescript
 BigBucket = class extends Bucket
@@ -487,6 +506,7 @@ BigBucket = class extends Bucket
 
 assert Bucket.__name == "BigBucket"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -503,6 +523,7 @@ Você pode até omitir o corpo, significando que pode escrever uma classe anôni
 ```yuescript
 x = class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -532,6 +553,7 @@ y\func!
 
 assert y.__class.__parent ~= X -- X não é pai de Y
 ```
+
 <YueDisplay>
 
 ```yue

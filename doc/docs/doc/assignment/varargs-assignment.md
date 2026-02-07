@@ -1,6 +1,6 @@
 # Varargs Assignment
 
-You can assign the results returned from a function  to a varargs symbol `...`. And then access its content using the Lua way.
+You can assign the results returned from a function to a varargs symbol `...`. And then access its content using the Lua way.
 
 ```yuescript
 list = [1, 2, 3, 4, 5]
@@ -10,6 +10,7 @@ count = select '#', ...
 first = select 1, ...
 print ok, count, first
 ```
+
 <YueDisplay>
 
 ```yue

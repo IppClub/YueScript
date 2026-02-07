@@ -21,4 +21,5 @@ footer:
   message: Licença MIT.
   copyright: Copyright © 2017-2026 Li Jin. Todos os direitos reservados.
 ---
+
 ---

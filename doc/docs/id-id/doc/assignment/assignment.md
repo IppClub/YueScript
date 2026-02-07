@@ -7,6 +7,7 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- menggunakan variabel yang sudah ada
 ```
+
 <YueDisplay>
 
 ```yue
@@ -20,6 +21,7 @@ hello = 123 -- menggunakan variabel yang sudah ada
 ## Pembaruan Nilai
 
 Anda dapat melakukan assignment pembaruan dengan banyak operator biner.
+
 ```yuescript
 x = 1
 x += 1
@@ -30,6 +32,7 @@ x %= 10
 s ..= "world" -- akan menambah local baru jika variabel local belum ada
 arg or= "default value"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -48,10 +51,12 @@ arg or= "default value"
 ## Assignment Berantai
 
 Anda bisa melakukan assignment berantai untuk menetapkan beberapa item ke nilai yang sama.
+
 ```yuescript
 a = b = c = d = e = 0
 x = y = z = f!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +67,7 @@ x = y = z = f!
 </YueDisplay>
 
 ## Local Eksplisit
+
 ```yuescript
 do
   local a = 1
@@ -78,6 +84,7 @@ do
   a = 1
   B = 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -100,6 +107,7 @@ do
 </YueDisplay>
 
 ## Global Eksplisit
+
 ```yuescript
 do
   global a = 1
@@ -116,6 +124,7 @@ do
   B = 2
   local Temp = "a local value"
 ```
+
 <YueDisplay>
 
 ```yue

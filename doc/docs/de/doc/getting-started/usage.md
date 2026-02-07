@@ -4,49 +4,51 @@
 
 YueScript-Modul in Lua verwenden:
 
-* **Fall 1**
+- **Fall 1**
 
-	"your_yuescript_entry.yue" in Lua require'n.
-	```Lua
-	require("yue")("your_yuescript_entry")
-	```
-	Dieser Code funktioniert weiterhin, wenn du "your_yuescript_entry.yue" im gleichen Pfad zu "your_yuescript_entry.lua" kompilierst. In den restlichen YueScript-Dateien verwendest du einfach normales **require** oder **import**. Die Zeilennummern in Fehlermeldungen werden korrekt behandelt.
+  "your_yuescript_entry.yue" in Lua require'n.
 
-* **Fall 2**
+  ```Lua
+  require("yue")("your_yuescript_entry")
+  ```
 
-	YueScript-Modul require'n und das Fehlermapping manuell umschreiben.
+  Dieser Code funktioniert weiterhin, wenn du "your_yuescript_entry.yue" im gleichen Pfad zu "your_yuescript_entry.lua" kompilierst. In den restlichen YueScript-Dateien verwendest du einfach normales **require** oder **import**. Die Zeilennummern in Fehlermeldungen werden korrekt behandelt.
 
-	```lua
-	local yue = require("yue")
-	yue.insert_loader()
-	local success, result = xpcall(function()
-	  return require("yuescript_module_name")
-	end, function(err)
-	  return yue.traceback(err)
-	end)
-	```
+- **Fall 2**
 
-* **Fall 3**
+  YueScript-Modul require'n und das Fehlermapping manuell umschreiben.
 
-	Die YueScript-Compilerfunktion in Lua verwenden.
+  ```lua
+  local yue = require("yue")
+  yue.insert_loader()
+  local success, result = xpcall(function()
+    return require("yuescript_module_name")
+  end, function(err)
+    return yue.traceback(err)
+  end)
+  ```
 
-	```lua
-	local yue = require("yue")
-	local codes, err, globals = yue.to_lua([[
-	  f = ->
-	    print "Hallo Welt"
-	  f!
-	]],{
-	  implicit_return_root = true,
-	  reserve_line_number = true,
-	  lint_global = true,
-	  space_over_tab = false,
-	  options = {
-	    target = "5.4",
-	    path = "/script"
-	  }
-	})
-	```
+- **Fall 3**
+
+  Die YueScript-Compilerfunktion in Lua verwenden.
+
+  ```lua
+  local yue = require("yue")
+  local codes, err, globals = yue.to_lua([[
+    f = ->
+      print "Hallo Welt"
+    f!
+  ]],{
+    implicit_return_root = true,
+    reserve_line_number = true,
+    lint_global = true,
+    space_over_tab = false,
+    options = {
+      target = "5.4",
+      path = "/script"
+    }
+  })
+  ```
 
 ## YueScript-Tool
 

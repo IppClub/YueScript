@@ -15,6 +15,7 @@ with Person!
   \save!
   print .name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +34,7 @@ A instrução with também pode ser usada como expressão que retorna o valor ao
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -52,6 +54,7 @@ create_person = (name,  relatives) ->
 
 me = create_person "Leaf", [dad, mother, sister]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -74,6 +77,7 @@ with str := "Hello"
   print "original:", str
   print "upper:", \upper!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -95,6 +99,7 @@ with tb
     ["key-name"] = value
   [] = "abc" -- anexando a "tb"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -115,6 +120,7 @@ with tb
 with? obj
   print obj.name
 ```
+
 <YueDisplay>
 
 ```yue

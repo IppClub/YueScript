@@ -10,6 +10,7 @@ Berikut membuat salinan tabel `items` tetapi semua nilainya digandakan.
 items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ Item yang disertakan dalam tabel baru bisa dibatasi dengan klausa `when`:
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +39,7 @@ Karena umum untuk mengiterasi nilai dari tabel berindeks numerik, operator **\**
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat sekarang [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -79,6 +83,7 @@ y_coords = [9, 2, 3]
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +101,7 @@ Perulangan for numerik juga bisa digunakan dalam komprehensi:
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -119,6 +125,7 @@ thing = {
 
 thing_copy = {k, v for k, v in pairs thing}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -136,6 +143,7 @@ thing_copy = {k, v for k, v in pairs thing}
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -150,6 +158,7 @@ Operator **\*** juga didukung. Di sini kita membuat tabel lookup akar kuadrat un
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -167,6 +176,7 @@ Dalam contoh ini kita mengonversi array pasangan menjadi tabel di mana item pert
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -185,6 +195,7 @@ Di sini kita bisa menetapkan batas minimum dan maksimum, mengambil semua item de
 ```yuescript
 slice = [item for item in *items[1, 5]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -198,6 +209,7 @@ Salah satu argumen slice boleh dikosongkan untuk menggunakan default yang masuk 
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -211,6 +223,7 @@ Jika batas minimum dikosongkan, defaultnya adalah 1. Di sini kita hanya memberik
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -225,6 +238,7 @@ Batas minimum dan maksimum bisa bernilai negatif, yang berarti batas dihitung da
 -- ambil 4 item terakhir
 slice = [item for item in *items[-4,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -239,6 +253,7 @@ Ukuran langkah juga bisa negatif, yang berarti item diambil dalam urutan terbali
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -258,6 +273,7 @@ sub_list = items[2, 4]
 -- ambil 4 item terakhir
 last_four_items = items[-4, -1]
 ```
+
 <YueDisplay>
 
 ```yue

@@ -5,6 +5,7 @@ Like in Lua, tables are delimited in curly braces.
 ```yuescript
 some_values = [1, 2, 3, 4]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -22,6 +23,7 @@ some_values = {
   ["favorite food"]: "rice"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ profile =
   shoe_size: 13,
   favorite_foods: ["ice cream", "donuts"]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -63,6 +66,7 @@ values = {
   occupation: "crime fighting"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -83,6 +87,7 @@ my_function dance: "Tango", partner: "none"
 
 y = type: "dog", legs: 4, tails: 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -101,6 +106,7 @@ tbl = {
   end: "hunger"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -121,6 +127,7 @@ person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -141,6 +148,7 @@ t = {
   "hello world": true
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -158,6 +166,7 @@ Lua tables have both an array part and a hash part, but sometimes you want to ma
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 ```
+
 <YueDisplay>
 
 ```yue

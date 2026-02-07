@@ -12,6 +12,7 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +38,7 @@ print hello, the_day
 
 :day = obj -- OK untuk destrukturisasi sederhana tanpa kurung
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +70,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
+
 <YueDisplay>
 
 ```yue
@@ -95,6 +98,7 @@ Jika pernyataan destrukturisasi kompleks, Anda bisa memecahnya ke beberapa baris
   }
 } = obj2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -113,6 +117,7 @@ Umumnya mengekstrak nilai dari tabel lalu menugaskannya ke variabel local dengan
 ```yuescript
 {:concat, :insert} = table
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +131,7 @@ Ini secara efektif sama seperti import, tetapi kita dapat mengganti nama field y
 ```yuescript
 {:mix, :max, random: rand} = math
 ```
+
 <YueDisplay>
 
 ```yue
@@ -139,6 +145,7 @@ Anda bisa menulis nilai default saat destrukturisasi seperti:
 ```yuescript
 {:name = "nameless", :job = "jobless"} = person
 ```
+
 <YueDisplay>
 
 ```yue
@@ -152,6 +159,7 @@ Anda dapat menggunakan `_` sebagai placeholder saat destrukturisasi list:
 ```yuescript
 [_, two, _, four] = items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -171,6 +179,7 @@ print first  -- prints: first
 print bulk   -- prints: {"second", "third", "fourth"}
 print last   -- prints: last
 ```
+
 <YueDisplay>
 
 ```yue
@@ -195,6 +204,7 @@ Operator spread dapat digunakan pada posisi berbeda untuk menangkap rentang yang
 -- Tangkap semuanya kecuali elemen tengah
 [first, ..._, last] = orders
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +233,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
+
 <YueDisplay>
 
 ```yue

@@ -15,6 +15,7 @@ class Inventory
     else
       @items[name] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -44,8 +45,8 @@ inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 inv = Inventory!
@@ -76,6 +77,7 @@ b\give_item "shirt"
 -- 会同时打印出裤子和衬衫
 print item for item in *a.clothes
 ```
+
 <YueDisplay>
 
 ```yue
@@ -103,6 +105,7 @@ class Person
   new: =>
     @clothes = []
 ```
+
 <YueDisplay>
 
 ```yue
@@ -124,6 +127,7 @@ class BackPack extends Inventory
     if #@items > size then error "背包已满"
     super name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -150,6 +154,7 @@ class Shelf
 -- 将打印: Shelf 被 Cupboard 继承
 class Cupboard extends Shelf
 ```
+
 <YueDisplay>
 
 ```yue
@@ -186,6 +191,7 @@ class MyClass extends ParentClass
     -- super 作为值等于父类：
     assert super == ParentClass
 ```
+
 <YueDisplay>
 
 ```yue
@@ -214,6 +220,7 @@ assert b.__class == BackPack
 
 print BackPack.size -- 打印 10
 ```
+
 <YueDisplay>
 
 ```yue
@@ -235,13 +242,14 @@ print BackPack.size -- 打印 10
 
 &emsp;&emsp;如果在类对象的元表中找不到某个属性，系统会从基表中检索该属性。这就意味着我们可以直接从类本身访问到其方法和属性。
 
-&emsp;&emsp;需要特别注意的是，对类对象的赋值并不会影响到基表，因此这不是向实例添加新方法的正确方式。相反，需要直接修改基表。关于这点，可以参考下面的 “__base” 字段。
+&emsp;&emsp;需要特别注意的是，对类对象的赋值并不会影响到基表，因此这不是向实例添加新方法的正确方式。相反，需要直接修改基表。关于这点，可以参考下面的 “\_\_base” 字段。
 
-&emsp;&emsp;此外，类对象包含几个特殊的属性：当类被声明时，类的名称会作为一个字符串存储在类对象的 “__name” 字段中。
+&emsp;&emsp;此外，类对象包含几个特殊的属性：当类被声明时，类的名称会作为一个字符串存储在类对象的 “\_\_name” 字段中。
 
 ```yuescript
 print BackPack.__name -- 打印 Backpack
 ```
+
 <YueDisplay>
 
 ```yue
@@ -267,6 +275,7 @@ Things\some_func!
 -- 类变量在实例中不可见
 assert Things().some_func == nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -295,6 +304,7 @@ Counter!
 
 print Counter.count -- 输出 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -317,6 +327,7 @@ print Counter.count -- 输出 2
 ```yuescript
 @@hello 1,2,3,4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -335,6 +346,7 @@ print Counter.count -- 输出 2
 class Things
   @class_var = "hello world"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -356,6 +368,7 @@ class MoreThings
   some_method: =>
     log "hello world: " .. secret
 ```
+
 <YueDisplay>
 
 ```yue
@@ -379,6 +392,7 @@ class MoreThings
 assert @ == self
 assert @@ == self.__class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -393,6 +407,7 @@ assert @@ == self.__class
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
+
 <YueDisplay>
 
 ```yue
@@ -418,6 +433,7 @@ class Something
     @@biz = biz
     @@baz = baz
 ```
+
 <YueDisplay>
 
 ```yue
@@ -443,6 +459,7 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
+
 <YueDisplay>
 
 ```yue
@@ -462,6 +479,7 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -482,6 +500,7 @@ BigBucket = class extends Bucket
 
 assert Bucket.__name == "BigBucket"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -498,6 +517,7 @@ assert Bucket.__name == "BigBucket"
 ```yuescript
 x = class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -527,6 +547,7 @@ y\func!
 
 assert y.__class.__parent ~= X -- X 不是 Y 的父类
 ```
+
 <YueDisplay>
 
 ```yue

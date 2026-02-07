@@ -10,6 +10,7 @@ O seguinte cria uma cópia da tabela items mas com todos os valores dobrados.
 items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ Os itens incluídos na nova tabela podem ser restringidos com uma cláusula when
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +39,7 @@ Como é comum iterar sobre os valores de uma tabela indexada numericamente, um o
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat agora é [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -79,6 +83,7 @@ y_coords = [9, 2, 3]
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +101,7 @@ Loops for numéricos também podem ser usados em compreensões:
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -119,6 +125,7 @@ thing = {
 
 thing_copy = {k, v for k, v in pairs thing}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -136,6 +143,7 @@ thing_copy = {k, v for k, v in pairs thing}
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -150,6 +158,7 @@ O operador **\*** também é suportado. Aqui criamos uma tabela de consulta de r
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -167,6 +176,7 @@ Neste exemplo convertemos um array de pares em uma tabela onde o primeiro item d
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -185,6 +195,7 @@ Aqui podemos definir os limites mínimo e máximo, pegando todos os itens com í
 ```yuescript
 slice = [item for item in *items[1, 5]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -198,6 +209,7 @@ Qualquer um dos argumentos do slice pode ser omitido para usar um padrão sensat
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -211,6 +223,7 @@ Se o limite mínimo for omitido, ele usa como padrão 1. Aqui fornecemos apenas 
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -225,6 +238,7 @@ Tanto o limite mínimo quanto o máximo podem ser negativos, o que significa que
 -- pegar os últimos 4 itens
 slice = [item for item in *items[-4,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -239,6 +253,7 @@ O tamanho do passo também pode ser negativo, o que significa que os itens são 
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -258,6 +273,7 @@ sub_list = items[2, 4]
 -- pegar os últimos 4 itens
 last_four_items = items[-4, -1]
 ```
+
 <YueDisplay>
 
 ```yue

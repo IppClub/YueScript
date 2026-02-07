@@ -5,6 +5,7 @@ next: false
 ---
 
 # Kompiler Online YueScript
+
 ---
 
 Coba YueScript di browser dengan WASM.

@@ -6,6 +6,7 @@ Semua operator biner dan unari Lua tersedia. Selain itu **!=** adalah alias untu
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -27,6 +28,7 @@ a = 5
 print 1 <= a <= 10
 -- output: true
 ```
+
 <YueDisplay>
 
 ```yue
@@ -64,6 +66,7 @@ print v(1) > v(2) <= v(3)
   false
 ]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -101,6 +104,7 @@ Operator **[] =** digunakan untuk menambahkan nilai ke tabel.
 tab = []
 tab[] = "Value"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +122,7 @@ tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA sekarang [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -149,6 +154,7 @@ a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -179,6 +185,7 @@ last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -212,6 +219,7 @@ print d.value
 
 close _ = <close>: -> print "out of scope"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -245,6 +253,7 @@ print tb.value
 tb.<> = __index: {item: "hello"}
 print tb.item
 ```
+
 <YueDisplay>
 
 ```yue
@@ -266,6 +275,7 @@ Destrukturisasi metatable dengan kunci metamethod yang dikelilingi **<>**.
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
+
 <YueDisplay>
 
 ```yue
@@ -293,6 +303,7 @@ with? io.open "test.txt", "w"
   \write "hello"
   \close!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -329,6 +340,7 @@ readFile "example.txt"
   |> render
   |> print
 ```
+
 <YueDisplay>
 
 ```yue
@@ -349,6 +361,7 @@ readFile "example.txt"
 ## Nil Coalescing
 
 Operator nil-coalescing **??** mengembalikan nilai dari operan kiri jika bukan **nil**; jika tidak, operator mengevaluasi operan kanan dan mengembalikan hasilnya. Operator **??** tidak mengevaluasi operan kanan jika operan kiri bernilai non-nil.
+
 ```yuescript
 local a, b, c, d
 a = b ?? c ?? d
@@ -356,6 +369,7 @@ func a ?? {}
 
 a ??= false
 ```
+
 <YueDisplay>
 
 ```yue
@@ -413,6 +427,7 @@ tb =
       tb: { }
 
 ```
+
 <YueDisplay>
 
 ```yue

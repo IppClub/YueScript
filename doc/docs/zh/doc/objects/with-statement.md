@@ -1,6 +1,5 @@
 # with 语句
 
-
 在编写 Lua 代码时，我们在创建对象后的常见操作是立即调用这个对象一系列操作函数并设置一系列属性。
 
 这导致在代码中多次重复引用对象的名称，增加了不必要的文本噪音。一个常见的解决方案是在创建对象时，在构造函数传入一个表，该表包含要覆盖设置的键和值的集合。这样做的缺点是该对象的构造函数必须支持这种初始化形式。
@@ -16,6 +15,7 @@ with Person!
   \save!
   print .name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -34,6 +34,7 @@ with 语句也可以用作一个表达式，并返回它的代码块正在处理
 file = with File "favorite_foods.txt"
   \set_encoding "utf8"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -53,6 +54,7 @@ create_person = (name,  relatives) ->
 
 me = create_person "Leaf", [dad, mother, sister]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -75,6 +77,7 @@ with str := "你好"
   print "原始:", str
   print "大写:", \upper!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +99,7 @@ with tb
     ["key-name"] = value
   [] = "abc" -- 追加到 "tb"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -116,6 +120,7 @@ with tb
 with? obj
   print obj.name
 ```
+
 <YueDisplay>
 
 ```yue

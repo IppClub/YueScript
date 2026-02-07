@@ -10,6 +10,7 @@ while i > 0
 
 while running == true do my_function!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -31,6 +32,7 @@ until i == 0
 
 until running == false do my_function!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -56,6 +58,7 @@ repeat
   i -= 1
 until i == 0
 ```
+
 <YueDisplay>
 
 ```yue

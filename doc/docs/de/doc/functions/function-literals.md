@@ -6,6 +6,7 @@ Alle Funktionen werden mit einem Funktionsausdruck erstellt. Eine einfache Funkt
 my_function = ->
 my_function() -- leere Funktion aufrufen
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ func_b = ->
   value = 100
   print "Der Wert:", value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ Wenn eine Funktion keine Argumente hat, kann sie mit dem `!`-Operator statt leer
 func_a!
 func_b()
 ```
+
 <YueDisplay>
 
 ```yue
@@ -56,6 +59,7 @@ Funktionen mit Argumenten werden erstellt, indem der Pfeil von einer Argumentlis
 ```yuescript
 sum = (x, y) -> print "Summe", x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -72,6 +76,7 @@ print sum 10, 20
 
 a b c "a", "b", "c"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -88,6 +93,7 @@ Um Mehrdeutigkeiten beim Aufruf zu vermeiden, können die Argumente auch in Klam
 ```yuescript
 print "x:", sum(10, 20), "y:", sum(30, 40)
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +110,7 @@ Funktionen wandeln die letzte Anweisung im Funktionskörper in ein `return` um. 
 sum = (x, y) -> x + y
 print "Die Summe ist ", sum 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +125,7 @@ Wenn du explizit zurückgeben willst, verwende `return`:
 ```yuescript
 sum = (x, y) -> return x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -132,6 +140,7 @@ Wie in Lua können Funktionen mehrere Werte zurückgeben. Die letzte Anweisung m
 mystery = (x, y) -> x + y, x - y
 a, b = mystery 10, 20
 ```
+
 <YueDisplay>
 
 ```yue
@@ -148,6 +157,7 @@ Da es in Lua üblich ist, beim Methodenaufruf ein Objekt als erstes Argument zu 
 ```yuescript
 func = (num) => @value + num
 ```
+
 <YueDisplay>
 
 ```yue
@@ -165,6 +175,7 @@ my_function = (name = "etwas", height = 100) ->
   print "Hallo, ich bin", name
   print "Meine Größe ist", height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +192,7 @@ Der Ausdruck für den Standardwert wird im Funktionskörper in der Reihenfolge d
 some_args = (x = 100, y = x + 1000) ->
   print x + y
 ```
+
 <YueDisplay>
 
 ```yue
@@ -202,6 +214,7 @@ b = x-10
 c = x -y
 d = x- z
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +236,7 @@ Steht ein Leerzeichen zwischen Variable und String-Literal, verhält sich der Au
 x = func"hallo" + 100
 y = func "hallo" + 100
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +261,7 @@ cool_func 1, 2,
   5, 6,
   7, 8
 ```
+
 <YueDisplay>
 
 ```yue
@@ -269,6 +284,7 @@ my_func 5, 6, 7,
     9, 1, 2,
   5, 4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -289,6 +305,7 @@ x = [
   8, 9, 10
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -309,6 +326,7 @@ y = [ my_func 1, 2, 3,
   5, 6, 7
 ]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -335,6 +353,7 @@ if func 1, 2, 3,
   print "hallo"
   print "Ich bin innerhalb der if-Bedingung"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -357,8 +376,8 @@ if func 1, 2, 3,
 
 YueScript unterstützt jetzt Destructuring von Funktionsparametern, wenn das Argument ein Objekt ist. Es gibt zwei Formen von Destructuring-Tabellenliteralen:
 
-* **Geschweifte Klammern/Objektparameter**, die optionale Standardwerte erlauben, wenn Felder fehlen (z. B. `{:a, :b}`, `{a: a1 = 123}`).
-* **Unverpackte einfache Tabellensyntax**, die mit einer Sequenz aus Key-Value- oder Shorthand-Bindings beginnt und so lange läuft, bis ein anderer Ausdruck sie beendet (z. B. `:a, b: b1, :c`). Diese Form extrahiert mehrere Felder aus demselben Objekt.
+- **Geschweifte Klammern/Objektparameter**, die optionale Standardwerte erlauben, wenn Felder fehlen (z. B. `{:a, :b}`, `{a: a1 = 123}`).
+- **Unverpackte einfache Tabellensyntax**, die mit einer Sequenz aus Key-Value- oder Shorthand-Bindings beginnt und so lange läuft, bis ein anderer Ausdruck sie beendet (z. B. `:a, b: b1, :c`). Diese Form extrahiert mehrere Felder aus demselben Objekt.
 
 ```yuescript
 f1 = (:a, :b, :c) ->
@@ -372,6 +391,7 @@ f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
 arg1 = {a: 0}
 f2 arg1, arg2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -401,6 +421,7 @@ findFirstEven = (list): nil ->
         if sub % 2 == 0
           return sub
 ```
+
 <YueDisplay>
 
 ```yue
@@ -425,6 +446,7 @@ findFirstEven = (list) ->
           return sub
   nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -466,6 +488,7 @@ process = (...args) ->
 
 process 1, nil, 3, nil, 5
 ```
+
 <YueDisplay>
 
 ```yue

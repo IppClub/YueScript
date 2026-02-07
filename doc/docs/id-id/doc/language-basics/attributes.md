@@ -6,6 +6,7 @@ Dukungan sintaks untuk atribut Lua 5.4. Anda juga masih bisa menggunakan deklara
 const a = 123
 close _ = <close>: -> print "Out of scope."
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Anda dapat melakukan destrukturisasi dengan variabel yang diberi atribut sebagai
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ Anda juga bisa mendeklarasikan variabel global sebagai `const`.
 global const Constant = 123
 -- Constant = 1
 ```
+
 <YueDisplay>
 
 ```yue

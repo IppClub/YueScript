@@ -7,6 +7,7 @@ if have_coins
 else
   print "No coins"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -25,6 +26,7 @@ A short syntax for single statements can also be used:
 have_coins = false
 if have_coins then print "Got coins" else print "No coins"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -40,6 +42,7 @@ Because if statements can be used as expressions, this can also be written as:
 have_coins = false
 print if have_coins then "Got coins" else "No coins"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -65,6 +68,7 @@ else
 
 print message -- prints: I am very tall
 ```
+
 <YueDisplay>
 
 ```yue
@@ -90,6 +94,7 @@ The opposite of if is unless:
 unless os.date("%A") == "Monday"
   print "it is not Monday!"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -102,6 +107,7 @@ unless os.date("%A") == "Monday"
 ```yuescript
 print "You're lucky!" unless math.random! > 0.1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -123,6 +129,7 @@ if a in [1, 3, 5, 7]
 if a in list
   print "checking if `a` is in a list"
 ```
+
 <YueDisplay>
 
 ```yue

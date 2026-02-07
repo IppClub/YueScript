@@ -29,6 +29,7 @@ catch err
     print yue.traceback err
   print result
 ```
+
 <YueDisplay>
 
 ```yue
@@ -82,6 +83,7 @@ catch e
   print e
   e
 ```
+
 <YueDisplay>
 
 ```yue

@@ -32,6 +32,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +69,7 @@ if $and f1!, f2!, f3!
 ## Menyisipkan Kode Mentah
 
 Fungsi macro bisa mengembalikan string YueScript atau tabel konfigurasi yang berisi kode Lua.
+
 ```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
 $yueFunc funcA
@@ -93,6 +95,7 @@ if cond then
 end
 ]==]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +129,7 @@ end
 ## Export Macro
 
 Fungsi macro dapat diekspor dari modul dan diimpor di modul lain. Anda harus menaruh fungsi macro export dalam satu file agar dapat digunakan, dan hanya definisi macro, impor macro, dan ekspansi macro yang boleh ada di modul export macro.
+
 ```yuescript
 -- file: utils.yue
 export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
@@ -140,6 +144,7 @@ import "utils" as {
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
+
 <YueDisplay>
 
 ```yue
@@ -165,10 +170,12 @@ import "utils" as {
 ## Macro Bawaan
 
 Ada beberapa macro bawaan tetapi Anda bisa menimpanya dengan mendeklarasikan macro dengan nama yang sama.
+
 ```yuescript
 print $FILE -- mendapatkan string nama modul saat ini
 print $LINE -- mendapatkan angka 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -235,6 +242,7 @@ macro printNumAndStr = (num `Num, str `String) -> |
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -259,6 +267,7 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hello"
 ```
+
 <YueDisplay>
 
 ```yue

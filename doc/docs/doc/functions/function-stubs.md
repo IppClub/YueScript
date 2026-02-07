@@ -24,6 +24,7 @@ run_callback my_object.write
 -- lets us bundle the object into a new function
 run_callback my_object\write
 ```
+
 <YueDisplay>
 
 ```yue

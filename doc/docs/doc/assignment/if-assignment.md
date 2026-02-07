@@ -6,6 +6,7 @@
 if user := database.find_user "moon"
   print user.name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -23,6 +24,7 @@ elseif world := os.getenv "world"
 else
   print "nothing :("
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,11 +39,13 @@ else
 </YueDisplay>
 
 If assignment with multiple return values. Only the first value is getting checked, other values are scoped.
+
 ```yuescript
 if success, result := pcall -> "get result without problems"
   print result -- variable result is scoped
 print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -61,6 +65,7 @@ while byte := stream\read_one!
   -- do something with the byte
   print byte
 ```
+
 <YueDisplay>
 
 ```yue

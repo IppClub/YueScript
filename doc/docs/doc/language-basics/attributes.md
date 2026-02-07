@@ -6,6 +6,7 @@ Syntax support for Lua 5.4 attributes. And you can still use both the `const` an
 const a = 123
 close _ = <close>: -> print "Out of scope."
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ You can do desctructuring with variables attributed as constant.
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ You can also declare a global variable to be `const`.
 global const Constant = 123
 -- Constant = 1
 ```
+
 <YueDisplay>
 
 ```yue

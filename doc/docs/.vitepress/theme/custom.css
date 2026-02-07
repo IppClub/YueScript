@@ -1,19 +1,21 @@
-@import '@fontsource/merriweather/400.css';
-@import '@fontsource/merriweather/700.css';
-@import '@fontsource/merriweather/900.css';
-@import '@fontsource/merriweather/400-italic.css';
-@import '@fontsource/merriweather/700-italic.css';
-@import '@fontsource/merriweather/900-italic.css';
+@import "@fontsource/merriweather/400.css";
+@import "@fontsource/merriweather/700.css";
+@import "@fontsource/merriweather/900.css";
+@import "@fontsource/merriweather/400-italic.css";
+@import "@fontsource/merriweather/700-italic.css";
+@import "@fontsource/merriweather/900-italic.css";
 
-@import '@fontsource/noto-serif-sc/400.css';
-@import '@fontsource/noto-serif-sc/700.css';
-@import '@fontsource/noto-serif-sc/900.css';
+@import "@fontsource/noto-serif-sc/400.css";
+@import "@fontsource/noto-serif-sc/700.css";
+@import "@fontsource/noto-serif-sc/900.css";
 
 :root {
   /* --- TYPOGRAPHY --- */
   /* Keep standard sans-serif for body text for readability */
   --vp-font-family-base: system-ui, sans-serif;
-  --vp-font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  --vp-font-family-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
 
   /* --- BRAND COLORS (Original Moon Gold) --- */
   --vp-c-brand-1: #b4ac8f;
@@ -27,11 +29,11 @@
 
   /* --- LIGHT MODE THEME --- */
   /* A warmer, "creamy" paper feel instead of harsh white */
-  --vp-c-bg: #FDFBF7;
-  --vp-c-bg-soft: #F7F5F0;
+  --vp-c-bg: #fdfbf7;
+  --vp-c-bg-soft: #f7f5f0;
+
   /* Slightly darker for sidebars */
-  --vp-c-bg-alt: #F0EDE5;
-  /* For code blocks/inputs */
+  --vp-c-bg-alt: #f0ede5;
 
   /* Text Colors: Deep Navy instead of pure black for softer contrast */
   --vp-c-text-1: #1a202c;
@@ -44,6 +46,7 @@
     width: 450px !important;
   }
 }
+
 .VPHero :deep(.image-src) {
   max-width: 450px;
   max-height: 450px;
@@ -52,20 +55,20 @@
 /* --- DARK MODE THEME (Midnight Blue) --- */
 .dark {
   /* Deep Midnight Blue background (replaces standard grey) */
-  --vp-c-bg: #0B0E14;
+  --vp-c-bg: #0b0e14;
   --vp-c-bg-soft: #131722;
+
   /* Sidebar/Nav */
-  --vp-c-bg-alt: #1A1F2E;
-  /* Code blocks/inputs */
+  --vp-c-bg-alt: #1a1f2e;
 
   /* Text Colors: Moonlight Silver */
-  --vp-c-text-1: #E2E8F0;
-  --vp-c-text-2: #94A3B8;
+  --vp-c-text-1: #e2e8f0;
+  --vp-c-text-2: #94a3b8;
 
   /* Adjust border colors to blend with blue, not grey */
-  --vp-c-border: #1E293B;
-  --vp-c-divider: #1E293B;
-  --vp-c-gutter: #1E293B;
+  --vp-c-border: #1e293b;
+  --vp-c-divider: #1e293b;
+  --vp-c-gutter: #1e293b;
 }
 
 /* --- HEADINGS: Apply the Serif Font --- */
@@ -78,16 +81,19 @@ h6,
 .VPFeature .title,
 .VPHero .name,
 .VPNavBarTitle .title {
-  font-family: 'Merriweather', 'Noto Serif SC', serif !important;
+  font-family: "Merriweather", "Noto Serif SC", serif !important;
   letter-spacing: -0.02em;
   /* Tighter tracking looks more professional on serifs */
+}
+
+.VPNavBarTitle .title {
+  font-size: 1.125rem;
 }
 
 /* Make the Hero Title (YueScript) feel more "Editorial" */
 .VPHero .name {
   font-weight: 900 !important;
   color: var(--vp-c-brand-1);
-  /* Optional: Adds a subtle glow in dark mode */
   text-shadow: 0 0 20px rgba(180, 172, 143, 0.2);
 }
 
@@ -102,7 +108,6 @@ h6,
 .VPButton.brand:hover {
   background-color: var(--vp-c-brand-1) !important;
 }
-
 
 /* Prism theme for YueCompiler output (shikijs/themes light-plus & dark-plus) */
 .code-output,
@@ -124,7 +129,7 @@ h6,
 }
 
 .code-output .token.keyword {
-  color: #AF00DB;
+  color: #af00db;
 }
 
 .code-output .token.operator,
@@ -171,7 +176,7 @@ h6,
 }
 
 .dark .code-output .token.keyword {
-  color: #C586C0;
+  color: #c586c0;
 }
 
 .dark .code-output .token.operator,
@@ -215,5 +220,5 @@ h6,
 /* --- CODE BLOCKS --- */
 /* Slight adjustment to code block background to fit the midnight theme */
 .dark .vp-code-group .tabs label {
-  background-color: #1A1F2E;
+  background-color: #1a1f2e;
 }

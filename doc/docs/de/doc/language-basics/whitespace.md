@@ -9,6 +9,7 @@ Eine Anweisung endet normalerweise an einem Zeilenumbruch. Du kannst auch ein Se
 ```yuescript
 a = 1; b = 2; print a + b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -29,6 +30,7 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
+
 <YueDisplay>
 
 ```yue

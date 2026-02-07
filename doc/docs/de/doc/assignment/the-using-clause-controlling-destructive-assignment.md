@@ -17,6 +17,7 @@ my_func!
 
 print i -- wird 0 ausgeben
 ```
+
 <YueDisplay>
 
 ```yue
@@ -52,6 +53,7 @@ my_func = (using nil) ->
 my_func!
 print i -- gibt 100 aus, i bleibt unverändert
 ```
+
 <YueDisplay>
 
 ```yue
@@ -80,6 +82,7 @@ my_func = (add using k, i) ->
 my_func(22)
 print i, k -- diese wurden aktualisiert
 ```
+
 <YueDisplay>
 
 ```yue

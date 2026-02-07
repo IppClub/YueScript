@@ -32,6 +32,7 @@ macro and = (...) -> "#{ table.concat {...}, ' and ' }"
 if $and f1!, f2!, f3!
   print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -94,6 +95,7 @@ if cond then
 end
 ]==]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -142,6 +144,7 @@ import "utils" as {
 }
 [1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
 ```
+
 <YueDisplay>
 
 ```yue
@@ -172,6 +175,7 @@ Es gibt einige eingebaute Makros, aber du kannst sie überschreiben, indem du Ma
 print $FILE -- String des aktuellen Modulnamens
 print $LINE -- gibt 2 aus
 ```
+
 <YueDisplay>
 
 ```yue
@@ -238,6 +242,7 @@ macro printNumAndStr = (num `Num, str `String) -> |
 
 $printNumAndStr 123, "hallo"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -262,6 +267,7 @@ macro printNumAndStr = (num, str) ->
 
 $printNumAndStr 123, "hallo"
 ```
+
 <YueDisplay>
 
 ```yue

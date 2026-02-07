@@ -6,6 +6,7 @@ Os blocos `if` e `elseif` podem receber uma atribuição no lugar de uma express
 if user := database.find_user "moon"
   print user.name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -23,6 +24,7 @@ elseif world := os.getenv "world"
 else
   print "nada :("
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,11 +39,13 @@ else
 </YueDisplay>
 
 Atribuição em if com múltiplos valores de retorno. Apenas o primeiro valor é verificado, os outros valores estão no escopo.
+
 ```yuescript
 if success, result := pcall -> "obter resultado sem problemas"
   print result -- variável result está no escopo
 print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -61,6 +65,7 @@ while byte := stream\read_one!
   -- fazer algo com o byte
   print byte
 ```
+
 <YueDisplay>
 
 ```yue

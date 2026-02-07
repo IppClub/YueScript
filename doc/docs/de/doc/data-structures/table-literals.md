@@ -5,6 +5,7 @@ Wie in Lua werden Tabellen mit geschweiften Klammern definiert.
 ```yuescript
 some_values = [1, 2, 3, 4]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -22,6 +23,7 @@ some_values = {
   ["Lieblingsessen"]: "Reis"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -42,6 +44,7 @@ profile =
   shoe_size: 13,
   favorite_foods: ["Eis", "Donuts"]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -63,6 +66,7 @@ values = {
   occupation: "Verbrechensbekämpfung"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -83,6 +87,7 @@ my_function dance: "Tango", partner: "keiner"
 
 y = type: "Hund", legs: 4, tails: 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -101,6 +106,7 @@ tbl = {
   end: "Hunger"
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -121,6 +127,7 @@ person = { :hair, :height, shoe_size: 40 }
 
 print_table :hair, :height
 ```
+
 <YueDisplay>
 
 ```yue
@@ -141,6 +148,7 @@ t = {
   "Hallo Welt": true
 }
 ```
+
 <YueDisplay>
 
 ```yue
@@ -158,6 +166,7 @@ Lua-Tabellen haben einen Array-Teil und einen Hash-Teil, aber manchmal möchte m
 some_values = [1, 2, 3, 4]
 list_with_one_element = [1, ]
 ```
+
 <YueDisplay>
 
 ```yue

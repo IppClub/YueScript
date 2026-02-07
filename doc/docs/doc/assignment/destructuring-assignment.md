@@ -12,6 +12,7 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +38,7 @@ print hello, the_day
 
 :day = obj -- OK to do simple destructuring without braces
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +70,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
+
 <YueDisplay>
 
 ```yue
@@ -95,6 +98,7 @@ If the destructuring statement is complicated, feel free to spread it out over a
   }
 } = obj2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -113,6 +117,7 @@ It's common to extract values from at table and assign them the local variables 
 ```yuescript
 {:concat, :insert} = table
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +131,7 @@ This is effectively the same as import, but we can rename fields we want to extr
 ```yuescript
 {:mix, :max, random: rand} = math
 ```
+
 <YueDisplay>
 
 ```yue
@@ -139,6 +145,7 @@ You can write default values while doing destructuring like:
 ```yuescript
 {:name = "nameless", :job = "jobless"} = person
 ```
+
 <YueDisplay>
 
 ```yue
@@ -152,6 +159,7 @@ You can use `_` as placeholder when doing a list destructuring:
 ```yuescript
 [_, two, _, four] = items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -171,6 +179,7 @@ print first  -- prints: first
 print bulk   -- prints: {"second", "third", "fourth"}
 print last   -- prints: last
 ```
+
 <YueDisplay>
 
 ```yue
@@ -195,6 +204,7 @@ The spread operator can be used in different positions to capture different rang
 -- Capture things except the middle elements
 [first, ..._, last] = orders
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +233,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
+
 <YueDisplay>
 
 ```yue

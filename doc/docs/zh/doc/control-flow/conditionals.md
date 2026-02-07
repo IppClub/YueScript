@@ -7,6 +7,7 @@ if have_coins
 else
   print "没有硬币"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -25,6 +26,7 @@ else
 have_coins = false
 if have_coins then print "有硬币" else print "没有硬币"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -40,6 +42,7 @@ if have_coins then print "有硬币" else print "没有硬币"
 have_coins = false
 print if have_coins then "有硬币" else "没有硬币"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -65,6 +68,7 @@ else
 
 print message -- 打印: 我很高
 ```
+
 <YueDisplay>
 
 ```yue
@@ -90,8 +94,8 @@ print message -- 打印: 我很高
 unless os.date("%A") == "Monday"
   print "今天不是星期一！"
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 unless os.date("%A") == "Monday"
@@ -103,6 +107,7 @@ unless os.date("%A") == "Monday"
 ```yuescript
 print "你真幸运！" unless math.random! > 0.1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -124,6 +129,7 @@ if a in [1, 3, 5, 7]
 if a in list
   print "检查`a`是否在列表中"
 ```
+
 <YueDisplay>
 
 ```yue

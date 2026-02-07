@@ -4,49 +4,51 @@
 
 &emsp;&emsp;在 Lua 中使用月之脚本模块：
 
-* **用法 1**
+- **用法 1**
 
-	&emsp;&emsp;在 Lua 中引入 "你的脚本入口文件.yue"。
+  &emsp;&emsp;在 Lua 中引入 "你的脚本入口文件.yue"。
 
-	```Lua
-	require("yue")("你的脚本入口文件")
-	```
+  ```Lua
+  require("yue")("你的脚本入口文件")
+  ```
 
-	&emsp;&emsp;当你在同一路径下把 "你的脚本入口文件.yue" 编译成了 "你的脚本入口文件.lua" 时，仍然可以使用这个代码加载 .lua 代码文件。在其余的月之脚本文件中，只需正常使用 **require** 或 **import** 进行脚本引用即可。错误消息中的代码行号也会被正确处理。
+  &emsp;&emsp;当你在同一路径下把 "你的脚本入口文件.yue" 编译成了 "你的脚本入口文件.lua" 时，仍然可以使用这个代码加载 .lua 代码文件。在其余的月之脚本文件中，只需正常使用 **require** 或 **import** 进行脚本引用即可。错误消息中的代码行号也会被正确处理。
 
-* **用法 2**
+- **用法 2**
 
-	&emsp;&emsp;手动引入月之脚本模块并重写错误消息来帮助调试。
-	```lua
-	local yue = require("yue")
-	yue.insert_loaders()
-	local success, result = xpcall(function()
-	  return require("yuescript_module_name")
-	end, function(err)
-	  return yue.traceback(err)
-	end)
-	```
+  &emsp;&emsp;手动引入月之脚本模块并重写错误消息来帮助调试。
 
-* **用法 3**
+  ```lua
+  local yue = require("yue")
+  yue.insert_loaders()
+  local success, result = xpcall(function()
+    return require("yuescript_module_name")
+  end, function(err)
+    return yue.traceback(err)
+  end)
+  ```
 
-	&emsp;&emsp;在 Lua 中使用月之脚本编译器功能。
-	```lua
-	local yue = require("yue")
-	local codes, err, globals = yue.to_lua([[
-	f = ->
-	  print "hello world"
-	f!
-	]],{
-	  implicit_return_root = true,
-	  reserve_line_number = true,
-	  lint_global = true,
-	  space_over_tab = false,
-	  options = {
-	    target = "5.4",
-	    path = "/script"
-	  }
-	})
-	```
+- **用法 3**
+
+  &emsp;&emsp;在 Lua 中使用月之脚本编译器功能。
+
+  ```lua
+  local yue = require("yue")
+  local codes, err, globals = yue.to_lua([[
+  f = ->
+    print "hello world"
+  f!
+  ]],{
+    implicit_return_root = true,
+    reserve_line_number = true,
+    lint_global = true,
+    space_over_tab = false,
+    options = {
+      target = "5.4",
+      path = "/script"
+    }
+  })
+  ```
 
 ## 月之脚本编译工具
 

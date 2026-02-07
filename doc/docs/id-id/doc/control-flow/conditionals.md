@@ -7,6 +7,7 @@ if have_coins
 else
   print "Tidak ada koin"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -25,6 +26,7 @@ Sintaks pendek untuk pernyataan tunggal juga bisa digunakan:
 have_coins = false
 if have_coins then print "Dapat koin" else print "Tidak ada koin"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -40,6 +42,7 @@ Karena pernyataan if dapat digunakan sebagai ekspresi, ini juga bisa ditulis seb
 have_coins = false
 print if have_coins then "Dapat koin" else "Tidak ada koin"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -65,6 +68,7 @@ else
 
 print message -- prints: Saya sangat tinggi
 ```
+
 <YueDisplay>
 
 ```yue
@@ -90,6 +94,7 @@ Kebalikan dari if adalah unless:
 unless os.date("%A") == "Monday"
   print "hari ini bukan Senin!"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -102,6 +107,7 @@ unless os.date("%A") == "Monday"
 ```yuescript
 print "Kamu beruntung!" unless math.random! > 0.1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -123,6 +129,7 @@ if a in [1, 3, 5, 7]
 if a in list
   print "memeriksa apakah `a` ada di dalam daftar"
 ```
+
 <YueDisplay>
 
 ```yue

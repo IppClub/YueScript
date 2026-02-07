@@ -6,6 +6,7 @@ Backcalls are used for unnesting callbacks. They are defined using arrows pointe
 x <- f
 print "hello" .. x
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ Fat arrow functions are also available.
 <= f
 print @value
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ You can specify a placeholder for where you want the backcall function to go as 
 (x) <- map _, [1, 2, 3]
 x * 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ result, msg = do
   check info
 print result, msg
 ```
+
 <YueDisplay>
 
 ```yue

@@ -11,6 +11,7 @@ switch name := "Dan"
   else
     print "Ich kenne dich nicht mit dem Namen #{name}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -39,6 +40,7 @@ next_number = switch b
   else
     error "so hoch kann ich nicht zählen!"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +64,7 @@ msg = switch math.random(1, 5)
   when 2 then "Du hast fast Glück"
   else "nicht so viel Glück"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -87,6 +90,7 @@ switch math.random(1, 5) when 1
 else
   print "nicht so viel Glück"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -124,6 +128,7 @@ for item in *items
     when :width, :height
       print "Größe #{width}, #{height}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -154,6 +159,7 @@ switch item
   when {pos: {:x = 50, :y = 200}}
     print "Vec2 #{x}, #{y}" -- Tabellen-Destrukturierung greift trotzdem
 ```
+
 <YueDisplay>
 
 ```yue
@@ -181,6 +187,7 @@ switch tb
   when [1, 2, b = 3] -- b hat einen Standardwert
     print "1, 2, #{b}"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -206,6 +213,7 @@ switch tb
   else
     print "ungültig"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -231,6 +239,7 @@ switch tb
   else
     print "ungültig"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -257,6 +266,7 @@ switch tb
     ]
     print "getroffen", fourth
 ```
+
 <YueDisplay>
 
 ```yue
@@ -282,6 +292,7 @@ switch segments
     print "Ressource:", resource -- gibt aus: "logs"
     print "Aktion:", action -- gibt aus: "view"
 ```
+
 <YueDisplay>
 
 ```yue

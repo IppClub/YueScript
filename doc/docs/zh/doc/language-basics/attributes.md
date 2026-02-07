@@ -6,6 +6,7 @@
 const a = 123
 close _ = <close>: -> print "超出范围。"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -21,6 +22,7 @@ close _ = <close>: -> print "超出范围。"
 const {:a, :b, c, d} = tb
 -- a = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -36,6 +38,7 @@ const {:a, :b, c, d} = tb
 global const Constant = 123
 -- Constant = 1
 ```
+
 <YueDisplay>
 
 ```yue

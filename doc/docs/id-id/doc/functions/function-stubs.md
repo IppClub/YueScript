@@ -24,6 +24,7 @@ run_callback my_object.write
 -- memungkinkan kita membundel objek ke fungsi baru
 run_callback my_object\write
 ```
+
 <YueDisplay>
 
 ```yue

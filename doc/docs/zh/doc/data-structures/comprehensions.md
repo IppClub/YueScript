@@ -10,6 +10,7 @@
 items = [1, 2, 3, 4]
 doubled = [item * 2 for i, item in ipairs items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ doubled = [item * 2 for i, item in ipairs items]
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +39,7 @@ slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat 现在为 [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -79,6 +83,7 @@ y_coords = [9, 2, 3]
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +101,7 @@ for y in *y_coords]
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -119,6 +125,7 @@ thing = {
 
 thing_copy = {k, v for k, v in pairs thing}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -136,6 +143,7 @@ thing_copy = {k, v for k, v in pairs thing}
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -150,6 +158,7 @@ no_color = {k, v for k, v in pairs thing when k != "color"}
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -167,6 +176,7 @@ sqrts = {i, math.sqrt i for i in *numbers}
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -185,6 +195,7 @@ tbl = {unpack tuple for tuple in *tuples}
 ```yuescript
 slice = [item for item in *items[1, 5]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -198,6 +209,7 @@ slice = [item for item in *items[1, 5]]
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -211,8 +223,8 @@ slice = [item for item in *items[2,]]
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 slice = [item for item in *items[,,2]]
@@ -226,6 +238,7 @@ slice = [item for item in *items[,,2]]
 -- 取最后4个元素
 slice = [item for item in *items[-4,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -240,6 +253,7 @@ slice = [item for item in *items[-4,-1]]
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -259,6 +273,7 @@ sub_list = items[2, 4]
 -- 取最后4个元素作为新的列表
 last_four_items = items[-4, -1]
 ```
+
 <YueDisplay>
 
 ```yue

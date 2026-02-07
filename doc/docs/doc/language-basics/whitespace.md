@@ -9,6 +9,7 @@ A statement normally ends at a line break. You can also use a semicolon `;` to e
 ```yuescript
 a = 1; b = 2; print a + b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -29,6 +30,7 @@ Rx.Observable
   \map (value) -> value .. '!'
   \subscribe print
 ```
+
 <YueDisplay>
 
 ```yue

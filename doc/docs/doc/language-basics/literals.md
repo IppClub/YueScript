@@ -12,6 +12,7 @@ some_string = "Here is a string
 -- String interpolation is only available in double quoted strings.
 print "I am #{math.random! * 100}% sure."
 ```
+
 <YueDisplay>
 
 ```yue
@@ -34,6 +35,7 @@ integer = 1_000_000
 hex = 0xEF_BB_BF
 binary = 0B10011
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +57,7 @@ str = |
     - item1
     - #{expr}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -78,6 +81,7 @@ fn = ->
       bar: baz
   return str
 ```
+
 <YueDisplay>
 
 ```yue
@@ -99,6 +103,7 @@ str = |
   path: "C:\Program Files\App"
   note: 'He said: "#{Hello}!"'
 ```
+
 <YueDisplay>
 
 ```yue

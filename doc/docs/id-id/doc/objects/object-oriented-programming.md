@@ -15,6 +15,7 @@ class Inventory
     else
       @items[name] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -46,6 +47,7 @@ inv = Inventory!
 inv\add_item "t-shirt"
 inv\add_item "pants"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -77,6 +79,7 @@ b\give_item "shirt"
 -- akan mencetak pants dan shirt
 print item for item in *a.clothes
 ```
+
 <YueDisplay>
 
 ```yue
@@ -104,6 +107,7 @@ class Person
   new: =>
     @clothes = []
 ```
+
 <YueDisplay>
 
 ```yue
@@ -125,6 +129,7 @@ class BackPack extends Inventory
     if #@items > size then error "backpack is full"
     super name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -151,6 +156,7 @@ class Shelf
 -- akan mencetak: Shelf was inherited by Cupboard
 class Cupboard extends Shelf
 ```
+
 <YueDisplay>
 
 ```yue
@@ -189,6 +195,7 @@ class MyClass extends ParentClass
     -- super sebagai nilai sama dengan kelas induk:
     assert super == ParentClass
 ```
+
 <YueDisplay>
 
 ```yue
@@ -217,6 +224,7 @@ assert b.__class == BackPack
 
 print BackPack.size -- mencetak 10
 ```
+
 <YueDisplay>
 
 ```yue
@@ -247,6 +255,7 @@ Nama kelas saat dideklarasikan disimpan sebagai string di field `__name` pada ob
 ```yuescript
 print BackPack.__name -- mencetak Backpack
 ```
+
 <YueDisplay>
 
 ```yue
@@ -272,6 +281,7 @@ Things\some_func!
 -- variabel kelas tidak terlihat pada instance
 assert Things().some_func == nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -300,6 +310,7 @@ Counter!
 
 print Counter.count -- mencetak 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -322,6 +333,7 @@ Semantik pemanggilan `@@` mirip dengan `@`. Memanggil nama `@@` akan meneruskan 
 ```yuescript
 @@hello 1,2,3,4
 ```
+
 <YueDisplay>
 
 ```yue
@@ -340,6 +352,7 @@ Berikut cara alternatif untuk membuat variabel kelas dibandingkan yang dijelaska
 class Things
   @class_var = "hello world"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -361,6 +374,7 @@ class MoreThings
   some_method: =>
     log "hello world: " .. secret
 ```
+
 <YueDisplay>
 
 ```yue
@@ -384,6 +398,7 @@ Jika digunakan sendirian, keduanya adalah alias untuk `self` dan `self.__class`.
 assert @ == self
 assert @@ == self.__class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -398,6 +413,7 @@ Contohnya, cara cepat untuk membuat instance baru dari kelas yang sama dari meth
 ```yuescript
 some_instance_method = (...) => @@ ...
 ```
+
 <YueDisplay>
 
 ```yue
@@ -423,6 +439,7 @@ class Something
     @@biz = biz
     @@baz = baz
 ```
+
 <YueDisplay>
 
 ```yue
@@ -448,6 +465,7 @@ new = (@fieldA, @fieldB) => @
 obj = new {}, 123, "abc"
 print obj
 ```
+
 <YueDisplay>
 
 ```yue
@@ -467,6 +485,7 @@ x = class Bucket
   drops: 0
   add_drop: => @drops += 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -487,6 +506,7 @@ BigBucket = class extends Bucket
 
 assert Bucket.__name == "BigBucket"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -503,6 +523,7 @@ Anda bahkan bisa menghilangkan badan kelas, artinya Anda bisa menulis kelas anon
 ```yuescript
 x = class
 ```
+
 <YueDisplay>
 
 ```yue
@@ -532,6 +553,7 @@ y\func!
 
 assert y.__class.__parent ~= X -- X bukan parent dari Y
 ```
+
 <YueDisplay>
 
 ```yue

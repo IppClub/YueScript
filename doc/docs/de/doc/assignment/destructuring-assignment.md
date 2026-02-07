@@ -12,6 +12,7 @@ thing = [1, 2]
 [a, b] = thing
 print a, b
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +38,7 @@ print hello, the_day
 
 :day = obj -- einfache Destructuring-Zuweisung ohne Klammern ist ok
 ```
+
 <YueDisplay>
 
 ```yue
@@ -68,6 +70,7 @@ obj2 = {
 {numbers: [first, second], properties: {color: color}} = obj2
 print first, second, color
 ```
+
 <YueDisplay>
 
 ```yue
@@ -95,6 +98,7 @@ Wenn die Destructuring-Anweisung kompliziert ist, kannst du sie gerne auf mehrer
   }
 } = obj2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -113,6 +117,7 @@ Es ist üblich, Werte aus einer Tabelle zu extrahieren und ihnen lokale Variable
 ```yuescript
 {:concat, :insert} = table
 ```
+
 <YueDisplay>
 
 ```yue
@@ -126,6 +131,7 @@ Das ist effektiv dasselbe wie `import`, aber du kannst Felder umbenennen, indem 
 ```yuescript
 {:mix, :max, random: rand} = math
 ```
+
 <YueDisplay>
 
 ```yue
@@ -139,6 +145,7 @@ Du kannst Standardwerte beim Destructuring angeben, z. B.:
 ```yuescript
 {:name = "namenlos", :job = "arbeitlos"} = person
 ```
+
 <YueDisplay>
 
 ```yue
@@ -152,6 +159,7 @@ Du kannst `_` als Platzhalter verwenden, wenn du eine Listen-Destructuring-Zuwei
 ```yuescript
 [_, two, _, four] = items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -171,6 +179,7 @@ print first  -- gibt aus: erster
 print bulk   -- gibt aus: {"zweiter", "dritter", "vierter"}
 print last   -- gibt aus: letzter
 ```
+
 <YueDisplay>
 
 ```yue
@@ -195,6 +204,7 @@ Der Spread-Operator kann an unterschiedlichen Positionen verwendet werden, um un
 -- Alles außer den mittleren Elementen erfassen
 [first, ..._, last] = orders
 ```
+
 <YueDisplay>
 
 ```yue
@@ -223,6 +233,7 @@ tuples = [
 for [left, right] in *tuples
   print left, right
 ```
+
 <YueDisplay>
 
 ```yue

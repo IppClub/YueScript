@@ -17,6 +17,7 @@ Die YueScript-Sprachbibliothek.
 Die YueScript-Version.
 
 **Signatur:**
+
 ```lua
 version: string
 ```
@@ -30,6 +31,7 @@ version: string
 Der Dateitrennzeichen-String der aktuellen Plattform.
 
 **Signatur:**
+
 ```lua
 dirsep: string
 ```
@@ -43,6 +45,7 @@ dirsep: string
 Der Cache für kompilierten Modulcode.
 
 **Signatur:**
+
 ```lua
 yue_compiled: {string: string}
 ```
@@ -56,6 +59,7 @@ yue_compiled: {string: string}
 Die YueScript-Compilerfunktion. Sie kompiliert YueScript-Code zu Lua-Code.
 
 **Signatur:**
+
 ```lua
 to_lua: function(code: string, config?: Config):
     --[[codes]] string | nil,
@@ -65,17 +69,17 @@ to_lua: function(code: string, config?: Config):
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| code | string | Der YueScript-Code. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| code      | string | Der YueScript-Code.               |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| string \| nil | Der kompilierte Lua-Code oder `nil`, falls die Kompilierung fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls die Kompilierung erfolgreich war. |
+| Rückgabetyp                         | Beschreibung                                                                                                              |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| string \| nil                       | Der kompilierte Lua-Code oder `nil`, falls die Kompilierung fehlgeschlagen ist.                                           |
+| string \| nil                       | Die Fehlermeldung oder `nil`, falls die Kompilierung erfolgreich war.                                                     |
 | {{string, integer, integer}} \| nil | Die globalen Variablen im Code (mit Name, Zeile und Spalte) oder `nil`, wenn die Compiler-Option `lint_global` false ist. |
 
 ### file_exist
@@ -87,21 +91,22 @@ to_lua: function(code: string, config?: Config):
 Prüft, ob eine Quelldatei existiert. Kann überschrieben werden, um das Verhalten anzupassen.
 
 **Signatur:**
+
 ```lua
 file_exist: function(filename: string): boolean
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
+| Parameter | Typ    | Beschreibung   |
+| --------- | ------ | -------------- |
+| filename  | string | Der Dateiname. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| boolean | Ob die Datei existiert. |
+| Rückgabetyp | Beschreibung            |
+| ----------- | ----------------------- |
+| boolean     | Ob die Datei existiert. |
 
 ### read_file
 
@@ -112,21 +117,22 @@ file_exist: function(filename: string): boolean
 Liest eine Quelldatei. Kann überschrieben werden, um das Verhalten anzupassen.
 
 **Signatur:**
+
 ```lua
 read_file: function(filename: string): string
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
+| Parameter | Typ    | Beschreibung   |
+| --------- | ------ | -------------- |
+| filename  | string | Der Dateiname. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| string | Der Dateiinhalt. |
+| Rückgabetyp | Beschreibung     |
+| ----------- | ---------------- |
+| string      | Der Dateiinhalt. |
 
 ### insert_loader
 
@@ -137,21 +143,22 @@ read_file: function(filename: string): string
 Fügt den YueScript-Loader in die Package-Loader (Searcher) ein.
 
 **Signatur:**
+
 ```lua
 insert_loader: function(pos?: integer): boolean
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| pos | integer | [Optional] Position, an der der Loader eingefügt wird. Standard ist 3. |
+| Parameter | Typ     | Beschreibung                                                           |
+| --------- | ------- | ---------------------------------------------------------------------- |
+| pos       | integer | [Optional] Position, an der der Loader eingefügt wird. Standard ist 3. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| boolean | Ob der Loader erfolgreich eingefügt wurde. Scheitert, wenn er bereits eingefügt ist. |
+| Rückgabetyp | Beschreibung                                                                         |
+| ----------- | ------------------------------------------------------------------------------------ |
+| boolean     | Ob der Loader erfolgreich eingefügt wurde. Scheitert, wenn er bereits eingefügt ist. |
 
 ### remove_loader
 
@@ -162,15 +169,16 @@ insert_loader: function(pos?: integer): boolean
 Entfernt den YueScript-Loader aus den Package-Loadern (Searchern).
 
 **Signatur:**
+
 ```lua
 remove_loader: function(): boolean
 ```
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| boolean | Ob der Loader erfolgreich entfernt wurde. Scheitert, wenn er nicht eingefügt ist. |
+| Rückgabetyp | Beschreibung                                                                      |
+| ----------- | --------------------------------------------------------------------------------- |
+| boolean     | Ob der Loader erfolgreich entfernt wurde. Scheitert, wenn er nicht eingefügt ist. |
 
 ### loadstring
 
@@ -181,6 +189,7 @@ remove_loader: function(): boolean
 Lädt YueScript-Code aus einem String in eine Funktion.
 
 **Signatur:**
+
 ```lua
 loadstring: function(input: string, chunkname: string, env: table, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
@@ -189,19 +198,19 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| input | string | Der YueScript-Code. |
-| chunkname | string | Der Name des Code-Chunks. |
-| env | table | Die Environment-Tabelle. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| input     | string | Der YueScript-Code.               |
+| chunkname | string | Der Name des Code-Chunks.         |
+| env       | table  | Die Environment-Tabelle.          |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp     | Beschreibung                                                          |
+| --------------- | --------------------------------------------------------------------- |
 | function \| nil | Die geladene Funktion oder `nil`, falls das Laden fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war. |
+| string \| nil   | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war.        |
 
 ### loadstring
 
@@ -212,6 +221,7 @@ loadstring: function(input: string, chunkname: string, env: table, config?: Conf
 Lädt YueScript-Code aus einem String in eine Funktion.
 
 **Signatur:**
+
 ```lua
 loadstring: function(input: string, chunkname: string, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
@@ -220,18 +230,18 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| input | string | Der YueScript-Code. |
-| chunkname | string | Der Name des Code-Chunks. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| input     | string | Der YueScript-Code.               |
+| chunkname | string | Der Name des Code-Chunks.         |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp     | Beschreibung                                                          |
+| --------------- | --------------------------------------------------------------------- |
 | function \| nil | Die geladene Funktion oder `nil`, falls das Laden fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war. |
+| string \| nil   | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war.        |
 
 ### loadstring
 
@@ -242,6 +252,7 @@ loadstring: function(input: string, chunkname: string, config?: Config):
 Lädt YueScript-Code aus einem String in eine Funktion.
 
 **Signatur:**
+
 ```lua
 loadstring: function(input: string, config?: Config):
     --[[loaded function]] nil | function(...: any): (any...),
@@ -250,17 +261,17 @@ loadstring: function(input: string, config?: Config):
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| input | string | Der YueScript-Code. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| input     | string | Der YueScript-Code.               |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp     | Beschreibung                                                          |
+| --------------- | --------------------------------------------------------------------- |
 | function \| nil | Die geladene Funktion oder `nil`, falls das Laden fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war. |
+| string \| nil   | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war.        |
 
 ### loadfile
 
@@ -271,6 +282,7 @@ loadstring: function(input: string, config?: Config):
 Lädt YueScript-Code aus einer Datei in eine Funktion.
 
 **Signatur:**
+
 ```lua
 loadfile: function(filename: string, env: table, config?: Config):
     nil | function(...: any): (any...),
@@ -279,18 +291,18 @@ loadfile: function(filename: string, env: table, config?: Config):
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
-| env | table | Die Environment-Tabelle. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| filename  | string | Der Dateiname.                    |
+| env       | table  | Die Environment-Tabelle.          |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp     | Beschreibung                                                          |
+| --------------- | --------------------------------------------------------------------- |
 | function \| nil | Die geladene Funktion oder `nil`, falls das Laden fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war. |
+| string \| nil   | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war.        |
 
 ### loadfile
 
@@ -301,6 +313,7 @@ loadfile: function(filename: string, env: table, config?: Config):
 Lädt YueScript-Code aus einer Datei in eine Funktion.
 
 **Signatur:**
+
 ```lua
 loadfile: function(filename: string, config?: Config):
     nil | function(...: any): (any...),
@@ -309,17 +322,17 @@ loadfile: function(filename: string, config?: Config):
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| filename  | string | Der Dateiname.                    |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp     | Beschreibung                                                          |
+| --------------- | --------------------------------------------------------------------- |
 | function \| nil | Die geladene Funktion oder `nil`, falls das Laden fehlgeschlagen ist. |
-| string \| nil | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war. |
+| string \| nil   | Die Fehlermeldung oder `nil`, falls das Laden erfolgreich war.        |
 
 ### dofile
 
@@ -330,23 +343,24 @@ loadfile: function(filename: string, config?: Config):
 Lädt YueScript-Code aus einer Datei in eine Funktion und führt sie aus.
 
 **Signatur:**
+
 ```lua
 dofile: function(filename: string, env: table, config?: Config): any...
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
-| env | table | Die Environment-Tabelle. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| filename  | string | Der Dateiname.                    |
+| env       | table  | Die Environment-Tabelle.          |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| any... | Die Rückgabewerte der geladenen Funktion. |
+| Rückgabetyp | Beschreibung                              |
+| ----------- | ----------------------------------------- |
+| any...      | Die Rückgabewerte der geladenen Funktion. |
 
 ### dofile
 
@@ -357,22 +371,23 @@ dofile: function(filename: string, env: table, config?: Config): any...
 Lädt YueScript-Code aus einer Datei in eine Funktion und führt sie aus.
 
 **Signatur:**
+
 ```lua
 dofile: function(filename: string, config?: Config): any...
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| filename | string | Der Dateiname. |
-| config | Config | [Optional] Die Compiler-Optionen. |
+| Parameter | Typ    | Beschreibung                      |
+| --------- | ------ | --------------------------------- |
+| filename  | string | Der Dateiname.                    |
+| config    | Config | [Optional] Die Compiler-Optionen. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| any... | Die Rückgabewerte der geladenen Funktion. |
+| Rückgabetyp | Beschreibung                              |
+| ----------- | ----------------------------------------- |
+| any...      | Die Rückgabewerte der geladenen Funktion. |
 
 ### find_modulepath
 
@@ -383,21 +398,22 @@ dofile: function(filename: string, config?: Config): any...
 Löst den YueScript-Modulnamen in einen Dateipfad auf.
 
 **Signatur:**
+
 ```lua
 find_modulepath: function(name: string): string
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| name | string | Der Modulname. |
+| Parameter | Typ    | Beschreibung   |
+| --------- | ------ | -------------- |
+| name      | string | Der Modulname. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| string | Der Dateipfad. |
+| Rückgabetyp | Beschreibung   |
+| ----------- | -------------- |
+| string      | Der Dateipfad. |
 
 ### pcall
 
@@ -410,21 +426,22 @@ Fängt Fehler ab und gibt einen Statuscode sowie Ergebnisse oder ein Fehlerobjek
 Schreibt die Fehlerzeilennummer bei Fehlern auf die ursprüngliche Zeilennummer im YueScript-Code um.
 
 **Signatur:**
+
 ```lua
 pcall: function(f: function, ...: any): boolean, any...
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| f | function | Die aufzurufende Funktion. |
-| ... | any | Argumente für die Funktion. |
+| Parameter | Typ      | Beschreibung                |
+| --------- | -------- | --------------------------- |
+| f         | function | Die aufzurufende Funktion.  |
+| ...       | any      | Argumente für die Funktion. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
+| Rückgabetyp  | Beschreibung                                         |
+| ------------ | ---------------------------------------------------- |
 | boolean, ... | Statuscode und Funktionsresultate oder Fehlerobjekt. |
 
 ### require
@@ -437,21 +454,22 @@ Lädt ein Modul (Lua oder YueScript).
 Schreibt die Fehlerzeilennummer auf die ursprüngliche Zeilennummer im YueScript-Code um, wenn das Modul ein YueScript-Modul ist und das Laden fehlschlägt.
 
 **Signatur:**
+
 ```lua
 require: function(name: string): any...
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| modname | string | Der Name des zu ladenden Moduls. |
+| Parameter | Typ    | Beschreibung                     |
+| --------- | ------ | -------------------------------- |
+| modname   | string | Der Name des zu ladenden Moduls. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| any | Der Wert in `package.loaded[modname]`, falls das Modul bereits geladen ist. Andernfalls wird ein Loader gesucht und der finale Wert von `package.loaded[modname]` sowie Loader-Daten als zweites Ergebnis zurückgegeben. |
+| Rückgabetyp | Beschreibung                                                                                                                                                                                                             |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| any         | Der Wert in `package.loaded[modname]`, falls das Modul bereits geladen ist. Andernfalls wird ein Loader gesucht und der finale Wert von `package.loaded[modname]` sowie Loader-Daten als zweites Ergebnis zurückgegeben. |
 
 ### p
 
@@ -462,15 +480,16 @@ require: function(name: string): any...
 Inspiziert die Struktur der übergebenen Werte und gibt String-Repräsentationen aus.
 
 **Signatur:**
+
 ```lua
 p: function(...: any)
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| ... | any | Die zu inspizierenden Werte. |
+| Parameter | Typ | Beschreibung                 |
+| --------- | --- | ---------------------------- |
+| ...       | any | Die zu inspizierenden Werte. |
 
 ### options
 
@@ -481,6 +500,7 @@ p: function(...: any)
 Die aktuellen Compiler-Optionen.
 
 **Signatur:**
+
 ```lua
 options: Config.Options
 ```
@@ -494,21 +514,22 @@ options: Config.Options
 Die Traceback-Funktion, die Stacktrace-Zeilennummern auf die ursprünglichen Zeilennummern im YueScript-Code umschreibt.
 
 **Signatur:**
+
 ```lua
 traceback: function(message: string): string
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| message | string | Die Traceback-Nachricht. |
+| Parameter | Typ    | Beschreibung             |
+| --------- | ------ | ------------------------ |
+| message   | string | Die Traceback-Nachricht. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| string | Die umgeschriebene Traceback-Nachricht. |
+| Rückgabetyp | Beschreibung                            |
+| ----------- | --------------------------------------- |
+| string      | Die umgeschriebene Traceback-Nachricht. |
 
 ### is_ast
 
@@ -519,22 +540,23 @@ traceback: function(message: string): string
 Prüft, ob der Code dem angegebenen AST entspricht.
 
 **Signatur:**
+
 ```lua
 is_ast: function(astName: string, code: string): boolean
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| astName | string | Der AST-Name. |
-| code | string | Der Code. |
+| Parameter | Typ    | Beschreibung  |
+| --------- | ------ | ------------- |
+| astName   | string | Der AST-Name. |
+| code      | string | Der Code.     |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| boolean | Ob der Code dem AST entspricht. |
+| Rückgabetyp | Beschreibung                    |
+| ----------- | ------------------------------- |
+| boolean     | Ob der Code dem AST entspricht. |
 
 ### AST
 
@@ -545,6 +567,7 @@ is_ast: function(astName: string, code: string): boolean
 Die AST-Typdefinition mit Name, Zeile, Spalte und Unterknoten.
 
 **Signatur:**
+
 ```lua
 type AST = {string, integer, integer, any}
 ```
@@ -558,6 +581,7 @@ type AST = {string, integer, integer, any}
 Konvertiert Code in AST.
 
 **Signatur:**
+
 ```lua
 to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveComment?: boolean):
     --[[AST]] AST | nil,
@@ -566,18 +590,18 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveC
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| code | string | Der Code. |
-| flattenLevel | integer | [Optional] Der Flatten-Level. Höher bedeutet mehr Flattening. Standard ist 0. Maximum ist 2. |
-| astName | string | [Optional] Der AST-Name. Standard ist "File". |
-| reserveComment | boolean | [Optional] Ob die ursprünglichen Kommentare beibehalten werden. Standard ist false. |
+| Parameter      | Typ     | Beschreibung                                                                                 |
+| -------------- | ------- | -------------------------------------------------------------------------------------------- |
+| code           | string  | Der Code.                                                                                    |
+| flattenLevel   | integer | [Optional] Der Flatten-Level. Höher bedeutet mehr Flattening. Standard ist 0. Maximum ist 2. |
+| astName        | string  | [Optional] Der AST-Name. Standard ist "File".                                                |
+| reserveComment | boolean | [Optional] Ob die ursprünglichen Kommentare beibehalten werden. Standard ist false.          |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| AST \| nil | Der AST oder `nil`, falls die Konvertierung fehlgeschlagen ist. |
+| Rückgabetyp   | Beschreibung                                                           |
+| ------------- | ---------------------------------------------------------------------- |
+| AST \| nil    | Der AST oder `nil`, falls die Konvertierung fehlgeschlagen ist.        |
 | string \| nil | Die Fehlermeldung oder `nil`, falls die Konvertierung erfolgreich war. |
 
 ### format
@@ -589,25 +613,26 @@ to_ast: function(code: string, flattenLevel?: number, astName?: string, reserveC
 Formatiert den YueScript-Code.
 
 **Signatur:**
+
 ```lua
 format: function(code: string, tabSize?: number, reserveComment?: boolean): string
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| code | string | Der Code. |
-| tabSize | integer | [Optional] Die Tab-Größe. Standard ist 4. |
+| Parameter      | Typ     | Beschreibung                                                                       |
+| -------------- | ------- | ---------------------------------------------------------------------------------- |
+| code           | string  | Der Code.                                                                          |
+| tabSize        | integer | [Optional] Die Tab-Größe. Standard ist 4.                                          |
 | reserveComment | boolean | [Optional] Ob die ursprünglichen Kommentare beibehalten werden. Standard ist true. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| string | Der formatierte Code. |
+| Rückgabetyp | Beschreibung          |
+| ----------- | --------------------- |
+| string      | Der formatierte Code. |
 
-### __call
+### \_\_call
 
 **Typ:** Metamethod.
 
@@ -617,21 +642,22 @@ Required das YueScript-Modul.
 Schreibt die Fehlerzeilennummer bei Ladefehlern auf die ursprüngliche Zeilennummer im YueScript-Code um.
 
 **Signatur:**
+
 ```lua
 metamethod __call: function(self: yue, module: string): any...
 ```
 
 **Parameter:**
 
-| Parameter | Typ | Beschreibung |
-| --- | --- | --- |
-| module | string | Der Modulname. |
+| Parameter | Typ    | Beschreibung   |
+| --------- | ------ | -------------- |
+| module    | string | Der Modulname. |
 
 **Rückgabe:**
 
-| Rückgabetyp | Beschreibung |
-| --- | --- |
-| any | Der Modulwert. |
+| Rückgabetyp | Beschreibung   |
+| ----------- | -------------- |
+| any         | Der Modulwert. |
 
 ## Config
 
@@ -648,6 +674,7 @@ Die Compiler-Optionen.
 Ob der Compiler die globalen Variablen im Code sammeln soll.
 
 **Signatur:**
+
 ```lua
 lint_global: boolean
 ```
@@ -661,6 +688,7 @@ lint_global: boolean
 Ob der Compiler für den Root-Codeblock ein implizites Return verwenden soll.
 
 **Signatur:**
+
 ```lua
 implicit_return_root: boolean
 ```
@@ -674,6 +702,7 @@ implicit_return_root: boolean
 Ob der Compiler die ursprüngliche Zeilennummer im kompilierten Code beibehalten soll.
 
 **Signatur:**
+
 ```lua
 reserve_line_number: boolean
 ```
@@ -687,6 +716,7 @@ reserve_line_number: boolean
 Ob der Compiler die ursprünglichen Kommentare im kompilierten Code beibehalten soll.
 
 **Signatur:**
+
 ```lua
 reserve_comment: boolean
 ```
@@ -700,6 +730,7 @@ reserve_comment: boolean
 Ob der Compiler statt Tabzeichen Leerzeichen verwenden soll.
 
 **Signatur:**
+
 ```lua
 space_over_tab: boolean
 ```
@@ -713,6 +744,7 @@ space_over_tab: boolean
 Ob der Compiler den zu kompilierenden Code als dasselbe aktuell kompilierte Modul behandeln soll. Nur für internen Gebrauch.
 
 **Signatur:**
+
 ```lua
 same_module: boolean
 ```
@@ -726,6 +758,7 @@ same_module: boolean
 Ob die Compiler-Fehlermeldung einen Zeilennummern-Offset enthalten soll. Nur für internen Gebrauch.
 
 **Signatur:**
+
 ```lua
 line_offset: integer
 ```
@@ -739,6 +772,7 @@ line_offset: integer
 Die Ziel-Lua-Version.
 
 **Signatur:**
+
 ```lua
 enum LuaTarget
   "5.1"
@@ -758,6 +792,7 @@ end
 Zusätzliche Optionen für die Kompilierung.
 
 **Signatur:**
+
 ```lua
 options: Options
 ```
@@ -777,6 +812,7 @@ Zusätzliche Compiler-Optionen.
 Die Ziel-Lua-Version für die Kompilierung.
 
 **Signatur:**
+
 ```lua
 target: LuaTarget
 ```
@@ -790,6 +826,7 @@ target: LuaTarget
 Zusätzlicher Modul-Suchpfad.
 
 **Signatur:**
+
 ```lua
 path: string
 ```
@@ -803,6 +840,7 @@ path: string
 Ob lokale Variablen in Traceback-Fehlermeldungen ausgegeben werden sollen. Standard ist false.
 
 **Signatur:**
+
 ```lua
 dump_locals: boolean
 ```
@@ -816,6 +854,7 @@ dump_locals: boolean
 Ob Fehlermeldungen vereinfacht werden sollen. Standard ist true.
 
 **Signatur:**
+
 ```lua
 simplified: boolean
 ```

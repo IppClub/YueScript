@@ -5,6 +5,7 @@ For convenience, the for loop and if statement can be applied to single statemen
 ```yuescript
 print "hello world" if name == "Rob"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -18,6 +19,7 @@ And with basic loops:
 ```yuescript
 print "item: ", item for item in *items
 ```
+
 <YueDisplay>
 
 ```yue
@@ -33,6 +35,7 @@ game\update! while game\isRunning!
 
 reader\parse_line! until reader\eof!
 ```
+
 <YueDisplay>
 
 ```yue

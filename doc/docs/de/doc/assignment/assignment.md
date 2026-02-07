@@ -7,6 +7,7 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- nutzt die bestehende Variable
 ```
+
 <YueDisplay>
 
 ```yue
@@ -31,6 +32,7 @@ x %= 10
 s ..= "world" -- legt eine neue lokale Variable an, wenn sie nicht existiert
 arg or= "default value"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -54,6 +56,7 @@ Mit verketteten Zuweisungen kannst du mehrere Variablen auf denselben Wert setze
 a = b = c = d = e = 0
 x = y = z = f!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -81,6 +84,7 @@ do
   a = 1
   B = 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -120,6 +124,7 @@ do
   B = 2
   local Temp = "a local value"
 ```
+
 <YueDisplay>
 
 ```yue

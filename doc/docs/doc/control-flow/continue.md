@@ -9,6 +9,7 @@ while i < 10
   continue if i % 2 == 0
   print i
 ```
+
 <YueDisplay>
 
 ```yue
@@ -29,6 +30,7 @@ odds = for x in *my_numbers
   continue if x % 2 == 1
   x
 ```
+
 <YueDisplay>
 
 ```yue

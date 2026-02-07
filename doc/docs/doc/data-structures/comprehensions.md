@@ -10,6 +10,7 @@ The following creates a copy of the items table but with all the values doubled.
 items = [ 1, 2, 3, 4 ]
 doubled = [item * 2 for i, item in ipairs items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -24,6 +25,7 @@ The items included in the new table can be restricted with a when clause:
 ```yuescript
 slice = [item for i, item in ipairs items when i > 1 and i < 3]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -37,6 +39,7 @@ Because it is common to iterate over the values of a numerically indexed table, 
 ```yuescript
 doubled = [item * 2 for item in *items]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -55,6 +58,7 @@ data =
 flat = [...v for k,v in pairs data]
 -- flat is now [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -79,6 +83,7 @@ y_coords = [9, 2, 3]
 points = [ [x, y] for x in *x_coords \
 for y in *y_coords]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -96,6 +101,7 @@ Numeric for loops can also be used in comprehensions:
 ```yuescript
 evens = [i for i = 1, 100 when i % 2 == 0]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -119,6 +125,7 @@ thing = {
 
 thing_copy = {k, v for k, v in pairs thing}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -136,6 +143,7 @@ thing_copy = {k, v for k, v in pairs thing}
 ```yuescript
 no_color = {k, v for k, v in pairs thing when k != "color"}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -150,6 +158,7 @@ The **\*** operator is also supported. Here we create a square root look up tabl
 numbers = [1, 2, 3, 4]
 sqrts = {i, math.sqrt i for i in *numbers}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -167,6 +176,7 @@ In this example we convert an array of pairs to a table where the first item in 
 tuples = [ ["hello", "world"], ["foo", "bar"]]
 tbl = {unpack tuple for tuple in *tuples}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -185,6 +195,7 @@ Here we can set the minimum and maximum bounds, taking all items with indexes be
 ```yuescript
 slice = [item for item in *items[1, 5]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -198,6 +209,7 @@ Any of the slice arguments can be left off to use a sensible default. In this ex
 ```yuescript
 slice = [item for item in *items[2,]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -211,6 +223,7 @@ If the minimum bound is left out, it defaults to 1. Here we only provide a step 
 ```yuescript
 slice = [item for item in *items[,,2]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -225,6 +238,7 @@ Both the minimum and maximum bounds can be negative, which means that the bounds
 -- take the last 4 items
 slice = [item for item in *items[-4,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -239,6 +253,7 @@ The step size can also be negative, which means that the items are taken in reve
 ```yuescript
 reverse_slice = [item for item in *items[-1,1,-1]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -258,6 +273,7 @@ sub_list = items[2, 4]
 -- take the last 4 items
 last_four_items = items[-4, -1]
 ```
+
 <YueDisplay>
 
 ```yue

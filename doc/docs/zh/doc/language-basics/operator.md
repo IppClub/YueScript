@@ -6,6 +6,7 @@
 tb\func! if tb ~= nil
 tb::func! if tb != nil
 ```
+
 <YueDisplay>
 
 ```yue
@@ -27,6 +28,7 @@ a = 5
 print 1 <= a <= 10
 -- 输出：true
 ```
+
 <YueDisplay>
 
 ```yue
@@ -64,6 +66,7 @@ print v(1) > v(2) <= v(3)
   false
 ]]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -101,6 +104,7 @@ print v(1) > v(2) <= v(3)
 tab = []
 tab[] = "Value"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -118,6 +122,7 @@ tbB = [4, 5, 6]
 tbA[] = ...tbB
 -- tbA 现在为 [1, 2, 3, 4, 5, 6]
 ```
+
 <YueDisplay>
 
 ```yue
@@ -149,6 +154,7 @@ a = {1, 2, 3, x: 1}
 b = {4, 5, y: 1}
 merge = {...a, ...b}
 ```
+
 <YueDisplay>
 
 ```yue
@@ -179,6 +185,7 @@ last = data.items[#]
 second_last = data.items[#-1]
 data.items[#] = 1
 ```
+
 <YueDisplay>
 
 ```yue
@@ -212,6 +219,7 @@ print d.value
 
 close _ = <close>: -> print "超出范围"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -245,8 +253,8 @@ print tb.value
 tb.<> = __index: {item: "hello"}
 print tb.item
 ```
-<YueDisplay>
 
+<YueDisplay>
 
 ```yue
 -- 使用包含字段 "value" 的元表创建
@@ -267,6 +275,7 @@ print tb.item
 {item, :new, :<close>, <index>: getter} = tb
 print item, new, close, getter
 ```
+
 <YueDisplay>
 
 ```yue
@@ -294,6 +303,7 @@ with? io.open "test.txt", "w"
   \write "你好"
   \close!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -330,6 +340,7 @@ readFile "example.txt"
   |> render
   |> print
 ```
+
 <YueDisplay>
 
 ```yue
@@ -358,6 +369,7 @@ func a ?? {}
 
 a ??= false
 ```
+
 <YueDisplay>
 
 ```yue
@@ -414,6 +426,7 @@ tb =
       func: => @value + 2
       tb: { }
 ```
+
 <YueDisplay>
 
 ```yue

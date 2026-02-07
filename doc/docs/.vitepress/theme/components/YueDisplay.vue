@@ -1,7 +1,7 @@
 <template>
   <div>
     <button class="button" @click="compile()">Compile</button>
-    <div style="display: none;">
+    <div style="display: none">
       <slot></slot>
     </div>
   </div>
@@ -11,14 +11,16 @@
 export default {
   methods: {
     compile() {
-      const node = this.$el.children[1]
-      const pre = node.querySelector('pre')
-      const codeNode = pre?.querySelector('code') || pre || node
-      const code = (codeNode?.textContent || '').replace(/\r\n?/g, '\n')
-      window.dispatchEvent(new CustomEvent('yue:open-compiler', { detail: code }))
-    }
-  }
-}
+      const node = this.$el.children[1];
+      const pre = node.querySelector("pre");
+      const codeNode = pre?.querySelector("code") || pre || node;
+      const code = (codeNode?.textContent || "").replace(/\r\n?/g, "\n");
+      window.dispatchEvent(
+        new CustomEvent("yue:open-compiler", { detail: code }),
+      );
+    },
+  },
+};
 </script>
 
 <style scoped>

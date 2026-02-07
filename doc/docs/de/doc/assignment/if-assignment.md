@@ -6,6 +6,7 @@
 if user := database.find_user "moon"
   print user.name
 ```
+
 <YueDisplay>
 
 ```yue
@@ -23,6 +24,7 @@ elseif world := os.getenv "world"
 else
   print "nichts :("
 ```
+
 <YueDisplay>
 
 ```yue
@@ -43,6 +45,7 @@ if success, result := pcall -> "Ergebnis ohne Probleme erhalten"
   print result -- Variable result ist im Scope
 print "OK"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +65,7 @@ while byte := stream\read_one!
   -- mit dem Byte etwas anfangen
   print byte
 ```
+
 <YueDisplay>
 
 ```yue

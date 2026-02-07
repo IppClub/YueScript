@@ -7,6 +7,7 @@ hello = "world"
 a, b, c = 1, 2, 3
 hello = 123 -- usa a variável existente
 ```
+
 <YueDisplay>
 
 ```yue
@@ -20,6 +21,7 @@ hello = 123 -- usa a variável existente
 ## Atualização
 
 Você pode realizar atribuição de atualização com muitos operadores binários.
+
 ```yuescript
 x = 1
 x += 1
@@ -30,6 +32,7 @@ x %= 10
 s ..= "world" -- adiciona um novo local se a variável local não existir
 arg or= "valor padrão"
 ```
+
 <YueDisplay>
 
 ```yue
@@ -48,10 +51,12 @@ arg or= "valor padrão"
 ## Atribuição encadeada
 
 Você pode fazer atribuição encadeada para atribuir múltiplos itens ao mesmo valor.
+
 ```yuescript
 a = b = c = d = e = 0
 x = y = z = f!
 ```
+
 <YueDisplay>
 
 ```yue
@@ -62,6 +67,7 @@ x = y = z = f!
 </YueDisplay>
 
 ## Locais explícitos
+
 ```yuescript
 do
   local a = 1
@@ -78,6 +84,7 @@ do
   a = 1
   B = 2
 ```
+
 <YueDisplay>
 
 ```yue
@@ -100,6 +107,7 @@ do
 </YueDisplay>
 
 ## Globais explícitos
+
 ```yuescript
 do
   global a = 1
@@ -116,6 +124,7 @@ do
   B = 2
   local Temp = "um valor local"
 ```
+
 <YueDisplay>
 
 ```yue

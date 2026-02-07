@@ -4,49 +4,51 @@
 
 Gunakan modul YueScript di Lua:
 
-* **Kasus 1**
+- **Kasus 1**
 
-	Require "your_yuescript_entry.yue" di Lua.
-	```Lua
-	require("yue")("your_yuescript_entry")
-	```
-	Dan kode ini tetap bekerja ketika Anda mengompilasi "your_yuescript_entry.yue" menjadi "your_yuescript_entry.lua" di path yang sama. Pada file YueScript lainnya cukup gunakan **require** atau **import** biasa. Nomor baris pada pesan error juga akan ditangani dengan benar.
+  Require "your_yuescript_entry.yue" di Lua.
 
-* **Kasus 2**
+  ```Lua
+  require("yue")("your_yuescript_entry")
+  ```
 
-	Require modul YueScript dan tulis ulang pesan secara manual.
+  Dan kode ini tetap bekerja ketika Anda mengompilasi "your_yuescript_entry.yue" menjadi "your_yuescript_entry.lua" di path yang sama. Pada file YueScript lainnya cukup gunakan **require** atau **import** biasa. Nomor baris pada pesan error juga akan ditangani dengan benar.
 
-	```lua
-	local yue = require("yue")
-	yue.insert_loader()
-	local success, result = xpcall(function()
-	  return require("yuescript_module_name")
-	end, function(err)
-	  return yue.traceback(err)
-	end)
-	```
+- **Kasus 2**
 
-* **Kasus 3**
+  Require modul YueScript dan tulis ulang pesan secara manual.
 
-	Gunakan fungsi kompiler YueScript di Lua.
+  ```lua
+  local yue = require("yue")
+  yue.insert_loader()
+  local success, result = xpcall(function()
+    return require("yuescript_module_name")
+  end, function(err)
+    return yue.traceback(err)
+  end)
+  ```
 
-	```lua
-	local yue = require("yue")
-	local codes, err, globals = yue.to_lua([[
-	  f = ->
-	    print "hello world"
-	  f!
-	]],{
-	  implicit_return_root = true,
-	  reserve_line_number = true,
-	  lint_global = true,
-	  space_over_tab = false,
-	  options = {
-	    target = "5.4",
-	    path = "/script"
-	  }
-	})
-	```
+- **Kasus 3**
+
+  Gunakan fungsi kompiler YueScript di Lua.
+
+  ```lua
+  local yue = require("yue")
+  local codes, err, globals = yue.to_lua([[
+    f = ->
+      print "hello world"
+    f!
+  ]],{
+    implicit_return_root = true,
+    reserve_line_number = true,
+    lint_global = true,
+    space_over_tab = false,
+    options = {
+      target = "5.4",
+      path = "/script"
+    }
+  })
+  ```
 
 ## Tool YueScript
 
@@ -99,14 +101,14 @@ Opsi:
 
 Gunakan kasus:
 
-Kompilasi semua file YueScript dengan ekstensi **.yue** secara rekursif di bawah path saat ini:  **yue .**
+Kompilasi semua file YueScript dengan ekstensi **.yue** secara rekursif di bawah path saat ini: **yue .**
 
-Kompilasi dan simpan hasil ke path target:  **yue -t /target/path/ .**
+Kompilasi dan simpan hasil ke path target: **yue -t /target/path/ .**
 
-Kompilasi dan pertahankan info debug:  **yue -l .**
+Kompilasi dan pertahankan info debug: **yue -l .**
 
-Kompilasi dan hasilkan kode yang diminisasi:  **yue -m .**
+Kompilasi dan hasilkan kode yang diminisasi: **yue -m .**
 
-Eksekusi kode mentah:  **yue -e 'print 123'**
+Eksekusi kode mentah: **yue -e 'print 123'**
 
-Eksekusi file YueScript:  **yue -e main.yue**
+Eksekusi file YueScript: **yue -e main.yue**
