@@ -456,7 +456,10 @@ export default defineConfig({
       },
     ],
     ["meta", { property: "og:type", content: "website" }],
-    ["meta", { property: "og:image", content: withBase("/image/yuescript.png") }],
+    [
+      "meta",
+      { property: "og:image", content: withBase("/image/yuescript.png") },
+    ],
     [
       "meta",
       {
