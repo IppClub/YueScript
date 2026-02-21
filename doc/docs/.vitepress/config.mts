@@ -64,6 +64,7 @@ const sidebarText = {
     functionStubs: "Funktions-Stubs",
     usingClause: "Die Using-Klausel; Kontrolle destruktiver Zuweisung",
     yuescriptLibrary: "Die YueScript-Bibliothek",
+    mascot: "Maskottchen – Xiaoyu",
     licenseMit: "Lizenz: MIT",
   },
   en: {
@@ -99,6 +100,7 @@ const sidebarText = {
     functionStubs: "Function Stubs",
     usingClause: "The Using Clause; Controlling Destructive Assignment",
     yuescriptLibrary: "The YueScript Library",
+    mascot: "Mascot - Xiaoyu",
     licenseMit: "License: MIT",
   },
   idId: {
@@ -134,6 +136,7 @@ const sidebarText = {
     functionStubs: "Fungsi Sementara",
     usingClause: "Klausa Using; Mengontrol Penugasan Destruktif",
     yuescriptLibrary: "Pustaka YueScript",
+    mascot: "Maskot – Xiaoyu",
     licenseMit: "Lisensi: MIT",
   },
   ptBr: {
@@ -169,6 +172,7 @@ const sidebarText = {
     functionStubs: "Stubs de função",
     usingClause: "Cláusula using; controlando atribuição destrutiva",
     yuescriptLibrary: "A biblioteca do YueScript",
+    mascot: "Mascote – Xiaoyu",
     licenseMit: "Licença: MIT",
   },
   zh: {
@@ -204,6 +208,7 @@ const sidebarText = {
     functionStubs: "函数存根",
     usingClause: "使用 using 语句：防止破坏性赋值",
     yuescriptLibrary: "月之脚本语言库",
+    mascot: "吉祥物 – 小玉",
     licenseMit: "MIT 许可证",
   },
 } as const;
@@ -219,7 +224,7 @@ type SidebarGroupText = {
   dataStructures: string;
   objects: string;
   advancedFeatures: string;
-  reference: string;
+  extras: string;
 };
 
 const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
@@ -232,7 +237,7 @@ const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
     dataStructures: "Datenstrukturen",
     objects: "Objekte",
     advancedFeatures: "Erweiterte Funktionen",
-    reference: "Referenz",
+    extras: "Extras",
   },
   en: {
     gettingStarted: "Getting Started",
@@ -243,7 +248,7 @@ const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
     dataStructures: "Data Structures",
     objects: "Objects",
     advancedFeatures: "Advanced Features",
-    reference: "Reference",
+    extras: "Extras",
   },
   idId: {
     gettingStarted: "Memulai",
@@ -254,7 +259,7 @@ const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
     dataStructures: "Struktur Data",
     objects: "Objek",
     advancedFeatures: "Fitur Lanjutan",
-    reference: "Referensi",
+    extras: "Ekstra",
   },
   ptBr: {
     gettingStarted: "Primeiros passos",
@@ -265,7 +270,7 @@ const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
     dataStructures: "Estruturas de dados",
     objects: "Objetos",
     advancedFeatures: "Recursos avançados",
-    reference: "Referência",
+    extras: "Extras",
   },
   zh: {
     gettingStarted: "起步",
@@ -276,7 +281,7 @@ const sidebarGroups: Record<SidebarLocale, SidebarGroupText> = {
     dataStructures: "数据结构",
     objects: "面向对象",
     advancedFeatures: "高级特性",
-    reference: "参考",
+    extras: "其他",
   },
 };
 
@@ -414,16 +419,17 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
         },
         { text: text.do, link: `${basePath}/advanced/do` },
         { text: text.try, link: `${basePath}/advanced/try` },
+        {
+          text: text.yuescriptLibrary,
+          link: `${basePath}/advanced/the-yuescript-library`,
+        },
       ],
     },
     {
-      text: group.reference,
+      text: group.extras,
       collapsed: true,
       items: [
-        {
-          text: text.yuescriptLibrary,
-          link: `${basePath}/reference/the-yuescript-library`,
-        },
+        { text: text.mascot, link: `${basePath}/reference/mascot` },
         { text: text.licenseMit, link: `${basePath}/reference/license-mit` },
       ],
     },

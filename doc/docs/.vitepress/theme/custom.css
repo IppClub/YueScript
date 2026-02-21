@@ -40,16 +40,36 @@
   --vp-c-text-2: #4a5568;
 }
 
-/* Hero image - enlarge container to fit 450px image without overflow */
+/* Hero image - adjust container to fit mascot artwork without overflow */
 @media (min-width: 960px) {
   .VPHero .image-container {
-    width: 450px !important;
+    width: 420px !important;
+  }
+
+  .VPHero .image-src {
+    margin-top: 2.7rem !important;
+    padding-bottom: 2.7rem !important;
   }
 }
 
-.VPHero :deep(.image-src) {
-  max-width: 450px;
-  max-height: 450px;
+@media (max-width: 960px) {
+  .VPHero .image-src {
+    margin-top: 1rem !important;
+    padding-bottom: 3.2rem !important;
+  }
+}
+
+@media (max-width: 639px) {
+  .VPHero .image-src {
+    margin-top: 3.2rem !important;
+    padding-bottom: 7.4rem !important;
+  }
+}
+
+.VPHero .image-src {
+  max-width: 420px;
+  max-height: 360px;
+  object-fit: contain;
 }
 
 /* --- DARK MODE THEME (Midnight Blue) --- */
