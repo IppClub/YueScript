@@ -429,8 +429,8 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
       text: group.extras,
       collapsed: true,
       items: [
-        { text: text.mascot, link: `${basePath}/reference/mascot` },
-        { text: text.licenseMit, link: `${basePath}/reference/license-mit` },
+        { text: text.mascot, link: `${basePath}/extras/mascot` },
+        { text: text.licenseMit, link: `${basePath}/extras/license-mit` },
       ],
     },
   ];
