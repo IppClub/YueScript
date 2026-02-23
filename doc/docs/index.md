@@ -6,7 +6,7 @@ hero:
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript
-    link: /doc/reference/mascot
+    link: /doc/extras/mascot
   actions:
     - theme: brand
       text: Quick Start →

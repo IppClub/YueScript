@@ -6,7 +6,7 @@ hero:
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript
-    link: /id-id/doc/reference/mascot
+    link: /id-id/doc/extras/mascot
   actions:
     - theme: brand
       text: Mulai Cepat →

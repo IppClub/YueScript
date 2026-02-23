@@ -36,13 +36,22 @@ const theme: Theme = {
               {
                 href: withBase(fm.hero.image.link),
                 class: "image-src",
-                style: "display: flex; justify-content: center; align-items: center;",
+                style:
+                  "display: flex; justify-content: center; align-items: center;",
               },
-              [img]
+              [img],
             );
           }
 
-          return h("div", { class: "image-src", style: "display: flex; justify-content: center; align-items: center;" }, [img]);
+          return h(
+            "div",
+            {
+              class: "image-src",
+              style:
+                "display: flex; justify-content: center; align-items: center;",
+            },
+            [img],
+          );
         }
         return null;
       },
