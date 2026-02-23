@@ -3,13 +3,13 @@
 Wie in Lua werden Tabellen mit geschweiften Klammern definiert.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 <YueDisplay>
 
 ```yue
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 </YueDisplay>
@@ -160,7 +160,7 @@ t = {
 
 </YueDisplay>
 
-Lua-Tabellen haben einen Array-Teil und einen Hash-Teil, aber manchmal möchte man beim Schreiben von Lua-Tabellen eine semantische Unterscheidung zwischen Array- und Hash-Nutzung machen. Dann kannst du eine Lua-Tabelle mit **[ ]** statt **{ }** schreiben, um eine Array-Tabelle darzustellen, und das Schreiben von Schlüssel-Wert-Paaren in einer Listentabelle ist nicht erlaubt.
+Lua-Tabellen haben sowohl einen Array-Teil als auch einen Hash-Teil, aber manchmal ist es nützlich, hier eine semantische Unterscheidung zu treffen. Du kannst **[ ]** anstelle von **{ }** verwenden, um eine Tabelle explizit als Array zu deklarieren; dadurch wird verhindert, dass Schlüssel-Wert-Paare hineingeschrieben werden.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

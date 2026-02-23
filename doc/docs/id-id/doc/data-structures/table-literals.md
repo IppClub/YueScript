@@ -3,13 +3,13 @@
 Seperti di Lua, tabel dibatasi dengan kurung kurawal.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 <YueDisplay>
 
 ```yue
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 </YueDisplay>
@@ -160,7 +160,7 @@ t = {
 
 </YueDisplay>
 
-Tabel Lua memiliki bagian array dan bagian hash, tetapi terkadang Anda ingin membedakan penggunaan array dan hash secara semantik saat menulis tabel Lua. Maka Anda bisa menulis tabel Lua dengan **[ ]** alih-alih **{ }** untuk merepresentasikan tabel array, dan menuliskan pasangan key-value di tabel list tidak akan diizinkan.
+Tabel Lua memiliki bagian array dan bagian hash, tetapi kadang-kadang berguna untuk membuat perbedaan semantik di antara keduanya. Anda dapat menggunakan **[ ]** sebagai ganti **{ }** untuk mendeklarasikan tabel secara eksplisit sebagai array, dengan begitu akan mencegah pasangan key-value dituliskan di dalamnya.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

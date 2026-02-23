@@ -3,13 +3,13 @@
 Como no Lua, as tabelas são delimitadas por chaves.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 <YueDisplay>
 
 ```yue
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 </YueDisplay>
@@ -160,7 +160,7 @@ t = {
 
 </YueDisplay>
 
-As tabelas Lua têm tanto uma parte array quanto uma parte hash, mas às vezes você quer fazer uma distinção semântica entre uso de array e hash ao escrever tabelas Lua. Então você pode escrever tabela Lua com **[ ]** em vez de **{ }** para representar uma tabela array, e escrever qualquer par chave-valor em uma tabela lista não será permitido.
+As tabelas Lua têm tanto uma parte array quanto uma parte hash, mas às vezes é útil fazer uma distinção semântica entre as duas. Você pode usar **[ ]** em vez de **{ }** para declarar explicitamente uma tabela como um array, fazer isso impedirá que quaisquer pares chave-valor sejam escritos dentro dela.
 
 ```yuescript
 some_values = [1, 2, 3, 4]

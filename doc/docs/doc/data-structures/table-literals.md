@@ -3,13 +3,13 @@
 Like in Lua, tables are delimited in curly braces.
 
 ```yuescript
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 <YueDisplay>
 
 ```yue
-some_values = [1, 2, 3, 4]
+some_values = {1, 2, 3, 4}
 ```
 
 </YueDisplay>
@@ -160,7 +160,7 @@ t = {
 
 </YueDisplay>
 
-Lua tables have both an array part and a hash part, but sometimes you want to make a semantic distinction between array and hash usage when writing Lua tables. Then you can write Lua table with **[ ]** instead of **{ }** to represent an array table and writing any key value pair in a list table won't be allowed.
+Lua tables have both an array part and a hash part, but sometimes it's useful to make a semantic distinction between the two. You can use **[ ]** instead of **{ }** to explicitly declare a table as an array, doing so will prevent any key-value pairs from being written inside it.
 
 ```yuescript
 some_values = [1, 2, 3, 4]
