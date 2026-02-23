@@ -6,6 +6,7 @@ hero:
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: 月之脚本
+    link: /zh/doc/reference/mascot
   actions:
     - theme: brand
       text: 快速上手 →
