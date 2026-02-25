@@ -1,9 +1,6 @@
-# Simple workflow for deploying static content to GitHub Pages
 name: Deploy static content to Pages
 
 on:
-
-  # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
 permissions:
@@ -20,25 +17,54 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Cache Emscripten
+        uses: actions/cache@v4
+        with:
+          path: ~/emsdk
+          key: emsdk-${{ runner.os }}-latest
+
+      - name: Install Emscripten
+        run: |
+          git clone https://github.com/emscripten-core/emsdk.git ~/emsdk
+          ~/emsdk/emsdk install latest
+          ~/emsdk/emsdk activate latest
+
+      - name: Build WASM
+        run: |
+          source ~/emsdk/emsdk_env.sh
+          make wasm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 20
+          cache: 'pnpm'
+          cache-dependency-path: doc/pnpm-lock.yaml
+
+      - name: Install and build docs
+        run: |
+          cd doc
+          pnpm install
+          pnpm run build
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Prepare Site
-        run: |
-          brew upgrade -f python
-          brew install emscripten
-          make wasm
-          cd doc
-          yarn
-          yarn build
-          cd ..
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: 'doc/docs/.vitepress/dist'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

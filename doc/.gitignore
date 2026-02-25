@@ -10,6 +10,5 @@ dist
 .basement
 config.local.js
 basement_dist
-yarn.lock
 docs/.vitepress/public/js/yuescript.js
 docs/.vitepress/public/js/yuescript.wasm
