@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: YueScript
-  tagline: Eine Sprache, die zu Lua kompiliert
+  tagline: Eine wunderbare Sprache, die zu Lua kompiliert
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript

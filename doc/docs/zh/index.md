@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: 月之脚本
-  tagline: 一门编译到 Lua 的语言
+  tagline: 一门令人愉悦且可编译为 Lua 的语言
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: 月之脚本

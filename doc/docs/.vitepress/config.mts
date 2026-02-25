@@ -438,7 +438,7 @@ function createSidebar(basePath: string, locale: SidebarLocale) {
 
 export default defineConfig({
   title: "YueScript",
-  description: "A language that compiles to Lua",
+  description: "A delightful language that compiles to Lua",
   base: docsBase,
   head: [
     ["meta", { name: "theme-color", content: "#b4ac8f" }],
@@ -452,7 +452,7 @@ export default defineConfig({
       "meta",
       {
         property: "og:description",
-        content: "A language that compiles to Lua",
+        content: "A delightful language that compiles to Lua",
       },
     ],
     ["meta", { property: "og:type", content: "website" }],
@@ -555,7 +555,7 @@ export default defineConfig({
     root: {
       label: "English",
       lang: "en-US",
-      description: "A language that compiles to Lua",
+      description: "A delightful language that compiles to Lua",
       themeConfig: {
         nav: [
           { text: "Documentation", link: "/doc/" },
@@ -568,7 +568,7 @@ export default defineConfig({
     "id-id": {
       label: "Bahasa Indonesia",
       lang: "id-ID",
-      description: "Bahasa yang dikompilasi ke Lua",
+      description: "Bahasa menyenangkan yang dikompilasi ke Lua",
       themeConfig: {
         nav: [
           { text: "Dokumentasi", link: "/id-id/doc/" },
@@ -581,7 +581,7 @@ export default defineConfig({
     de: {
       label: "Deutsch",
       lang: "de-DE",
-      description: "Eine Sprache, die zu Lua kompiliert",
+      description: "Eine wunderbare Sprache, die zu Lua kompiliert",
       themeConfig: {
         nav: [
           { text: "Dokumentation", link: "/de/doc/" },
@@ -594,7 +594,7 @@ export default defineConfig({
     "pt-br": {
       label: "Português (Brasil)",
       lang: "pt-BR",
-      description: "Uma linguagem que compila para Lua",
+      description: "Uma linguagem encantadora que compila para Lua",
       themeConfig: {
         nav: [
           { text: "Documentação", link: "/pt-br/doc/" },
@@ -607,7 +607,7 @@ export default defineConfig({
     zh: {
       label: "简体中文",
       lang: "zh-CN",
-      description: "一门编译到 Lua 的语言",
+      description: "一门令人愉悦且可编译为 Lua 的语言",
       themeConfig: {
         nav: [
           { text: "文档", link: "/zh/doc/" },

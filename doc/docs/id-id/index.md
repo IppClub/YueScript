@@ -2,7 +2,7 @@
 layout: home
 hero:
   name: YueScript
-  tagline: Bahasa yang dikompilasi ke Lua
+  tagline: Bahasa menyenangkan yang dikompilasi ke Lua
   image:
     src: /image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png
     alt: YueScript

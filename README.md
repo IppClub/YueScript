@@ -21,7 +21,6 @@
   <img src="doc/docs/.vitepress/public/image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png" width="360" alt="Xiaoyu, the YueScript mascot"/>
 </p>
 
-
 <p align="center">
   <sub><b>Xiaoyu (小玉)</b> · Official YueScript Mascot</sub>
 </p>
