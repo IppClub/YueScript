@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.33.9"sv;
+const std::string_view version = "0.33.10"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -3759,7 +3759,6 @@ private:
 					out.push_back(join(temp));
 					return;
 				}
-				auto defs = getPreDefine(assignment);
 				transformValue(leftValue, temp);
 				auto left = std::move(temp.back());
 				temp.pop_back();
@@ -3769,11 +3768,13 @@ private:
 				if (!singleValueFrom(update->value)) {
 					right = '(' + right + ')';
 				}
+				auto defs = getPreDefine(assignment);
 				_buf << join(temp);
-				if (!defs.empty())
+				if (!defs.empty()) {
 					_buf << defs;
-				else
+				} else {
 					_buf << indent() << left;
+				}
 				_buf << " = "sv << left << ' ' << op << ' ' << right << nl(assignment);
 				out.push_back(clearBuf());
 				break;
