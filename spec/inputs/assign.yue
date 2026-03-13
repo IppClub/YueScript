@@ -127,4 +127,9 @@ do
 	a |= 7
 	a ^= 8
 
+do
+	type or= (v) ->
+		type = type v
+		type
+
 nil

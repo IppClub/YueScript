@@ -204,5 +204,11 @@ return _(function()
 		a = a | 7
 		a = a ^ 8
 	end
+	do
+		local type = type or function(v)
+			local type = type(v)
+			return type
+		end
+	end
 	return nil
 end)
