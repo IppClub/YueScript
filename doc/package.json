@@ -15,20 +15,20 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^25.2.3",
+    "@types/node": "^25.5.0",
     "vitepress": "^1.6.4",
-    "vue": "^3.5.28"
+    "vue": "^3.5.31"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.10.1",
-    "@codemirror/language": "^6.12.1",
+    "@codemirror/commands": "^6.10.3",
+    "@codemirror/language": "^6.12.3",
     "@codemirror/legacy-modes": "^6.5.2",
-    "@codemirror/state": "^6.5.4",
-    "@codemirror/view": "^6.39.12",
+    "@codemirror/state": "^6.6.0",
+    "@codemirror/view": "^6.40.0",
     "@fontsource/merriweather": "^5.2.11",
     "@fontsource/noto-serif-sc": "^5.2.8",
     "@lezer/highlight": "^1.2.3",
-    "@shikijs/themes": "^3.22.0",
-    "prismjs": "^1.29.0"
+    "@shikijs/themes": "^4.0.2",
+    "prismjs": "^1.30.0"
   }
 }

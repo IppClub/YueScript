@@ -60,7 +60,7 @@ export default {
   width: min(90vw, 1100px);
   max-height: 90vh;
   overflow: auto;
-  background: #ffffff;
+  background: var(--vp-c-bg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
 }
 </style>

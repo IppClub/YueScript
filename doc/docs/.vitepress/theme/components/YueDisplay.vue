@@ -28,18 +28,18 @@ export default {
   border: none;
   display: inline-block;
   font-size: 16px;
-  color: #fff;
-  background-color: #b7ae8f;
+  color: var(--vp-button-brand-text);
+  background-color: var(--vp-button-brand-bg);
   text-decoration: none;
   padding: 0.4rem 0.8rem;
   border-radius: 4px;
   transition: background-color 0.1s ease;
   box-sizing: border-box;
-  border-bottom: 1px solid #aaa07b;
+  border-bottom: 1px solid var(--vp-button-brand-border);
   margin-bottom: 1em;
 }
 .button:hover {
-  background-color: #beb69a;
+  background-color: var(--vp-button-brand-hover-bg);
 }
 .button:focus,
 .button:active:focus,

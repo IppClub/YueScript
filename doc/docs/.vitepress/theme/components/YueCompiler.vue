@@ -41,165 +41,96 @@ import { history, indentWithTab } from "@codemirror/commands";
 import { defaultKeymap, historyKeymap } from "@codemirror/commands";
 import { simpleMode } from "@codemirror/legacy-modes/mode/simple-mode";
 
-/* shikijs/themes/light-plus: editor.background #FFFFFF, editor.foreground #000000 */
-const lightPlusTheme = EditorView.theme(
-  {
-    "&": {
-      height: "100%",
-      backgroundColor: "#FFFFFF",
-      color: "#000000",
-      fontSize: "14px",
+function createEditorTheme({ bg, fg, gutterColor, selectionBg, cursorColor, matchingBracketBg, dark }) {
+  return EditorView.theme(
+    {
+      "&": {
+        height: "100%",
+        backgroundColor: bg,
+        color: fg,
+        fontSize: "14px",
+      },
+      "&.cm-focused": { outline: "none" },
+      ".cm-content": {
+        fontFamily:
+          "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
+        lineHeight: "1.375",
+      },
+      ".cm-gutters": {
+        backgroundColor: bg,
+        color: gutterColor,
+        borderRight: "none",
+      },
+      ".cm-activeLine": { backgroundColor: "transparent" },
+      ".cm-activeLineGutter": { backgroundColor: "transparent" },
+      ".cm-selectionBackground": { backgroundColor: selectionBg },
+      "&.cm-focused .cm-selectionBackground": { backgroundColor: selectionBg },
+      ".cm-cursor": { borderLeftColor: cursorColor },
+      ".cm-matchingBracket": { backgroundColor: matchingBracketBg },
     },
-    "&.cm-focused": {
-      outline: "none",
-    },
-    ".cm-content": {
-      fontFamily:
-        "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
-      lineHeight: "1.375",
-    },
-    ".cm-gutters": {
-      backgroundColor: "#FFFFFF",
-      color: "#6e6e6e",
-      borderRight: "none",
-    },
-    ".cm-activeLine": {
-      backgroundColor: "transparent",
-    },
-    ".cm-activeLineGutter": {
-      backgroundColor: "transparent",
-    },
-    ".cm-selectionBackground": {
-      backgroundColor: "#add6ff",
-    },
-    "&.cm-focused .cm-selectionBackground": {
-      backgroundColor: "#add6ff",
-    },
-    ".cm-cursor": {
-      borderLeftColor: "#000000",
-    },
-    ".cm-matchingBracket": {
-      backgroundColor: "#c9def5",
-    },
-  },
-  { dark: false },
-);
+    { dark },
+  );
+}
 
-/* shikijs/themes/dark-plus: editor.background #1E1E1E, editor.foreground #D4D4D4 */
-const darkPlusTheme = EditorView.theme(
-  {
-    "&": {
-      height: "100%",
-      backgroundColor: "#1E1E1E",
-      color: "#D4D4D4",
-      fontSize: "14px",
-    },
-    "&.cm-focused": {
-      outline: "none",
-    },
-    ".cm-content": {
-      fontFamily:
-        "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
-      lineHeight: "1.375",
-    },
-    ".cm-gutters": {
-      backgroundColor: "#1E1E1E",
-      color: "#858585",
-      borderRight: "none",
-    },
-    ".cm-activeLine": {
-      backgroundColor: "transparent",
-    },
-    ".cm-activeLineGutter": {
-      backgroundColor: "transparent",
-    },
-    ".cm-selectionBackground": {
-      backgroundColor: "#264f78",
-    },
-    "&.cm-focused .cm-selectionBackground": {
-      backgroundColor: "#264f78",
-    },
-    ".cm-cursor": {
-      borderLeftColor: "#aeafad",
-    },
-    ".cm-matchingBracket": {
-      backgroundColor: "#3a3d41",
-    },
-  },
-  { dark: true },
-);
+const lightPlusTheme = createEditorTheme({
+  bg: "#FFFFFF", fg: "#000000", gutterColor: "#6e6e6e",
+  selectionBg: "#add6ff", cursorColor: "#000000", matchingBracketBg: "#c9def5", dark: false,
+});
 
-/* shikijs/themes/light-plus tokenColors */
-const lightPlusHighlightStyle = HighlightStyle.define(
-  [
-    { tag: tags.comment, color: "#008000" },
-    { tag: tags.keyword, color: "#AF00DB" },
-    { tag: [tags.operator, tags.punctuation], color: "#000000" },
-    { tag: [tags.string, tags.special(tags.string)], color: "#a31515" },
-    { tag: tags.regexp, color: "#811f3f" },
-    { tag: [tags.number, tags.bool, tags.null], color: "#098658" },
-    { tag: tags.function(tags.variableName), color: "#795e26" },
-    { tag: tags.typeName, color: "#267f99" },
-    { tag: tags.className, color: "#267f99" },
-    { tag: tags.propertyName, color: "#001080" },
-    { tag: tags.tagName, color: "#800000" },
-    { tag: tags.attributeName, color: "#e50000" },
-    { tag: tags.meta, color: "#666666" },
-    { tag: tags.invalid, color: "#cd3131" },
-    // Additional tags for YueScript - ensure all token types have styles
-    { tag: tags.variableName, color: "#001080" },
-    { tag: tags.constant(tags.name), color: "#098658" },
-    { tag: tags.constant(tags.variableName), color: "#098658" },
-    { tag: tags.constant, color: "#098658" },
-    { tag: tags.definition(tags.variableName), color: "#001080" },
-    { tag: tags.modifier, color: "#AF00DB" },
-    { tag: tags.namespace, color: "#267f99" },
-    { tag: tags.labelName, color: "#795e26" },
-    { tag: tags.character, color: "#098658" },
-    { tag: tags.literal, color: "#098658" },
-    { tag: tags.bracket, color: "#000000" },
-    { tag: tags.squareBracket, color: "#000000" },
-    { tag: tags.paren, color: "#000000" },
-    { tag: tags.brace, color: "#000000" },
-  ],
-  { fallback: true },
-);
+const darkPlusTheme = createEditorTheme({
+  bg: "#1E1E1E", fg: "#D4D4D4", gutterColor: "#858585",
+  selectionBg: "#264f78", cursorColor: "#aeafad", matchingBracketBg: "#3a3d41", dark: true,
+});
 
-/* shikijs/themes/dark-plus tokenColors */
-const darkPlusHighlightStyle = HighlightStyle.define(
-  [
-    { tag: tags.comment, color: "#6a9955" },
-    { tag: tags.keyword, color: "#C586C0" },
-    { tag: [tags.operator, tags.punctuation], color: "#d4d4d4" },
-    { tag: [tags.string, tags.special(tags.string)], color: "#ce9178" },
-    { tag: tags.regexp, color: "#d16969" },
-    { tag: [tags.number, tags.bool, tags.null], color: "#b5cea8" },
-    { tag: tags.function(tags.variableName), color: "#dcdcaa" },
-    { tag: tags.typeName, color: "#4ec9b0" },
-    { tag: tags.className, color: "#4ec9b0" },
-    { tag: tags.propertyName, color: "#9cdcfe" },
-    { tag: tags.tagName, color: "#569cd6" },
-    { tag: tags.attributeName, color: "#9cdcfe" },
-    { tag: tags.meta, color: "#d4d4d4" },
-    { tag: tags.invalid, color: "#f44747" },
-    // Additional tags for YueScript - ensure all token types have styles
-    { tag: tags.variableName, color: "#9cdcfe" },
-    { tag: tags.constant(tags.name), color: "#b5cea8" },
-    { tag: tags.constant(tags.variableName), color: "#b5cea8" },
-    { tag: tags.constant, color: "#b5cea8" },
-    { tag: tags.definition(tags.variableName), color: "#9cdcfe" },
-    { tag: tags.modifier, color: "#C586C0" },
-    { tag: tags.namespace, color: "#4ec9b0" },
-    { tag: tags.labelName, color: "#dcdcaa" },
-    { tag: tags.character, color: "#b5cea8" },
-    { tag: tags.literal, color: "#b5cea8" },
-    { tag: tags.bracket, color: "#d4d4d4" },
-    { tag: tags.squareBracket, color: "#d4d4d4" },
-    { tag: tags.paren, color: "#d4d4d4" },
-    { tag: tags.brace, color: "#d4d4d4" },
-  ],
-  { fallback: true },
-);
+function createHighlightStyle(c) {
+  return HighlightStyle.define(
+    [
+      { tag: tags.comment, color: c.comment },
+      { tag: tags.keyword, color: c.keyword },
+      { tag: [tags.operator, tags.punctuation], color: c.punctuation },
+      { tag: [tags.string, tags.special(tags.string)], color: c.string },
+      { tag: tags.regexp, color: c.regexp },
+      { tag: [tags.number, tags.bool, tags.null], color: c.number },
+      { tag: tags.function(tags.variableName), color: c.function },
+      { tag: tags.typeName, color: c.type },
+      { tag: tags.className, color: c.type },
+      { tag: tags.propertyName, color: c.property },
+      { tag: tags.tagName, color: c.tag },
+      { tag: tags.attributeName, color: c.attribute },
+      { tag: tags.meta, color: c.meta },
+      { tag: tags.invalid, color: c.invalid },
+      { tag: tags.variableName, color: c.property },
+      { tag: tags.constant(tags.name), color: c.number },
+      { tag: tags.constant(tags.variableName), color: c.number },
+      { tag: tags.constant, color: c.number },
+      { tag: tags.definition(tags.variableName), color: c.property },
+      { tag: tags.modifier, color: c.keyword },
+      { tag: tags.namespace, color: c.type },
+      { tag: tags.labelName, color: c.function },
+      { tag: tags.character, color: c.number },
+      { tag: tags.literal, color: c.number },
+      { tag: tags.bracket, color: c.punctuation },
+      { tag: tags.squareBracket, color: c.punctuation },
+      { tag: tags.paren, color: c.punctuation },
+      { tag: tags.brace, color: c.punctuation },
+    ],
+    { fallback: true },
+  );
+}
+
+const lightPlusHighlightStyle = createHighlightStyle({
+  comment: "#008000", keyword: "#AF00DB", punctuation: "#000000",
+  string: "#a31515", regexp: "#811f3f", number: "#098658",
+  function: "#795e26", type: "#267f99", property: "#001080",
+  tag: "#800000", attribute: "#e50000", meta: "#666666", invalid: "#cd3131",
+});
+
+const darkPlusHighlightStyle = createHighlightStyle({
+  comment: "#6a9955", keyword: "#C586C0", punctuation: "#d4d4d4",
+  string: "#ce9178", regexp: "#d16969", number: "#b5cea8",
+  function: "#dcdcaa", type: "#4ec9b0", property: "#9cdcfe",
+  tag: "#569cd6", attribute: "#9cdcfe", meta: "#d4d4d4", invalid: "#f44747",
+});
 
 export default {
   props: {
@@ -229,6 +160,7 @@ export default {
       themeCompartment: null,
       highlightCompartment: null,
       themeObserver: null,
+      _onYueReady: null,
     };
   },
   computed: {
@@ -244,7 +176,7 @@ export default {
     window.addEventListener("resize", this.handleResize);
     this.observeTheme();
 
-    const initialCode = this.text !== "" ? this.text : "";
+    const initialCode = this.text;
     this.code = initialCode;
     this.codeChanged(initialCode);
     this.initEditor(initialCode);
@@ -252,21 +184,26 @@ export default {
       this.focusEditorToEnd();
     });
 
-    const check = ((self) => {
-      return () => {
-        if (window.yue) {
-          self.info = window.yue.version();
-          self.readonly = false;
-          this.refreshEditorReadOnly();
-        } else {
-          setTimeout(check, 100);
-        }
-      };
-    })(this);
-    check();
+    const onYueReady = () => {
+      if (window.yue) {
+        this.info = window.yue.version();
+        this.readonly = false;
+        this.refreshEditorReadOnly();
+      }
+    };
+    if (window.yue) {
+      onYueReady();
+    } else {
+      this._onYueReady = onYueReady;
+      window.addEventListener("yue:ready", onYueReady, { once: true });
+    }
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.handleResize);
+    if (this._onYueReady) {
+      window.removeEventListener("yue:ready", this._onYueReady);
+      this._onYueReady = null;
+    }
     if (this.editorView) {
       this.editorView.destroy();
       this.editorView = null;
@@ -673,7 +610,7 @@ export default {
   overflow-wrap: break-word;
   width: calc(100% - 120px);
   height: 55px;
-  border-color: #b7ae8f;
+  border-color: var(--vp-button-brand-bg);
   border-radius: 4px;
   border-width: 1px;
   border-style: solid;
@@ -722,20 +659,20 @@ export default {
   border: none;
   display: inline-block;
   font-size: 1.2rem;
-  color: #fff;
-  background-color: #b7ae8f;
+  color: var(--vp-button-brand-text);
+  background-color: var(--vp-button-brand-bg);
   text-decoration: none;
   padding: 0.8rem 1.6rem;
   border-radius: 4px;
   transition: background-color 0.1s ease;
   box-sizing: border-box;
-  border-bottom: 1px solid #aaa07b;
+  border-bottom: 1px solid var(--vp-button-brand-border);
   margin-top: 10px;
   margin-right: 5px;
 }
 
 .button:hover {
-  background-color: #beb69a;
+  background-color: var(--vp-button-brand-hover-bg);
 }
 
 .button:focus,

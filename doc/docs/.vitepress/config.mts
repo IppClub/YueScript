@@ -537,6 +537,7 @@ export default defineConfig({
   var s = document.createElement('script');
   s.src = '${withBase("/js/yuescript.js")}';
   s.async = true;
+  s.onerror = loadStub;
   document.head.appendChild(s);
 })();`,
     ],
