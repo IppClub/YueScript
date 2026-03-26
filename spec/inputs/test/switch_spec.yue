@@ -265,3 +265,86 @@ describe "switch", ->
 				when 1 then "yes"
 				else "no"
 		assert.same getValue!, "yes"
+
+	it "should match empty list pattern with []", ->
+		-- [] uses #x == 0 check, matches tables with no array elements
+		emptyArray = {}
+		hashTable = {a: 1, b: 2}
+		arrayWithElements = {1, 2, 3}
+
+		result1 = switch emptyArray
+			when [] then "empty list"
+			else "not empty list"
+		assert.same result1, "empty list"
+
+		result2 = switch hashTable
+			when [] then "empty list"
+			else "not empty list"
+		assert.same result2, "empty list"
+
+		result3 = switch arrayWithElements
+			when [] then "empty list"
+			else "not empty list"
+		assert.same result3, "not empty list"
+
+	it "should match empty table pattern with {}", ->
+		-- {} uses next(x) == nil check, matches only truly empty tables
+		emptyTable = {}
+		hashTable = {a: 1}
+		arrayTable = {1}
+
+		result1 = switch emptyTable
+			when {} then "empty table"
+			else "not empty table"
+		assert.same result1, "empty table"
+
+		result2 = switch hashTable
+			when {} then "empty table"
+			else "not empty table"
+		assert.same result2, "not empty table"
+
+		result3 = switch arrayTable
+			when {} then "empty table"
+			else "not empty table"
+		assert.same result3, "not empty table"
+
+	it "should distinguish between [] and {} patterns", ->
+		-- [] matches tables with #x == 0 (no array part)
+		-- {} matches tables with next(x) == nil (completely empty)
+		classify = (x) ->
+			switch x
+				when {} then "truly empty"
+				when [] then "no array elements"
+				else "has elements"
+
+		assert.same classify({}), "truly empty"
+		assert.same classify({a: 1}), "no array elements"
+		assert.same classify({1, 2}), "has elements"
+
+	it "should handle empty list pattern with then syntax", ->
+		result = switch {}
+			when [] then "matched"
+			else "not matched"
+		assert.same result, "matched"
+
+	it "should handle empty table pattern with then syntax", ->
+		result = switch {}
+			when {} then "matched"
+			else "not matched"
+		assert.same result, "matched"
+
+	it "should match empty patterns with multiple when branches", ->
+		emptyArray = {}
+		emptyHash = {}
+
+		result1 = switch emptyArray
+			when {1} then "has 1"
+			when [] then "empty list"
+			else "other"
+		assert.same result1, "empty list"
+
+		result2 = switch emptyHash
+			when {a: 1} then "has a"
+			when {} then "empty table"
+			else "other"
+		assert.same result2, "empty table"

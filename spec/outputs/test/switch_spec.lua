@@ -727,7 +727,7 @@ return describe("switch", function()
 		end
 		return assert.same(result, "matched cool")
 	end)
-	return it("should handle switch in function call", function()
+	it("should handle switch in function call", function()
 		local something = 1
 		local getValue
 		getValue = function()
@@ -738,5 +738,248 @@ return describe("switch", function()
 			end
 		end
 		return assert.same(getValue(), "yes")
+	end)
+	it("should match empty list pattern with []", function()
+		local emptyArray = { }
+		local hashTable = {
+			a = 1,
+			b = 2
+		}
+		local arrayWithElements = {
+			1,
+			2,
+			3
+		}
+		local result1
+		do
+			local _type_0 = type(emptyArray)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if #emptyArray == 0 then
+					_match_0 = true
+					result1 = "empty list"
+				end
+			end
+			if not _match_0 then
+				result1 = "not empty list"
+			end
+		end
+		assert.same(result1, "empty list")
+		local result2
+		do
+			local _type_0 = type(hashTable)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if #hashTable == 0 then
+					_match_0 = true
+					result2 = "empty list"
+				end
+			end
+			if not _match_0 then
+				result2 = "not empty list"
+			end
+		end
+		assert.same(result2, "empty list")
+		local result3
+		do
+			local _type_0 = type(arrayWithElements)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if #arrayWithElements == 0 then
+					_match_0 = true
+					result3 = "empty list"
+				end
+			end
+			if not _match_0 then
+				result3 = "not empty list"
+			end
+		end
+		return assert.same(result3, "not empty list")
+	end)
+	it("should match empty table pattern with {}", function()
+		local emptyTable = { }
+		local hashTable = {
+			a = 1
+		}
+		local arrayTable = {
+			1
+		}
+		local result1
+		do
+			local _type_0 = type(emptyTable)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if next(emptyTable) == nil then
+					_match_0 = true
+					result1 = "empty table"
+				end
+			end
+			if not _match_0 then
+				result1 = "not empty table"
+			end
+		end
+		assert.same(result1, "empty table")
+		local result2
+		do
+			local _type_0 = type(hashTable)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if next(hashTable) == nil then
+					_match_0 = true
+					result2 = "empty table"
+				end
+			end
+			if not _match_0 then
+				result2 = "not empty table"
+			end
+		end
+		assert.same(result2, "not empty table")
+		local result3
+		do
+			local _type_0 = type(arrayTable)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if next(arrayTable) == nil then
+					_match_0 = true
+					result3 = "empty table"
+				end
+			end
+			if not _match_0 then
+				result3 = "not empty table"
+			end
+		end
+		return assert.same(result3, "not empty table")
+	end)
+	it("should distinguish between [] and {} patterns", function()
+		local classify
+		classify = function(x)
+			local _type_0 = type(x)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if next(x) == nil then
+					_match_0 = true
+					return "truly empty"
+				end
+			end
+			if not _match_0 then
+				local _match_1 = false
+				if _tab_0 then
+					if #x == 0 then
+						_match_1 = true
+						return "no array elements"
+					end
+				end
+				if not _match_1 then
+					return "has elements"
+				end
+			end
+		end
+		assert.same(classify({ }), "truly empty")
+		assert.same(classify({
+			a = 1
+		}), "no array elements")
+		return assert.same(classify({
+			1,
+			2
+		}), "has elements")
+	end)
+	it("should handle empty list pattern with then syntax", function()
+		local result
+		do
+			local _exp_0 = { }
+			local _type_0 = type(_exp_0)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if #_exp_0 == 0 then
+					_match_0 = true
+					result = "matched"
+				end
+			end
+			if not _match_0 then
+				result = "not matched"
+			end
+		end
+		return assert.same(result, "matched")
+	end)
+	it("should handle empty table pattern with then syntax", function()
+		local result
+		do
+			local _exp_0 = { }
+			local _type_0 = type(_exp_0)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if next(_exp_0) == nil then
+					_match_0 = true
+					result = "matched"
+				end
+			end
+			if not _match_0 then
+				result = "not matched"
+			end
+		end
+		return assert.same(result, "matched")
+	end)
+	return it("should match empty patterns with multiple when branches", function()
+		local emptyArray = { }
+		local emptyHash = { }
+		local result1
+		do
+			local _type_0 = type(emptyArray)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if 1 == emptyArray[1] then
+					_match_0 = true
+					result1 = "has 1"
+				end
+			end
+			if not _match_0 then
+				local _match_1 = false
+				if _tab_0 then
+					if #emptyArray == 0 then
+						_match_1 = true
+						result1 = "empty list"
+					end
+				end
+				if not _match_1 then
+					result1 = "other"
+				end
+			end
+		end
+		assert.same(result1, "empty list")
+		local result2
+		do
+			local _type_0 = type(emptyHash)
+			local _tab_0 = "table" == _type_0 or "userdata" == _type_0
+			local _match_0 = false
+			if _tab_0 then
+				if 1 == emptyHash.a then
+					_match_0 = true
+					result2 = "has a"
+				end
+			end
+			if not _match_0 then
+				local _match_1 = false
+				if _tab_0 then
+					if next(emptyHash) == nil then
+						_match_1 = true
+						result2 = "empty table"
+					end
+				end
+				if not _match_1 then
+					result2 = "other"
+				end
+			end
+		end
+		return assert.same(result2, "empty table")
 	end)
 end)
