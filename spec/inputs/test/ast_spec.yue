@@ -1,0 +1,91 @@
+yue = require "yue"
+
+describe "yue.to_ast", ->
+	it "should return AST with end position for simple expression", ->
+		ast = yue.to_ast "x = 1"
+		assert.is_not_nil ast
+		-- ast format: [name, begin_line, begin_col, end_line, end_col, ...children]
+		assert.same ast[1], "File"
+		assert.same ast[2], 1  -- begin line
+		assert.same ast[3], 1  -- begin col
+		assert.is_number ast[4]  -- end line
+		assert.is_number ast[5]  -- end col
+
+	it "should have correct end position for leaf nodes", ->
+		ast = yue.to_ast "1"
+		assert.is_not_nil ast
+		-- Leaf node with no children should have format: [name, begin_line, begin_col, end_line, end_col, value]
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		assert.is_number ast[4]
+		assert.is_number ast[5]
+
+	it "should have end position for multi-line code", ->
+		code = [[
+x = 1
+y = 2]]
+		ast = yue.to_ast code
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		-- End position should be on line 2
+		assert.is_true ast[4] >= 2
+
+	it "should have end position for function definition", ->
+		code = [[
+add = (a, b) ->
+	a + b]]
+		ast = yue.to_ast code
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		assert.is_number ast[4]
+		assert.is_number ast[5]
+
+	it "should have end position for table literal", ->
+		ast = yue.to_ast "{a: 1, b: 2}"
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		assert.is_number ast[4]
+		assert.is_number ast[5]
+
+	it "should have end position for class definition", ->
+		code = [[
+class Person
+	new: (@name) =>
+	getName: => @name]]
+		ast = yue.to_ast code
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		assert.is_true ast[4] >= 3
+
+	it "should return nil and error message for invalid syntax", ->
+		ast, err = yue.to_ast "if then else"
+		assert.is_nil ast
+		assert.is_string err
+
+	it "should support flatten level parameter", ->
+		ast = yue.to_ast "x = 1", 0
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.is_number ast[4]
+		assert.is_number ast[5]
+
+	it "should have end position in nested structures", ->
+		code = "x = [i for i = 1, 10]"
+		ast = yue.to_ast code
+		assert.is_not_nil ast
+		assert.same ast[1], "File"
+		assert.same ast[2], 1
+		assert.same ast[3], 1
+		assert.is_number ast[4]
+		assert.is_number ast[5]
+		-- End column should reflect the end of the expression
+		assert.is_true ast[5] > 1

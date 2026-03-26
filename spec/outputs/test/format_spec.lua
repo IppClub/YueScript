@@ -164,7 +164,9 @@ local rewriteLineCol
 rewriteLineCol = function(item)
 	item[2] = 0
 	item[3] = 0
-	for i = 4, #item do
+	item[4] = 0
+	item[5] = 0
+	for i = 6, #item do
 		local _exp_0 = type(item[i])
 		if "table" == _exp_0 then
 			if item[i][1] == "comment" then
