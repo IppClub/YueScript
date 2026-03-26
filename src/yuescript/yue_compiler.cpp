@@ -478,11 +478,18 @@ private:
 		ast_ptr<true, Exp_t> defVal;
 	};
 
+	enum class EmptyTableType {
+		None,
+		EmptyList,
+		EmptyTable
+	};
+
 	struct Destructure {
 		ast_ptr<true, ast_node> value;
 		std::string valueVar;
 		std::list<DestructItem> items;
 		ast_ptr<false, ExpListAssign_t> inlineAssignment;
+		EmptyTableType emptyTableType = EmptyTableType::None;
 	};
 
 	enum class ExpUsage {
@@ -3425,10 +3432,9 @@ private:
 						break;
 					default: YUEE("AST node mismatch", destructNode); break;
 				}
-				if (dlist->empty()) {
-					if (!optional) {
-						throw CompileError("expect items to be destructured"sv, destructNode);
-					}
+				bool emptyTablePattern = dlist->empty();
+				if (emptyTablePattern && !optional) {
+					throw CompileError("expect items to be destructured"sv, destructNode);
 				}
 				for (auto item : *dlist) {
 					switch (item->get_id()) {
@@ -3553,6 +3559,26 @@ private:
 						destructs.push_back(AssignmentPtr{newAssign, true});
 						extraScope = true;
 					}
+				}
+				// Handle empty table pattern for switch matching
+				if (emptyTablePattern) {
+					Destructure emptyDestruct;
+					if (!varDefOnly) {
+						emptyDestruct.value = valueItems.back();
+						emptyDestruct.valueVar = singleVariableFrom(emptyDestruct.value, AccessType::None);
+					}
+					switch (destructNode->get_id()) {
+						case id<Comprehension_t>():
+							emptyDestruct.emptyTableType = EmptyTableType::EmptyList;
+							break;
+						case id<TableLit_t>():
+						case id<SimpleTable_t>():
+							emptyDestruct.emptyTableType = EmptyTableType::EmptyTable;
+							break;
+						default:
+							break;
+					}
+					destructs.push_back(std::move(emptyDestruct));
 				}
 				TableLit_t* tabs[] = {subDestruct.get(), subMetaDestruct.get()};
 				for (auto tab : tabs) {
@@ -12129,6 +12155,15 @@ private:
 						continue;
 					}
 					const auto& destruct = std::get<Destructure>(des);
+					// Handle empty table pattern
+					if (destruct.emptyTableType != EmptyTableType::None) {
+						if (destruct.emptyTableType == EmptyTableType::EmptyList) {
+							conds.push_back('#' + objVar + " == 0");
+						} else {
+							conds.push_back(globalVar("next"sv, branch, AccessType::Read) + '(' + objVar + ") == nil");
+						}
+						continue;
+					}
 					for (const auto& item : destruct.items) {
 						if (!item.defVal) {
 							if (!isAssignable(item.target)) {
