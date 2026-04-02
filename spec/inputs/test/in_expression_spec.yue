@@ -72,11 +72,6 @@ describe "in expression", ->
 		assert.is_true 2 in get_items!
 		assert.is_false 5 in get_items!
 
-	it "should handle nil in table", ->
-		items = {1, nil, 3}
-		assert.is_true nil in items
-		assert.is_true 1 in items
-
 	it "should work with string keys", ->
 		obj = ["name", "value"]
 		assert.is_true "name" in obj

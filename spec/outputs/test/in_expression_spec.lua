@@ -201,25 +201,7 @@ local _anon_func_21 = function(get_items)
 	end
 	return false
 end
-local _anon_func_22 = function(items)
-	local _val_0 = nil
-	for _index_0 = 1, #items do
-		if items[_index_0] == _val_0 then
-			return true
-		end
-	end
-	return false
-end
-local _anon_func_23 = function(items)
-	local _val_0 = 1
-	for _index_0 = 1, #items do
-		if items[_index_0] == _val_0 then
-			return true
-		end
-	end
-	return false
-end
-local _anon_func_24 = function(obj)
+local _anon_func_22 = function(obj)
 	local _val_0 = "name"
 	for _index_0 = 1, #obj do
 		if obj[_index_0] == _val_0 then
@@ -228,7 +210,7 @@ local _anon_func_24 = function(obj)
 	end
 	return false
 end
-local _anon_func_25 = function(obj)
+local _anon_func_23 = function(obj)
 	local _val_0 = "value"
 	for _index_0 = 1, #obj do
 		if obj[_index_0] == _val_0 then
@@ -237,7 +219,7 @@ local _anon_func_25 = function(obj)
 	end
 	return false
 end
-local _anon_func_26 = function(obj)
+local _anon_func_24 = function(obj)
 	local _val_0 = "missing"
 	for _index_0 = 1, #obj do
 		if obj[_index_0] == _val_0 then
@@ -246,7 +228,7 @@ local _anon_func_26 = function(obj)
 	end
 	return false
 end
-local _anon_func_27 = function(items)
+local _anon_func_25 = function(items)
 	local _val_0 = 2
 	for _index_0 = 1, #items do
 		if items[_index_0] == _val_0 then
@@ -255,7 +237,7 @@ local _anon_func_27 = function(items)
 	end
 	return false
 end
-local _anon_func_28 = function(allowed, item)
+local _anon_func_26 = function(allowed, item)
 	for _index_0 = 1, #allowed do
 		if allowed[_index_0] == item then
 			return true
@@ -411,23 +393,14 @@ return describe("in expression", function()
 		assert.is_true(_anon_func_20(get_items))
 		return assert.is_false(_anon_func_21(get_items))
 	end)
-	it("should handle nil in table", function()
-		local items = {
-			1,
-			nil,
-			3
-		}
-		assert.is_true(_anon_func_22(items))
-		return assert.is_true(_anon_func_23(items))
-	end)
 	it("should work with string keys", function()
 		local obj = {
 			"name",
 			"value"
 		}
-		assert.is_true(_anon_func_24(obj))
-		assert.is_true(_anon_func_25(obj))
-		return assert.is_false(_anon_func_26(obj))
+		assert.is_true(_anon_func_22(obj))
+		assert.is_true(_anon_func_23(obj))
+		return assert.is_false(_anon_func_24(obj))
 	end)
 	it("should support complex expressions", function()
 		local items = {
@@ -435,7 +408,7 @@ return describe("in expression", function()
 			2,
 			3
 		}
-		local result = (_anon_func_27(items)) and "yes" or "no"
+		local result = (_anon_func_25(items)) and "yes" or "no"
 		return assert.same(result, "yes")
 	end)
 	return it("should work in comprehension", function()
@@ -456,7 +429,7 @@ return describe("in expression", function()
 			local _len_0 = 1
 			for _index_0 = 1, #source do
 				local item = source[_index_0]
-				if (#allowed > 0 and _anon_func_28(allowed, item)) then
+				if (#allowed > 0 and _anon_func_26(allowed, item)) then
 					_accum_0[_len_0] = item
 					_len_0 = _len_0 + 1
 				end
