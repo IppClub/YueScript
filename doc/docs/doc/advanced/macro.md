@@ -229,7 +229,7 @@ print "Valid enum type:", $BodyType Static
 
 </YueDisplay>
 
-## Generating Multi-line Yue Code
+## Generating Multi-line Code
 
 When a macro returns multi-line Yue code, using a quoted multi-line string is not recommended. Prefer `-> |` instead.
 

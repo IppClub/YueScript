@@ -183,7 +183,7 @@ print "Gültiger Enum-Typ:", $BodyType Static
 -- print "Kompilierungsfehler bei Enum-Typ:", $BodyType Unknown
 ```
 
-## Mehrzeiligen Yue-Code erzeugen
+## Mehrzeiligen Code erzeugen
 
 Wenn ein Makro mehrzeiligen Yue-Code zurückgibt, ist eine mehrzeilige Zeichenkette in Anführungszeichen nicht zu empfehlen. Verwende stattdessen bevorzugt `-> |`.
 

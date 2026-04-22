@@ -183,7 +183,7 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
-## Gerando código Yue em múltiplas linhas
+## Gerando código em múltiplas linhas
 
 Quando uma macro retorna código Yue em múltiplas linhas, não é recomendado usar uma string multilinha entre aspas. Prefira `-> |`.
 

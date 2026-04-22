@@ -229,7 +229,7 @@ print "有效的枚举类型:", $BodyType Static
 
 </YueDisplay>
 
-## 生成多行 Yue 代码
+## 生成多行代码
 
 &emsp;&emsp;当宏返回多行 Yue 代码时，不推荐使用带引号的多行字符串，建议优先使用 `-> |`。
 

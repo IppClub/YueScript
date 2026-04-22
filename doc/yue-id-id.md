@@ -183,7 +183,7 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
-## Menghasilkan kode Yue multi-baris
+## Menghasilkan kode multi-baris
 
 Saat macro mengembalikan kode Yue multi-baris, penggunaan string multi-baris di dalam tanda kutip tidak direkomendasikan. Sebaiknya gunakan `-> |`.
 

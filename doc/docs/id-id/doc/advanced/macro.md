@@ -229,7 +229,7 @@ print "Valid enum type:", $BodyType Static
 
 </YueDisplay>
 
-## Menghasilkan kode Yue multi-baris
+## Menghasilkan kode multi-baris
 
 Saat macro mengembalikan kode Yue multi-baris, penggunaan string multi-baris di dalam tanda kutip tidak direkomendasikan. Sebaiknya gunakan `-> |`.
 
