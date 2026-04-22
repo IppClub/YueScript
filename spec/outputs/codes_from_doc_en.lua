@@ -125,6 +125,18 @@ end
 print("yuescript")
 print(2)
 print("Valid enum type:", "Static")
+love.conf = function(t)
+	do
+		t.identity = 'LOVE'
+		t.version = "11.5"
+	end
+end
+love.conf = function(t)
+	do
+		t.identity = 'LOVE'
+		t.version = "11.5"
+	end
+end
 do
 	print(123, "hello")
 end
@@ -164,6 +176,18 @@ end
 print("yuescript")
 print(2)
 print("Valid enum type:", "Static")
+love.conf = function(t)
+	do
+		t.identity = 'LOVE'
+		t.version = "11.5"
+	end
+end
+love.conf = function(t)
+	do
+		t.identity = 'LOVE'
+		t.version = "11.5"
+	end
+end
 do
 	print(123, "hello")
 end

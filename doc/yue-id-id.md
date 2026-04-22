@@ -183,6 +183,33 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
+## Menghasilkan kode Yue multi-baris
+
+Saat macro mengembalikan kode Yue multi-baris, penggunaan string multi-baris di dalam tanda kutip tidak direkomendasikan. Sebaiknya gunakan `-> |`.
+
+String bertanda kutip mempertahankan teks apa adanya, sedangkan string multi-baris YAML menghapus indentasi awal yang sama. Ini biasanya membuat blok Yue yang dihasilkan lebih stabil, terutama ketika kode yang dihasilkan berisi komentar atau blok bertingkat.
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
 ## Validasi Argumen
 
 Anda dapat mendeklarasikan tipe node AST yang diharapkan dalam daftar argumen, dan memeriksa apakah argumen macro yang masuk memenuhi harapan pada waktu kompilasi.

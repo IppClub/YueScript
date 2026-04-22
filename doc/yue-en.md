@@ -183,6 +183,33 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
+## Generating Multi-line Yue Code
+
+When a macro returns multi-line Yue code, using a quoted multi-line string is not recommended. Prefer `-> |` instead.
+
+A quoted string keeps the literal text as-is, while a YAML multiline string removes the common leading indentation. This usually makes generated Yue blocks more stable, especially when the generated code contains comments or nested blocks.
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
 ## Argument Validation
 
 You can declare the expected AST node types in the argument list, and check whether the incoming macro arguments meet the expectations at compile time.

@@ -183,6 +183,33 @@ print "有效的枚举类型:", $BodyType Static
 -- print "编译报错的枚举类型:", $BodyType Unknown
 ```
 
+## 生成多行 Yue 代码
+
+&emsp;&emsp;当宏返回多行 Yue 代码时，不推荐使用带引号的多行字符串，建议优先使用 `-> |`。
+
+&emsp;&emsp;带引号的字符串会按字面保留文本；而 YAML 风格多行字符串会移除公共前导缩进。对宏生成的 Yue 代码来说，这通常能让代码块结构更稳定，尤其是在生成代码里包含注释或嵌套块时。
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
 ## 宏参数检查
 
 &emsp;&emsp;可以直接在参数列表中声明期望的 AST 节点类型，并在编译时检查传入的宏参数是否符合预期。

@@ -183,6 +183,33 @@ print "Valid enum type:", $BodyType Static
 -- print "Compilation error with enum type:", $BodyType Unknown
 ```
 
+## Gerando código Yue em múltiplas linhas
+
+Quando uma macro retorna código Yue em múltiplas linhas, não é recomendado usar uma string multilinha entre aspas. Prefira `-> |`.
+
+Uma string entre aspas preserva o texto literal, enquanto uma string multilinha estilo YAML remove a indentação inicial comum. Isso normalmente deixa os blocos Yue gerados mais estáveis, especialmente quando o código gerado contém comentários ou blocos aninhados.
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
 ## Validação de argumentos
 
 Você pode declarar os tipos de nós AST esperados na lista de argumentos e verificar se os argumentos da macro recebidos atendem às expectativas em tempo de compilação.

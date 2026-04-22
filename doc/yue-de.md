@@ -183,6 +183,33 @@ print "Gültiger Enum-Typ:", $BodyType Static
 -- print "Kompilierungsfehler bei Enum-Typ:", $BodyType Unknown
 ```
 
+## Mehrzeiligen Yue-Code erzeugen
+
+Wenn ein Makro mehrzeiligen Yue-Code zurückgibt, ist eine mehrzeilige Zeichenkette in Anführungszeichen nicht zu empfehlen. Verwende stattdessen bevorzugt `-> |`.
+
+Eine Zeichenkette in Anführungszeichen behält den Text wörtlich bei, während ein YAML-Mehrzeilen-String die gemeinsame führende Einrückung entfernt. Dadurch bleiben erzeugte Yue-Blöcke in der Regel stabiler, besonders wenn der erzeugte Code Kommentare oder verschachtelte Blöcke enthält.
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
 ## Argument-Validierung
 
 Du kannst erwartete AST-Knotentypen in der Argumentliste deklarieren und zur Compile-Zeit prüfen, ob die übergebenen Makroargumente den Erwartungen entsprechen.
