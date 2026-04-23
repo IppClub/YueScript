@@ -1,0 +1,160 @@
+import to_lua from require "yue"
+
+compile_and_run = (code, config = {}) ->
+	lua_code, err = to_lua code, config
+	assert.is_nil err
+	assert.is_not_nil lua_code
+	chunk, load_err = load lua_code
+	assert.is_nil load_err
+	assert.is_not_nil chunk
+	chunk!
+
+describe "annotation", ->
+	it "should append generated text after annotated class by default", ->
+		code = [[
+macro ClsDef = (code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	return
+		type: "text"
+		before: false
+		code: "-- after:" .. className
+
+$[ClsDef]
+class A
+	getName: => "A"
+
+return
+]]
+		result, err = to_lua code
+		assert.is_nil err
+		assert.is_not_nil result
+		assert.is_true result\find("__name = \"A\"") != nil
+		assert.is_true result\find("%-%- after:A") != nil
+		assert.is_true result\find("__name = \"A\"") < result\find("%-%- after:A")
+
+	it "should place generated text before the annotated statement when before is true", ->
+		code = [[
+macro Before = (code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	return
+		type: "text"
+		before: true
+		code: "-- before:" .. className
+
+$[Before]
+class B
+	getName: => "B"
+
+return
+]]
+		result, err = to_lua code
+		assert.is_nil err
+		assert.is_not_nil result
+		assert.is_true result\find("%-%- before:B") != nil
+		assert.is_true result\find("local B") != nil
+		assert.is_true result\find("%-%- before:B") < result\find("local B")
+
+	it "should support annotation invocation arguments", ->
+		code = [[
+macro Tag = (tag, code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	return
+		type: "text"
+		before: false
+		code: "-- " .. tag .. ":" .. className
+
+$[Tag("entity")]
+class C
+	getName: => "C"
+
+return
+]]
+		result, err = to_lua code
+		assert.is_nil err
+		assert.is_not_nil result
+		assert.is_true result\find("%-%- \"entity\":C") != nil
+
+	it "should report an error when annotation is not followed by a statement", ->
+		code = [[
+macro Invalid = (code) -> ""
+$[Invalid]
+]]
+		result, err = to_lua code
+		assert.is_nil result
+		assert.is_true err\match("annotation must be followed by a statement") != nil
+
+	it "should wrap annotated function to validate numeric arguments", ->
+		code = [[
+macro ValidateNumberArgs = (code) ->
+	funcName = code\match "^(%w+)%s*="
+	return
+		type: "text"
+		before: false
+		code: table.concat {
+			"local __orig_#{funcName} = #{funcName}"
+			"#{funcName} = function(a, b)"
+			"\tassert(type(a) == \"number\", \"expected number for a\")"
+			"\tassert(type(b) == \"number\", \"expected number for b\")"
+			"\treturn __orig_#{funcName}(a, b)"
+			"end"
+		}, "\n"
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+
+ok, value = pcall -> add 3, 4
+bad_ok, bad_err = pcall -> add "3", 4
+return ok, value, bad_ok, bad_err
+]]
+		ok, value, bad_ok, bad_err = compile_and_run code
+		assert.is_true ok
+		assert.same value, 7
+		assert.is_false bad_ok
+		assert.is_true bad_err\match("expected number for a") != nil
+
+	it "should wrap annotated function to validate return value", ->
+		code = [[
+macro ValidateNumberReturn = (code) ->
+	funcName = code\match "^(%w+)%s*="
+	return
+		type: "text"
+		before: false
+		code: table.concat {
+			"local __orig_#{funcName} = #{funcName}"
+			"#{funcName} = function(...)"
+			"\tlocal result = __orig_#{funcName}(...)"
+			"\tassert(type(result) == \"number\", \"expected numeric return\")"
+			"\treturn result"
+			"end"
+		}, "\n"
+
+$[ValidateNumberReturn]
+toText = (value) -> tostring value
+
+ok, err = pcall -> toText 42
+return ok, err
+]]
+		ok, err = compile_and_run code
+		assert.is_false ok
+		assert.is_true err\match("expected numeric return") != nil
+
+	it "should use annotation arguments to register annotated classes", ->
+		code = [[
+macro Register = (registry, code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	return
+		type: "text"
+		before: false
+		code: "#{registry}[\"#{className}\"] = #{className}"
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+	run: => "ok"
+
+return registry.Worker != nil, registry.Worker!\run!
+]]
+		exists, result = compile_and_run code
+		assert.is_true exists
+		assert.same result, "ok"

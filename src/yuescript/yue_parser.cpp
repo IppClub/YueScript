@@ -1072,6 +1072,8 @@ YueParser::YueParser() {
 	);
 	MacroInPlace = '$' >> space >> "->" >> space >> Body;
 
+	Annotation = "$[" >> space >> UnicodeName >> -(Invoke | InvokeArgs) >> space >> ']';
+
 	must_variable = Variable | and_(LuaKeyword >> not_alpha_num) >> keyword_as_identifier_syntax_error | expected_indentifier_error;
 
 	NameList = Seperator >> must_variable >> *(space >> ',' >> space >> must_variable);
@@ -1128,7 +1130,7 @@ YueParser::YueParser() {
 	StatementAppendix = IfLine | WhileLine | CompFor;
 	Statement = (
 		(
-			Import | Export | Global | Macro | MacroInPlace | Label
+			Import | Export | Global | Macro | MacroInPlace | Annotation | Label
 		) | (
 			Local | While | Repeat | For | Return |
 			BreakLoop | Goto | ShortTabAppending |

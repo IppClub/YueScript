@@ -1,0 +1,27 @@
+macro ClsDef = (code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	lines = table.concat [item\gsub "%-%-%-", "---@" for item in code\gmatch "(%-%-%-.-)\n"], "\n"
+	return
+		type: "text"
+		before: false
+		code: |
+			---@class #{className}
+			#{lines}
+			---@class #{className}Class
+			---@operator call:#{className}
+			---@cast #{className} #{className}Class
+
+$[ClsDef]
+class A
+	---field x number
+	---field y number
+	new: (@x = 0, @y = 0) =>
+	---field setAdd fun(self: A, x: number, y: number): number Set fields and add number values.
+	setAdd: (@x, @y) => @x + @y
+
+a = A!
+res = a::setAdd 1, 2
+print(a.x, a.y, a.y, res)
+
+return
+

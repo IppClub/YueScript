@@ -853,6 +853,12 @@ AST_NODE(Macro)
 	AST_MEMBER(Macro, &name, &decl)
 AST_END(Macro)
 
+AST_NODE(Annotation)
+	ast_ptr<true, UnicodeName_t> name;
+	ast_sel<false, Invoke_t, InvokeArgs_t> invoke;
+	AST_MEMBER(Annotation, &name, &invoke)
+AST_END(Annotation)
+
 AST_NODE(NameOrDestructure)
 	ast_sel<true, Variable_t, SimpleTable_t, TableLit_t, Comprehension_t> item;
 	AST_MEMBER(NameOrDestructure, &item)
@@ -961,7 +967,8 @@ AST_END(ChainAssign)
 AST_NODE(Statement)
 	ast_sel<true,
 		Import_t, While_t, Repeat_t, For_t,
-		Return_t, Local_t, Global_t, Export_t, Macro_t, MacroInPlace_t,
+		Return_t, Local_t, Global_t, Export_t,
+		Macro_t, MacroInPlace_t, Annotation_t,
 		BreakLoop_t, Label_t, Goto_t, ShortTabAppending_t,
 		Backcall_t, LocalAttrib_t, PipeBody_t, ExpListAssign_t, ChainAssign_t
 	> content;

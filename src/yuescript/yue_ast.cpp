@@ -1530,6 +1530,9 @@ std::string MacroFunc_t::to_string(void* ud) const {
 std::string Macro_t::to_string(void* ud) const {
 	return "macro "s + name->to_string(ud) + " = "s + decl->to_string(ud);
 }
+std::string Annotation_t::to_string(void* ud) const {
+	return "$["s + name->to_string(ud) + (invoke ? invoke->to_string(ud) : ""s) + "]"s;
+}
 std::string MacroInPlace_t::to_string(void* ud) const {
 	auto info = reinterpret_cast<YueFormat*>(ud);
 	auto line = "$ ->"s;

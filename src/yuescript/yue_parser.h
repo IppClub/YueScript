@@ -464,6 +464,7 @@ private:
 	AST_RULE(MacroFunc);
 	AST_RULE(Macro);
 	AST_RULE(MacroInPlace);
+	AST_RULE(Annotation);
 	AST_RULE(NameOrDestructure);
 	AST_RULE(AssignableNameList);
 	AST_RULE(InvokeArgs);

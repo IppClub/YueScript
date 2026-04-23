@@ -28,6 +28,11 @@ if (LUA_EXEC_NAME MATCHES "luajit")
 		NAMES luajit libluajit
 		PATHS ${LUA_LIBDIR}
 		NO_DEFAULT_PATH)
+elseif (LUA_VERSION_STRING MATCHES "Lua 5.5")
+	find_library(LUA_LIBRARIES
+		NAMES lua55 lua5.5 liblua55 liblua5.5 lua liblua
+		PATHS ${LUA_LIBDIR}
+		NO_DEFAULT_PATH)
 elseif (LUA_VERSION_STRING MATCHES "Lua 5.4")
 	find_library(LUA_LIBRARIES
 		NAMES lua54 lua5.4 liblua54 liblua5.4 lua liblua

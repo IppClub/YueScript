@@ -1,0 +1,16 @@
+macro Tag = (tag, code`ClassDecl) ->
+	className = code\match "^class%s+(%w+)"
+	return
+		type: "text"
+		before: tag == "before"
+		code: "-- #{tag}:#{className}"
+
+$[Tag("before")]
+class B
+	getTag: => "before"
+
+$[Tag("after")]
+class C
+	getTag: => "after"
+
+return B!\getTag!, C!\getTag!

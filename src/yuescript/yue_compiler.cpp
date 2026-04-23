@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.33.10"sv;
+const std::string_view version = "0.34.0"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -5386,7 +5386,8 @@ private:
 		if (!nodes.empty()) {
 			str_list temp;
 			auto lastStmt = lastStatementFrom(nodes);
-			for (auto node : nodes) {
+			for (auto nodeIt = nodes.begin(); nodeIt != nodes.end(); ++nodeIt) {
+				auto node = *nodeIt;
 				if (auto comment = ast_cast<YueComment_t>(node)) {
 					transformComment(comment, temp);
 					continue;
@@ -5398,7 +5399,8 @@ private:
 				} else if (!ast_is<Statement_t>(node)) {
 					continue;
 				}
-				auto transformNode = [&]() {
+				std::function<void()> transformNode;
+				transformNode = [&]() {
 					currentScope().lastStatement = (node == lastStmt) && currentScope().mode == GlobalMode::None;
 					auto stmt = static_cast<Statement_t*>(node);
 					if (auto importNode = stmt->content.as<Import_t>();
@@ -5418,6 +5420,56 @@ private:
 								_importedGlobal->importContent = importNode->content.get();
 							}
 						}
+					} else if (auto annotation = stmt->content.as<Annotation_t>()) {
+#ifndef YUE_NO_MACRO
+						auto next = nodeIt;
+						++next;
+						if (next == nodes.end() || !ast_is<Statement_t>(*next)) {
+							throw CompileError("annotation must be followed by a statement"sv, node);
+						}
+						if (static_cast<Statement_t*>(*next)->content.is<Return_t>()) {
+							throw CompileError("annotation can not be applied to a return statement"sv, node);
+						}
+						auto callable = annotation->new_ptr<Callable_t>();
+						auto macroName = annotation->new_ptr<MacroName_t>();
+						macroName->name.set(annotation->name);
+						callable->item.set(macroName);
+						auto chainValue = annotation->new_ptr<ChainValue_t>();
+						chainValue->items.push_back(callable);
+						if (annotation->invoke) {
+							chainValue->items.push_back(annotation->invoke);
+						}
+						auto stmtCode = YueFormat{}.toString(*next);
+						ast_ptr<false, ast_node> macroNode;
+						std::unique_ptr<input> codes;
+						std::string luaCodes;
+						str_list localVars;
+						bool before = false;
+						std::tie(macroNode, codes, luaCodes, localVars, before) = expandMacro(chainValue, ExpUsage::Common, false, stmtCode);
+						if (!before) {
+							++nodeIt;
+							node = *nodeIt;
+							transformNode();
+						}
+						if (!macroNode) {
+							temp.push_back(luaCodes);
+							if (!localVars.empty()) {
+								for (const auto& var : localVars) {
+									addToScope(var);
+								}
+							}
+						} else {
+							if (!macroNode.to<Block_t>()->statementOrComments.empty()) {
+								auto doBody = macroNode->new_ptr<Body_t>();
+								doBody->content.set(macroNode);
+								auto doNode = macroNode->new_ptr<Do_t>();
+								doNode->body.set(doBody);
+								transformDo(doNode, temp, ExpUsage::Common);
+							}
+						}
+#else // YUE_NO_MACRO
+						throw CompileError("macro feature not supported"sv, annotation);
+#endif // YUE_NO_MACRO
 					} else {
 						transformStatement(stmt, temp);
 					}
@@ -5659,7 +5711,7 @@ private:
 			pushCurrentModule(); // cur
 			int top = lua_gettop(L) - 1;
 			DEFER(lua_settop(L, top));
-			if (auto builtinCode = expandMacroChain(chainValue)) {
+			if (auto builtinCode = expandMacroChain(chainValue, Empty)) {
 				throw CompileError("macro generating function must return a function"sv, chainValue);
 			} // cur res
 			if (lua_isfunction(L, -1) == 0) {
@@ -7039,7 +7091,7 @@ private:
 		return Empty;
 	}
 
-	std::optional<std::string> expandMacroChain(ChainValue_t* chainValue) {
+	std::optional<std::string> expandMacroChain(ChainValue_t* chainValue, const std::string& extraCode) {
 		const auto& chainList = chainValue->items.objects();
 		auto x = ast_to<Callable_t>(chainList.front())->item.to<MacroName_t>();
 		auto macroName = _parser.toString(x->name);
@@ -7088,7 +7140,7 @@ private:
 							auto chainValue = exp->get_by_path<UnaryExp_t, Value_t, ChainValue_t>();
 							BREAK_IF(!chainValue);
 							BREAK_IF(!isMacroChain(chainValue));
-							str = std::get<1>(expandMacroStr(chainValue));
+							str = std::get<1>(expandMacroStr(chainValue, Empty));
 							BLOCK_END
 						}
 					}
@@ -7184,7 +7236,11 @@ private:
 		if (args) {
 			argIt = args->begin();
 		}
+		if (!extraCode.empty()) {
+			argStrs.push_back(extraCode);
+		}
 		for (const auto& arg : argStrs) {
+			ast_node* currentArg = args && argIt != args->end() ? *argIt : chainValue;
 			if (checkIt != checks.end()) {
 				if (checkIt->empty()) {
 					++checkIt;
@@ -7192,18 +7248,20 @@ private:
 					if ((*checkIt)[0] == '.') {
 						auto astName = checkIt->substr(3);
 						if (!_parser.match(astName, arg)) {
-							throw CompileError("expecting \""s + astName + "\", AST mismatch"s, *argIt);
+							throw CompileError("expecting \""s + astName + "\", AST mismatch"s, currentArg);
 						}
 					} else {
 						if (!_parser.match(*checkIt, arg)) {
-							throw CompileError("expecting \""s + *checkIt + "\", AST mismatch"s, *argIt);
+							throw CompileError("expecting \""s + *checkIt + "\", AST mismatch"s, currentArg);
 						}
 						++checkIt;
 					}
 				}
 			}
 			lua_pushlstring(L, arg.c_str(), arg.size());
-			++argIt;
+			if (args && argIt != args->end()) {
+				++argIt;
+			}
 		} // cur pcall macroFunc args...
 		bool success = lua_pcall(L, static_cast<int>(argStrs.size()), 1, 0) == 0;
 		if (!success) { // cur err
@@ -7218,21 +7276,22 @@ private:
 		return std::nullopt;
 	}
 
-	std::tuple<std::string, std::string, str_list> expandMacroStr(ChainValue_t* chainValue) {
+	std::tuple<std::string, std::string, str_list, bool> expandMacroStr(ChainValue_t* chainValue, const std::string& extraCode) {
 		auto x = chainValue->items.front();
 		pushCurrentModule(); // cur
 		int top = lua_gettop(L) - 1;
 		DEFER(lua_settop(L, top));
-		auto builtinCode = expandMacroChain(chainValue);
+		auto builtinCode = expandMacroChain(chainValue, extraCode);
 		if (builtinCode) {
-			return {Empty, builtinCode.value(), {}};
+			return {Empty, builtinCode.value(), {}, false};
 		} // cur res
 		if (lua_isstring(L, -1) == 0 && lua_istable(L, -1) == 0) {
 			throw CompileError("macro function must return a string or a table"sv, x);
 		} // cur res
 		std::string codes;
-		std::string type;
+		std::string type = "yue"s;
 		str_list localVars;
+		bool before = false;
 		if (lua_istable(L, -1) != 0) { // cur tab
 			lua_getfield(L, -1, "code"); // cur tab code
 			if (lua_isstring(L, -1) != 0) {
@@ -7245,8 +7304,8 @@ private:
 			if (lua_isstring(L, -1) != 0) {
 				type = lua_tostring(L, -1);
 			}
-			if (type != "lua"sv && type != "text"sv) {
-				throw CompileError("macro table must contain field \"type\" of value \"lua\" or \"text\""sv, x);
+			if (type != "yue"sv && type != "lua"sv && type != "text"sv) {
+				throw CompileError("macro table must contain field \"type\" of value \"yue\", \"lua\" or \"text\""sv, x);
 			}
 			lua_pop(L, 1); // cur tab
 			if (type == "text"sv) {
@@ -7269,20 +7328,26 @@ private:
 				}
 				lua_pop(L, 1); // cur tab
 			}
+			lua_getfield(L, -1, "before"); // cur tab before
+			if (lua_toboolean(L, -1) != 0) {
+				before = true;
+			}
+			lua_pop(L, 1);
 		} else { // cur code
 			codes = lua_tostring(L, -1);
 		}
 		Utils::trim(codes);
 		Utils::replace(codes, "\r\n"sv, "\n"sv);
-		return {type, codes, std::move(localVars)};
+		return {type, codes, std::move(localVars), before};
 	}
 
-	std::tuple<ast_ptr<false, ast_node>, std::unique_ptr<input>, std::string, str_list> expandMacro(ChainValue_t* chainValue, ExpUsage usage, bool allowBlockMacroReturn) {
+	std::tuple<ast_ptr<false, ast_node>, std::unique_ptr<input>, std::string, str_list, bool> expandMacro(ChainValue_t* chainValue, ExpUsage usage, bool allowBlockMacroReturn, const std::string& extraCode) {
 		auto x = ast_to<Callable_t>(chainValue->items.front())->item.to<MacroName_t>();
 		const auto& chainList = chainValue->items.objects();
 		std::string type, codes;
 		str_list localVars;
-		std::tie(type, codes, localVars) = expandMacroStr(chainValue);
+		bool before = false;
+		std::tie(type, codes, localVars, before) = expandMacroStr(chainValue, extraCode);
 		bool isBlock = (usage == ExpUsage::Common) && (chainList.size() < 2 || (chainList.size() == 2 && ast_is<Invoke_t, InvokeArgs_t>(chainList.back())));
 		ParseInfo info;
 		if (type == "lua"sv) {
@@ -7298,7 +7363,7 @@ private:
 					codes.insert(0, indent() + "do"s + nl(chainValue));
 					codes.append(_newLine + indent() + "end"s + nl(chainValue));
 				}
-				return {nullptr, nullptr, std::move(codes), std::move(localVars)};
+				return {nullptr, nullptr, std::move(codes), std::move(localVars), before};
 			} else {
 				auto expCode = "return ("s + codes + ')';
 				if (luaL_loadbuffer(L, expCode.c_str(), expCode.size(), macroChunk.c_str()) != 0) {
@@ -7320,7 +7385,7 @@ private:
 						newChain->items.push_back(*it);
 					}
 				}
-				return {exp, nullptr, Empty, std::move(localVars)};
+				return {exp, nullptr, Empty, std::move(localVars), before};
 			}
 		} else if (type == "text"sv) {
 			if (!isBlock) {
@@ -7329,7 +7394,7 @@ private:
 			if (!codes.empty()) {
 				codes.append(_newLine);
 			}
-			return {nullptr, nullptr, std::move(codes), std::move(localVars)};
+			return {nullptr, nullptr, std::move(codes), std::move(localVars), before};
 		} else {
 			if (!codes.empty()) {
 				if (isBlock) {
@@ -7395,10 +7460,10 @@ private:
 					auto block = blockEnd->block.get();
 					info.node.set(block);
 				}
-				return {info.node, std::move(info.codes), Empty, std::move(localVars)};
+				return {info.node, std::move(info.codes), Empty, std::move(localVars), before};
 			} else {
 				if (!isBlock) throw CompileError("failed to expand empty macro as expr"sv, x);
-				return {x->new_ptr<Block_t>().get(), std::move(info.codes), Empty, std::move(localVars)};
+				return {x->new_ptr<Block_t>().get(), std::move(info.codes), Empty, std::move(localVars), before};
 			}
 		}
 	}
@@ -7411,7 +7476,8 @@ private:
 			std::unique_ptr<input> codes;
 			std::string luaCodes;
 			str_list localVars;
-			std::tie(node, codes, luaCodes, localVars) = expandMacro(chainValue, usage, allowBlockMacroReturn);
+			bool before = false;
+			std::tie(node, codes, luaCodes, localVars, before) = expandMacro(chainValue, usage, allowBlockMacroReturn, Empty);
 			if (!node) {
 				out.push_back(luaCodes);
 				if (!localVars.empty()) {
