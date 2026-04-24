@@ -2,6 +2,26 @@
 
 The implementation for the original Moonscript language 0.5.0 can be found in the `0.5.0` branch of Yuescript. The Moonscript with fixes and new features is in the main branch of Yuescript. Here are the changelogs for each Yuescript version.
 
+## v0.34.x
+
+### Added Features
+
+* Added annotation statements for applying macros to the following statement.
+  ```moonscript
+  macro ShowName = (code) -> |
+    print "#{code\match '^[%w_]*'}"
+
+  $[ShowName]
+  myFunc = ->
+  ```
+* Extended macro expansion tables with `type: "yue"`, `type: "lua"`, `type: "text"`, and `before` support for controlling how generated code is inserted.
+* Added Lua 5.5 library detection to the CMake build configuration.
+
+### Fixed Issues
+
+* Added annotation statement regression coverage, including generated annotations, before/after insertion, class registration, and function-wrapper use cases.
+* Updated macro documentation and localized docs for annotation statements.
+
 ## v0.33.x
 
 ### Added Features
