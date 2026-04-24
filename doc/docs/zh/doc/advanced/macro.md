@@ -338,3 +338,145 @@ $printNumAndStr 123, "hello"
 </YueDisplay>
 
 &emsp;&emsp;更多关于可用 AST 节点的详细信息，请参考 [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp) 中大写的规则定义。
+
+## 注解语句
+
+&emsp;&emsp;注解语句会把一个宏应用到它后面的那条语句上。
+
+&emsp;&emsp;这等价于调用该宏，并把后面那条语句的源码作为最后一个参数附加进去。
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+</YueDisplay>
+
+&emsp;&emsp;如果注解宏返回的是配置表，可选字段 `before` 可以控制生成结果插入到被注解语句之前还是之后。
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+</YueDisplay>
+
+&emsp;&emsp;由于后面的语句会作为额外的宏参数传入，注解也可以从类声明生成注册代码。它同样可以使用普通宏支持的 AST 参数检查。
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+</YueDisplay>
+
+&emsp;&emsp;注解也可以用来给函数注入包装代码。
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+<YueDisplay>
+
+```yue
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+</YueDisplay>
+
+&emsp;&emsp;注解后面必须紧跟一条语句，而且不能作用在 `return` 语句上。如果被注解的语句正好位于代码块末尾，而你又需要拿到原始的语句 AST 形态，就需要额外补一个显式的 `return`，避免它被隐式返回表达式包起来。

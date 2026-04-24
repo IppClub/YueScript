@@ -143,6 +143,61 @@ end
 do
 	print(123, "hello")
 end
+local myFunc
+myFunc = function() end
+do
+	print("myFunc")
+end
+return
+-- before:tableA
+local tableA = { }
+local tableB = { }
+-- after:tableB
+return
+local registry = { }
+local Worker
+do
+	local _class_0
+	local _base_0 = {
+		run = function(self)
+			return "ok"
+		end
+	}
+	if _base_0.__index == nil then
+		_base_0.__index = _base_0
+	end
+	_class_0 = setmetatable({
+		__init = function() end,
+		__base = _base_0,
+		__name = "Worker"
+	}, {
+		__index = _base_0,
+		__call = function(cls, ...)
+			local _self_0 = setmetatable({ }, _base_0)
+			cls.__init(_self_0, ...)
+			return _self_0
+		end
+	})
+	_base_0.__class = _class_0
+	Worker = _class_0
+end
+do
+	registry["Worker"] = Worker
+end
+return
+local add
+add = function(a, b)
+	return a + b
+end
+do
+	local __orig_add = add
+	add = function(...)
+		for i = 1, select("#", ...) do
+			assert(type(select(i, ...)) == "number", "expected number for arg " .. tostring(i))
+		end
+		return __orig_add(...)
+	end
+end
 local area = 6.2831853071796 * 5
 print('你好 世界')
 do
@@ -193,6 +248,61 @@ do
 end
 do
 	print(123, "hello")
+end
+local myFunc
+myFunc = function() end
+do
+	print("myFunc")
+end
+return
+-- before:tableA
+local tableA = { }
+local tableB = { }
+-- after:tableB
+return
+local registry = { }
+local Worker
+do
+	local _class_0
+	local _base_0 = {
+		run = function(self)
+			return "ok"
+		end
+	}
+	if _base_0.__index == nil then
+		_base_0.__index = _base_0
+	end
+	_class_0 = setmetatable({
+		__init = function() end,
+		__base = _base_0,
+		__name = "Worker"
+	}, {
+		__index = _base_0,
+		__call = function(cls, ...)
+			local _self_0 = setmetatable({ }, _base_0)
+			cls.__init(_self_0, ...)
+			return _self_0
+		end
+	})
+	_base_0.__class = _class_0
+	Worker = _class_0
+end
+do
+	registry["Worker"] = Worker
+end
+return
+local add
+add = function(a, b)
+	return a + b
+end
+do
+	local __orig_add = add
+	add = function(...)
+		for i = 1, select("#", ...) do
+			assert(type(select(i, ...)) == "number", "expected number for arg " .. tostring(i))
+		end
+		return __orig_add(...)
+	end
 end
 xpcall(function()
 	return func(1, 2, 3)

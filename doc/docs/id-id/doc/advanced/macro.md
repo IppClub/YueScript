@@ -338,3 +338,145 @@ $printNumAndStr 123, "hello"
 </YueDisplay>
 
 Untuk detail lebih lanjut tentang node AST yang tersedia, silakan lihat definisi huruf besar di [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
+
+## Pernyataan anotasi
+
+Pernyataan anotasi menerapkan sebuah macro ke pernyataan yang tepat mengikutinya.
+
+Ini setara dengan memanggil macro sambil menambahkan kode sumber dari pernyataan berikutnya sebagai argumen terakhir.
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+</YueDisplay>
+
+Saat macro anotasi mengembalikan tabel konfigurasi, field opsional `before` mengatur apakah hasil yang dihasilkan akan diletakkan sebelum atau sesudah pernyataan yang dianotasi.
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+</YueDisplay>
+
+Karena pernyataan berikutnya diteruskan sebagai argumen macro tambahan, anotasi juga bisa digunakan untuk menghasilkan kode registrasi langsung dari deklarasi class. Anda juga dapat menggunakan pemeriksaan argumen AST yang sama seperti pada macro biasa.
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+</YueDisplay>
+
+Anotasi juga bisa menyisipkan kode pembungkus di sekitar fungsi:
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+<YueDisplay>
+
+```yue
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+</YueDisplay>
+
+Sebuah anotasi harus selalu diikuti oleh sebuah pernyataan, dan tidak bisa diterapkan ke pernyataan `return`. Jika pernyataan yang dianotasi berada di akhir sebuah blok dan Anda membutuhkan bentuk AST mentah dari pernyataan itu, tambahkan `return` eksplisit setelahnya agar ia tidak dibungkus menjadi ekspresi yang dikembalikan secara implisit.

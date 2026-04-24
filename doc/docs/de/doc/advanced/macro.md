@@ -338,3 +338,145 @@ $printNumAndStr 123, "hallo"
 </YueDisplay>
 
 Weitere Details zu verfügbaren AST-Knoten findest du in den großgeschriebenen Definitionen in `yue_parser.cpp`.
+
+## Annotation-Anweisungen
+
+Annotation-Anweisungen wenden ein Makro auf die direkt folgende Anweisung an.
+
+Das entspricht einem Makroaufruf, bei dem der Quelltext der folgenden Anweisung als letztes Argument zusätzlich übergeben wird.
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+</YueDisplay>
+
+Wenn das Annotationsmakro eine Konfigurationstabelle zurückgibt, steuert das optionale Feld `before`, ob das Ergebnis vor oder nach der annotierten Anweisung eingefügt wird.
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+</YueDisplay>
+
+Da die folgende Anweisung als zusätzliches Makroargument übergeben wird, lassen sich mit Annotationen auch direkt Registrierungszeilen aus Klassendeklarationen erzeugen. Du kannst dabei dieselben AST-Argumentprüfungen wie bei normalen Makros verwenden.
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+<YueDisplay>
+
+```yue
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+</YueDisplay>
+
+Annotationen können auch Wrapper-Code um Funktionen herum einfügen:
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+<YueDisplay>
+
+```yue
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+</YueDisplay>
+
+Auf eine Annotation muss immer eine Anweisung folgen, und sie kann nicht auf eine `return`-Anweisung angewendet werden. Wenn die annotierte Anweisung am Ende eines Blocks steht und du die rohe AST-Form der Anweisung brauchst, füge ein explizites `return` danach ein, damit sie nicht in einen implizit zurückgegebenen Ausdruck eingebettet wird.

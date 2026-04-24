@@ -237,6 +237,76 @@ $printNumAndStr 123, "hello"
 
 Para mais detalhes sobre os nós AST disponíveis, consulte as definições em maiúsculas em [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
 
+## Instruções de anotação
+
+As instruções de anotação aplicam uma macro à instrução logo em seguida.
+
+Isso equivale a chamar a macro com o código-fonte da instrução seguinte anexado como último argumento.
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+Quando a macro de anotação retorna uma tabela de configuração, o campo opcional `before` controla se o resultado gerado será emitido antes ou depois da instrução anotada.
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+Como a instrução seguinte é passada como um argumento extra para a macro, anotações também podem ser usadas para gerar código de registro a partir de declarações de classe. Você também pode usar as mesmas checagens de AST nos argumentos que macros normais oferecem.
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+Anotações também podem injetar código de empacotamento em volta de funções:
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+Uma anotação sempre precisa ser seguida por uma instrução, e ela não pode ser aplicada a uma instrução `return`. Se a instrução anotada aparecer no fim de um bloco e você precisar da forma AST bruta dessa instrução, adicione um `return` explícito em seguida para evitar que ela seja envolvida por uma expressão com retorno implícito.
+
 # Try
 
 A sintaxe para tratamento de erros do Lua em uma forma comum.

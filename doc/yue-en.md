@@ -105,7 +105,7 @@ if $and f1!, f2!, f3!
 
 ## Insert Raw Codes
 
-A macro function can either return a YueScript string or a config table containing Lua codes.
+A macro function can either return a YueScript string or a config table containing generated code.
 
 ```yuescript
 macro yueFunc = (var) -> "local #{var} = ->"
@@ -132,6 +132,15 @@ if cond then
 end
 ]==]
 ```
+
+The returned table can be used to control how the generated code gets inserted.
+
+- `code` is the generated text.
+- `type` chooses how the text is handled. It can be `"yue"` (the default), `"lua"`, or `"text"`.
+- `locals` declares local names introduced by inserted text.
+- `before` puts the generated result before the annotated statement instead of after it.
+
+In most cases you only need to choose a `type`. Use `"yue"` for generated YueScript, `"lua"` for raw Lua, and `"text"` for text that should be copied straight into the final output.
 
 ## Export Macro
 
@@ -236,6 +245,76 @@ $printNumAndStr 123, "hello"
 ```
 
 For more details about available AST nodes, please refer to the uppercased definitions in [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp).
+
+## Annotation Statements
+
+Annotation statements apply a macro to the statement immediately following them.
+
+This is equivalent to calling the macro with the following statement's source text appended as the last argument.
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+When the annotation macro returns a config table, the optional `before` field controls whether the generated result is emitted before or after the annotated statement.
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+Because the followed statement is passed in as an extra macro argument, annotations can also be used to generate registration code from class declarations. Because the followed statement is passed in as an extra macro argument, you can use the same AST argument checks as normal macros:
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+Annotations can also inject wrapper code around functions:
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+An annotation must always be followed by a statement, and it can not be applied to a `return` statement. If the annotated statement appears at the end of a block, add an explicit trailing `return` when you need the raw statement AST shape instead of an implicitly returned expression.
 
 # Try
 
