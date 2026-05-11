@@ -41,6 +41,9 @@ import { history, indentWithTab } from "@codemirror/commands";
 import { defaultKeymap, historyKeymap } from "@codemirror/commands";
 import { simpleMode } from "@codemirror/legacy-modes/mode/simple-mode";
 
+const TRY_PAGE_DRAFT_KEY = "yuescript.try.code";
+const TRY_PAGE_DRAFT_SAVE_DELAY = 1000;
+
 function createEditorTheme({ bg, fg, gutterColor, selectionBg, cursorColor, matchingBracketBg, dark }) {
   return EditorView.theme(
     {
@@ -161,6 +164,7 @@ export default {
       highlightCompartment: null,
       themeObserver: null,
       _onYueReady: null,
+      draftSaveTimer: null,
     };
   },
   computed: {
@@ -170,13 +174,17 @@ export default {
     highlightedLua() {
       return highlight(this.compiled || "", languages.lua);
     },
+    shouldPersistDraft() {
+      return !this.compileronly && !this.displayonly && this.text === "";
+    },
   },
   mounted() {
     this.windowWidth = window.innerWidth;
     window.addEventListener("resize", this.handleResize);
+    window.addEventListener("beforeunload", this.saveDraftNow);
     this.observeTheme();
 
-    const initialCode = this.text;
+    const initialCode = this.loadDraftCode();
     this.code = initialCode;
     this.codeChanged(initialCode);
     this.initEditor(initialCode);
@@ -199,10 +207,16 @@ export default {
     }
   },
   beforeUnmount() {
+    this.saveDraftNow();
     window.removeEventListener("resize", this.handleResize);
+    window.removeEventListener("beforeunload", this.saveDraftNow);
     if (this._onYueReady) {
       window.removeEventListener("yue:ready", this._onYueReady);
       this._onYueReady = null;
+    }
+    if (this.draftSaveTimer) {
+      clearTimeout(this.draftSaveTimer);
+      this.draftSaveTimer = null;
     }
     if (this.editorView) {
       this.editorView.destroy();
@@ -214,6 +228,46 @@ export default {
     }
   },
   methods: {
+    loadDraftCode() {
+      if (!this.shouldPersistDraft) {
+        return this.text;
+      }
+      try {
+        const draft = window.localStorage.getItem(TRY_PAGE_DRAFT_KEY);
+        return draft === null ? this.text : draft;
+      } catch (error) {
+        return this.text;
+      }
+    },
+    scheduleDraftSave(text) {
+      if (!this.shouldPersistDraft) {
+        return;
+      }
+      if (this.draftSaveTimer) {
+        clearTimeout(this.draftSaveTimer);
+      }
+      this.draftSaveTimer = window.setTimeout(() => {
+        this.draftSaveTimer = null;
+        this.saveDraft(text);
+      }, TRY_PAGE_DRAFT_SAVE_DELAY);
+    },
+    saveDraftNow() {
+      if (!this.shouldPersistDraft) {
+        return;
+      }
+      if (this.draftSaveTimer) {
+        clearTimeout(this.draftSaveTimer);
+        this.draftSaveTimer = null;
+      }
+      this.saveDraft(this.code);
+    },
+    saveDraft(text) {
+      try {
+        window.localStorage.setItem(TRY_PAGE_DRAFT_KEY, text);
+      } catch (error) {
+        // Ignore unavailable or full localStorage; compiling should still work.
+      }
+    },
     focusEditorToEnd() {
       if (!this.editorView) {
         return;
@@ -506,6 +560,7 @@ export default {
         }
         const nextCode = update.state.doc.toString();
         this.code = nextCode;
+        this.scheduleDraftSave(nextCode);
         this.codeChanged(nextCode);
       });
 
