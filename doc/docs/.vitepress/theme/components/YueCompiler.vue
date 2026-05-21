@@ -196,6 +196,7 @@ export default {
       if (window.yue) {
         this.info = window.yue.version();
         this.readonly = false;
+        this.codeChanged(this.code);
         this.refreshEditorReadOnly();
       }
     };
