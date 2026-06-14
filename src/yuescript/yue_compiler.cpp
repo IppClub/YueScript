@@ -78,7 +78,7 @@ static std::unordered_set<std::string> Metamethods = {
 	"close"s // Lua 5.4
 };
 
-const std::string_view version = "0.34.0"sv;
+const std::string_view version = "0.34.1"sv;
 const std::string_view extension = "yue"sv;
 
 class CompileError : public std::logic_error {
@@ -4786,7 +4786,7 @@ private:
 			auto newBlock = funLit->new_ptr<Block_t>();
 			if (funLit->body) {
 				auto last = lastStatementFrom(funLit->body);
-				if (!last->appendix && last->content.is<Return_t>() && !funLit->defaultReturn.is<DefaultValue_t>()) {
+				if (last && !last->appendix && last->content.is<Return_t>() && !funLit->defaultReturn.is<DefaultValue_t>()) {
 					throw CompileError("duplicated return statement", last->content);
 				}
 				auto content = funLit->body->content.get();
