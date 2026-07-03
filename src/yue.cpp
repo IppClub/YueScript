@@ -580,17 +580,28 @@ int main(int narg, const char** args) {
 					std::cout << lua_tostring(L, -1) << '\n';
 					return 1;
 				}
-				lua_newtable(L);
 				i++;
-				for (int j = i, index = 1; j < narg; j++) {
-					lua_pushstring(L, args[j]);
-					lua_rawseti(L, -2, index);
-					index++;
-				}
-				lua_setglobal(L, "arg");
+				auto setArgTable = [&](std::string_view scriptName, int tokensBeforeScript) {
+					lua_newtable(L);
+					for (int j = i, index = 1; j < narg; j++) {
+						lua_pushstring(L, args[j]);
+						lua_rawseti(L, -2, index);
+						index++;
+					}
+					if (!scriptName.empty()) {
+						lua_pushlstring(L, scriptName.data(), scriptName.size());
+						lua_rawseti(L, -2, 0);
+						for (int j = 0, index = -tokensBeforeScript; j < tokensBeforeScript; j++, index++) {
+							lua_pushstring(L, args[j]);
+							lua_rawseti(L, -2, index);
+						}
+					}
+					lua_setglobal(L, "arg");
+				};
 				std::ifstream input(evalStr, std::ios::in);
 				int argNum = 2;
 				if (input) {
+					setArgTable(evalStr, i - 1);
 					auto ext = fs::path(evalStr).extension().string();
 					for (auto& ch : ext) ch = std::tolower(ch);
 					if (ext == ".lua") {
@@ -630,6 +641,7 @@ int main(int narg, const char** args) {
 						lua_setfield(L, -2, "options");
 					}
 				} else {
+					setArgTable({ }, 0);
 					pushYue(L, "loadstring"sv);
 					lua_pushlstring(L, evalStr.c_str(), evalStr.size());
 					lua_pushliteral(L, "=(eval str)");

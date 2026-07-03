@@ -63,7 +63,34 @@ EOF
 assert_output_contains "First argument" "first" $YUE_BIN -e "$TMP_DIR/args_test.yue" first second
 assert_output_contains "Second argument" "second" $YUE_BIN -e "$TMP_DIR/args_test.yue" first second
 
-# Test 7: Test with compiler options via --key=value
+# Test 7: Test arg table layout for executed scripts
+echo ""
+echo "Testing arg table layout..."
+cat > "$TMP_DIR/arg_table.yue" << 'EOF'
+import arg
+print "main=" .. tostring arg[0]
+print "first=" .. tostring arg[1]
+print "exe=" .. tostring arg[-2]
+print "option=" .. tostring arg[-1]
+EOF
+
+assert_output_contains "Yue arg[0]" "main=$TMP_DIR/arg_table.yue" $YUE_BIN -e "$TMP_DIR/arg_table.yue" alpha
+assert_output_contains "Yue arg[1]" "first=alpha" $YUE_BIN -e "$TMP_DIR/arg_table.yue" alpha
+assert_output_contains "Yue arg[-1]" "option=-e" $YUE_BIN -e "$TMP_DIR/arg_table.yue" alpha
+assert_output_contains "Yue --execute arg[0]" "main=$TMP_DIR/arg_table.yue" $YUE_BIN --execute="$TMP_DIR/arg_table.yue" alpha
+
+cat > "$TMP_DIR/arg_table.lua" << 'EOF'
+print("main=" .. tostring(arg[0]))
+print("first=" .. tostring(arg[1]))
+print("exe=" .. tostring(arg[-2]))
+print("option=" .. tostring(arg[-1]))
+EOF
+
+assert_output_contains "Lua arg[0]" "main=$TMP_DIR/arg_table.lua" $YUE_BIN -e "$TMP_DIR/arg_table.lua" alpha
+assert_output_contains "Lua arg[1]" "first=alpha" $YUE_BIN -e "$TMP_DIR/arg_table.lua" alpha
+assert_output_contains "Lua arg[-1]" "option=-e" $YUE_BIN -e "$TMP_DIR/arg_table.lua" alpha
+
+# Test 8: Test with compiler options via --key=value
 echo ""
 echo "Testing compiler options in execute mode..."
 cat > "$TMP_DIR/options_test.yue" << 'EOF'
@@ -72,12 +99,12 @@ EOF
 
 assert_success "Execute with compiler option" $YUE_BIN -e "$TMP_DIR/options_test.yue" --reserve_line_number=true
 
-# Test 8: Execute code with table operations
+# Test 9: Execute code with table operations
 echo ""
 echo "Testing table operations..."
 assert_output_contains "Table operations" "3" $YUE_BIN -e 't = {1, 2, 3}; print #t'
 
-# Test 9: Execute code with function definition
+# Test 10: Execute code with function definition
 echo ""
 echo "Testing function definition..."
 cat > "$TMP_DIR/func_test.yue" << 'EOF'
@@ -87,7 +114,7 @@ EOF
 
 assert_output_contains "Function execution" "10" $YUE_BIN -e "$TMP_DIR/func_test.yue"
 
-# Test 10: Execute code with class
+# Test 11: Execute code with class
 echo ""
 echo "Testing class execution..."
 cat > "$TMP_DIR/class_test.yue" << 'EOF'
@@ -103,7 +130,7 @@ EOF
 
 assert_output_contains "Class method execution" "5" $YUE_BIN -e "$TMP_DIR/class_test.yue"
 
-# Test 11: Execute with import
+# Test 12: Execute with import
 echo ""
 echo "Testing import in execute mode..."
 cat > "$TMP_DIR/import_test.yue" << 'EOF'
@@ -113,7 +140,7 @@ EOF
 # Note: This test depends on how imports are set up
 assert_success "Execute with import" $YUE_BIN -e "$TMP_DIR/import_test.yue" --path="$TMP_DIR"
 
-# Test 12: Execute code with error handling
+# Test 13: Execute code with error handling
 echo ""
 echo "Testing error handling in executed code..."
 cat > "$TMP_DIR/error_test.yue" << 'EOF'
@@ -126,7 +153,7 @@ EOF
 
 assert_output_contains "Error handling" "caught:" $YUE_BIN -e "$TMP_DIR/error_test.yue"
 
-# Test 13: Execute with export statement
+# Test 14: Execute with export statement
 echo ""
 echo "Testing export in execute mode..."
 cat > "$TMP_DIR/export_test.yue" << 'EOF'
@@ -136,7 +163,7 @@ EOF
 
 assert_output_contains "Export value" "42" $YUE_BIN -e "$TMP_DIR/export_test.yue"
 
-# Test 14: Execute with macro
+# Test 15: Execute with macro
 echo ""
 echo "Testing macro in execute mode..."
 cat > "$TMP_DIR/macro_test.yue" << 'EOF'
@@ -148,7 +175,7 @@ EOF
 
 assert_output_contains "Macro execution" "42" $YUE_BIN -e "$TMP_DIR/macro_test.yue"
 
-# Test 15: Execute with string literal
+# Test 16: Execute with string literal
 echo ""
 echo "Testing string literals..."
 # Use grep without -F to match patterns with newlines
