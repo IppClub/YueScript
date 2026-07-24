@@ -38,6 +38,20 @@ namespace CodeCvt {
 namespace parserlib {
 
 input utf8_decode(const std::string& str) {
+	bool ascii = true;
+	for (unsigned char ch : str) {
+		if (ch >= 0x80) {
+			ascii = false;
+			break;
+		}
+	}
+	if (ascii) {
+		input result(str.size(), char32_t{});
+		for (size_t i = 0; i < str.size(); i++) {
+			result[i] = static_cast<unsigned char>(str[i]);
+		}
+		return result;
+	}
 	return CodeCvt::utf8to32(str);
 }
 
@@ -131,13 +145,17 @@ public:
 	// matches
 	_match_vector m_matches;
 
+	// whether to resolve left-recursive rules
+	bool m_resolve_left_recursion;
+
 	// constructor
-	_context(input& i, void* ud)
+	_context(input& i, void* ud, bool resolveLeftRecursion)
 		: m_user_data(ud)
 		, m_pos(i)
 		, m_error_pos(i)
 		, m_begin(i.begin())
-		, m_end(i.end()) {
+		, m_end(i.end())
+		, m_resolve_left_recursion(resolveLeftRecursion) {
 	}
 
 	// check if the end is reached
@@ -451,7 +469,7 @@ public:
 	virtual bool parse_non_term(_context& con) const override {
 		pos pos = con.m_pos;
 		if (m_expr->parse_non_term(con)) {
-			item_t item = {&pos, &con.m_pos, con.m_user_data};
+			item_t item = {&pos, &con.m_pos, con.m_user_data, con.m_begin, con.m_end};
 			return m_handler(item);
 		}
 		return false;
@@ -461,7 +479,7 @@ public:
 	virtual bool parse_term(_context& con) const override {
 		pos pos = con.m_pos;
 		if (m_expr->parse_term(con)) {
-			item_t item = {&pos, &con.m_pos, con.m_user_data};
+			item_t item = {&pos, &con.m_pos, con.m_user_data, con.m_begin, con.m_end};
 			return m_handler(item);
 		}
 		return false;
@@ -854,6 +872,40 @@ private:
 	rule& m_rule;
 };
 
+// predictive rule dispatch
+class _dispatch : public _expr {
+public:
+	_dispatch(const dispatch_handler& handler, std::initializer_list<rule*> rules)
+		: m_handler(handler) {
+		m_rules.reserve(rules.size());
+		for (rule* target : rules) {
+			m_rules.push_back(new _ref(*target));
+		}
+	}
+
+	virtual ~_dispatch() {
+		for (_expr* target : m_rules) {
+			delete target;
+		}
+	}
+
+	virtual bool parse_non_term(_context& con) const override {
+		const size_t index = m_handler(con.m_pos.m_it, con.m_end);
+		if (index >= m_rules.size()) return false;
+		return m_rules[index]->parse_non_term(con);
+	}
+
+	virtual bool parse_term(_context& con) const override {
+		const size_t index = m_handler(con.m_pos.m_it, con.m_end);
+		if (index >= m_rules.size()) return false;
+		return m_rules[index]->parse_term(con);
+	}
+
+private:
+	dispatch_handler m_handler;
+	std::vector<_expr*> m_rules;
+};
+
 // eof
 class _eof : public _expr {
 public:
@@ -930,6 +982,10 @@ _state::_state(_context& con)
 
 // parse non-term rule.
 bool _context::parse_non_term(rule& r) {
+	if (!m_resolve_left_recursion) {
+		return _parse_non_term(r);
+	}
+
 	// save the state of the rule
 	rule::_state old_state = r.m_state;
 	// restore the rule's state
@@ -1024,6 +1080,10 @@ bool _context::parse_non_term(rule& r) {
 
 // parse term rule.
 bool _context::parse_term(rule& r) {
+	if (!m_resolve_left_recursion) {
+		return _parse_term(r);
+	}
+
 	// save the state of the rule
 	rule::_state old_state = r.m_state;
 	// restore the rule's state
@@ -1619,6 +1679,10 @@ expr user(const expr& e, const user_handler& handler) {
 	return _private::construct_expr(new _user(_private::get_expr(e), handler));
 }
 
+expr dispatch(const dispatch_handler& handler, std::initializer_list<rule*> rules) {
+	return _private::construct_expr(new _dispatch(handler, rules));
+}
+
 /** parses the given input.
 	The parse procedures of each rule parsed are executed
 	before this function returns, if parsing succeeds.
@@ -1629,9 +1693,9 @@ expr user(const expr& e, const user_handler& handler) {
 	@param ud user data, passed to the parse procedures.
 	@return true on parsing success, false on failure.
 */
-bool parse(input& i, rule& g, error_list& el, void* st, void* ud) {
+bool parse(input& i, rule& g, error_list& el, void* st, void* ud, bool resolveLeftRecursion) {
 	// prepare context
-	_context con(i, ud);
+	_context con(i, ud, resolveLeftRecursion);
 
 	// parse grammar
 	if (!con.parse_non_term(g)) {
@@ -1664,9 +1728,9 @@ bool parse(input& i, rule& g, error_list& el, void* st, void* ud) {
 	@param ud user data, passed to the parse procedures.
 	@return true on parsing success, false on failure.
 */
-bool start_with(input& i, rule& g, error_list& el, void* st, void* ud) {
+bool start_with(input& i, rule& g, error_list& el, void* st, void* ud, bool resolveLeftRecursion) {
 	// prepare context
-	_context con(i, ud);
+	_context con(i, ud, resolveLeftRecursion);
 
 	// parse grammar
 	if (!con.parse_non_term(g)) {

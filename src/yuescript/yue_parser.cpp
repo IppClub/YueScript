@@ -769,7 +769,46 @@ YueParser::YueParser() {
 	});
 
 	SimpleTable = Seperator >> key_value >> *(space >> ',' >> space >> key_value);
-	Value = inc_exp_level >> ensure(SimpleValue | SimpleTable | ChainValue, dec_exp_level);
+	auto chain_value_start = pl::user(true_(), [](const item_t& item) {
+		auto current = item.begin->m_it;
+		if (current == item.input_end) return false;
+		auto ch = *current;
+		if (ch == '@') return true;
+		if (ch == '$') {
+			current++;
+			return current != item.input_end
+				&& (*current == '_' || *current > 255
+					|| (*current >= 'a' && *current <= 'z')
+					|| (*current >= 'A' && *current <= 'Z'));
+		}
+		if (!(ch == '_' || ch > 255
+				|| (ch >= 'a' && ch <= 'z')
+				|| (ch >= 'A' && ch <= 'Z'))) {
+			return false;
+		}
+		bool ascii = true;
+		std::string name;
+		do {
+			if (*current > 255) {
+				ascii = false;
+			} else {
+				name += static_cast<char>(*current);
+			}
+			current++;
+			if (current == item.input_end) break;
+			ch = *current;
+		} while (ch == '_' || ch > 255
+			|| (ch >= 'a' && ch <= 'z')
+			|| (ch >= 'A' && ch <= 'Z')
+			|| (ch >= '0' && ch <= '9'));
+		if (ascii && Keywords.find(name) != Keywords.end()) return false;
+		while (current != item.input_end && (*current == ' ' || *current == '\t')) current++;
+		return current == item.input_end || *current != ':';
+	});
+	Value = inc_exp_level >> ensure(
+		chain_value_start >> ChainValue |
+		SimpleValue | SimpleTable | ChainValue,
+		dec_exp_level);
 
 	single_string_inner = '\\' >> set("'\\") | not_('\'') >> any_char;
 	SingleString = '\'' >> *single_string_inner >> ('\'' | unclosed_single_string_error);
@@ -1114,11 +1153,62 @@ YueParser::YueParser() {
 
 	ConstValue = (expr("nil") | "true" | "false") >> not_alpha_num;
 
-	SimpleValue =
+	simple_value_fallback =
 		TableLit | ConstValue | If | Switch | Try | With |
 		ClassDecl | For | While | Repeat | Do |
 		UnaryValue | TblComprehension | Comprehension |
 		FunLit | Num | VarArg;
+	SimpleValue = pl::dispatch([](input_it current, input_it end) -> size_t {
+		if (current == end) return 14;
+		auto startsKeyword = [current, end](std::string_view keyword) {
+			auto it = current;
+			for (char expected : keyword) {
+				if (it == end || *it != static_cast<unsigned char>(expected)) return false;
+				++it;
+			}
+			if (it == end) return true;
+			const auto ch = *it;
+			return !(ch == '_' || (ch >= 'a' && ch <= 'z')
+				|| (ch >= 'A' && ch <= 'Z') || (ch >= '0' && ch <= '9'));
+		};
+		switch (*current) {
+			case '{': return 14;
+			case '-': {
+				auto next = current + 1;
+				return next != end && *next == '>' ? 14 : 11;
+			}
+			case '#': case '~': return 11;
+			case '.': {
+				auto next = current + 1;
+				if (next != end && *next >= '0' && *next <= '9') return 12;
+				if (next != end && *next == '.') {
+					++next;
+					if (next != end && *next == '.') return 13;
+				}
+				return 14;
+			}
+			default:
+				if (*current >= '0' && *current <= '9') return 12;
+				break;
+		}
+		if (startsKeyword("nil"sv) || startsKeyword("true"sv) || startsKeyword("false"sv)) return 1;
+		if (startsKeyword("if"sv) || startsKeyword("unless"sv)) return 2;
+		if (startsKeyword("switch"sv)) return 3;
+		if (startsKeyword("try"sv)) return 4;
+		if (startsKeyword("with"sv)) return 5;
+		if (startsKeyword("class"sv)) return 6;
+		if (startsKeyword("for"sv)) return 7;
+		if (startsKeyword("while"sv) || startsKeyword("until"sv)) return 8;
+		if (startsKeyword("repeat"sv)) return 9;
+		if (startsKeyword("do"sv)) return 10;
+		if (startsKeyword("not"sv)) return 11;
+		return 14;
+	}, {
+		TableLit.this_ptr(), ConstValue.this_ptr(), If.this_ptr(), Switch.this_ptr(),
+		Try.this_ptr(), With.this_ptr(), ClassDecl.this_ptr(), For.this_ptr(),
+		While.this_ptr(), Repeat.this_ptr(), Do.this_ptr(), UnaryValue.this_ptr(),
+		Num.this_ptr(), VarArg.this_ptr(), simple_value_fallback.this_ptr()
+	});
 
 	ExpListAssign = ExpList >> -(space >> (Update | Assign | SubBackcall)) >> not_(space >> '=');
 
@@ -1204,7 +1294,7 @@ bool YueParser::startWith(std::string_view codes, rule& r) {
 	error_list errors;
 	try {
 		State state;
-		return ::yue::start_with(*converted, r, errors, &state);
+		return ::yue::start_with(*converted, r, errors, &state, false);
 	} catch (const ParserError&) {
 		return false;
 	} catch (const std::logic_error&) {
@@ -1232,7 +1322,7 @@ ParseInfo YueParser::parse(std::string_view codes, rule& r, bool lax) {
 	try {
 		State state;
 		state.lax = lax;
-		res.node.set(::yue::parse(*(res.codes), r, errors, &state));
+		res.node.set(::yue::parse(*(res.codes), r, errors, &state, false));
 		if (state.exportCount > 0) {
 			int index = 0;
 			std::string moduleName;

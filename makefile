@@ -437,9 +437,25 @@ clean:
 	@$(RM) -r bin
 	@$(RM) -r $(TEST_OUTPUT)
 
+# Test shared Lua module state lifecycle
+.PHONY: test-same-module
+test-same-module: debug
+	@$(CXX) -std=c++20 -DYUE_UTF8_IMPL $(INCLUDES) \
+		spec/cpp/same_module_state_test.cpp \
+		build/debug/yuescript/ast.o \
+		build/debug/yuescript/parser.o \
+		build/debug/yuescript/yue_ast.o \
+		build/debug/yuescript/yue_compiler.o \
+		build/debug/yuescript/yue_parser.o \
+		build/debug/yuescript/yuescript.o \
+		$(SRC_PATH)/3rdParty/lua/liblua.a \
+		$(LINK_FLAGS) \
+		-o build/debug/same_module_state_test
+	@build/debug/same_module_state_test
+
 # Test Yuescript compiler
 .PHONY: test
-test: debug
+test: test-same-module
 	@mkdir -p $(TEST_OUTPUT)/5.1/test
 	@echo "Compiling Yuescript codes..."
 	@$(START_TIME)
@@ -516,4 +532,3 @@ $(BUILD_PATH)/%.o: $(SRC_PATH)/%.c
 	$(CMD_PREFIX)$(CC) $(CFLAGS) $(INCLUDES) -MP -MMD -c $< -o $@
 	@echo -en "\t Compile time: "
 	@$(END_TIME)
-

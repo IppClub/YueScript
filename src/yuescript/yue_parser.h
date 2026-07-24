@@ -405,6 +405,7 @@ private:
 	AST_RULE(ChainValue);
 	AST_RULE(SimpleTable);
 	AST_RULE(SimpleValue);
+	NONE_AST_RULE(simple_value_fallback);
 	AST_RULE(Value);
 	AST_RULE(LuaStringOpen);
 	AST_RULE(LuaStringContent);

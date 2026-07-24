@@ -11,12 +11,17 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 
 #pragma once
 
+#include <array>
 #include <cassert>
-#include <list>
+#include <cstddef>
 #include <deque>
+#include <iterator>
+#include <list>
+#include <memory>
 #include <stdexcept>
 #include <string_view>
 #include <type_traits>
+#include <vector>
 
 #include "yuescript/parser.hpp"
 
@@ -25,6 +30,7 @@ namespace parserlib {
 using namespace std::string_view_literals;
 
 class ast_node;
+class ast_arena;
 template <bool Required, class T>
 class ast_ptr;
 template <bool Required, class T>
@@ -63,10 +69,41 @@ enum class traversal {
 	Stop
 };
 
+class ast_arena {
+public:
+	ast_arena() = default;
+	ast_arena(const ast_arena&) = delete;
+	ast_arena& operator=(const ast_arena&) = delete;
+
+	void* allocate(size_t size, size_t alignment);
+
+private:
+	struct block {
+		std::unique_ptr<std::byte[]> data;
+		size_t size = 0;
+		size_t used = 0;
+	};
+	std::vector<block> _blocks;
+};
+
+class ast_arena_scope {
+public:
+	explicit ast_arena_scope(ast_arena& arena);
+	~ast_arena_scope();
+	ast_arena_scope(const ast_arena_scope&) = delete;
+	ast_arena_scope& operator=(const ast_arena_scope&) = delete;
+
+private:
+	ast_arena* _previous = nullptr;
+};
+
 /** Base class for AST nodes.
  */
 class ast_node : public input_range {
 public:
+	static void* operator new(size_t size);
+	static void operator delete(void* ptr) noexcept;
+
 	ast_node()
 		: _ref(0) { }
 
@@ -154,15 +191,59 @@ bool ast_is(ast_node* node) {
 
 class ast_member;
 
-/** type of ast member vector.
- */
-typedef std::vector<ast_member*> ast_member_vector;
+class ast_member_vector {
+public:
+	using iterator = ast_member**;
+	using const_iterator = ast_member* const*;
+	using reverse_iterator = std::reverse_iterator<iterator>;
+	using const_reverse_iterator = std::reverse_iterator<const_iterator>;
+
+	void reserve(size_t size) {
+		if (size <= InlineCapacity) return;
+		if (_heap) {
+			_overflow.reserve(size);
+		} else {
+			_overflow.reserve(size);
+			for (size_t i = 0; i < _size; i++) _overflow.push_back(_inline[i]);
+			_heap = true;
+		}
+	}
+
+	void push_back(ast_member* member) {
+		if (_heap) {
+			_overflow.push_back(member);
+		} else if (_size < InlineCapacity) {
+			_inline[_size] = member;
+		} else {
+			reserve(_size + 1);
+			_overflow.push_back(member);
+		}
+		_size++;
+	}
+
+	iterator begin() { return _heap ? _overflow.data() : _inline.data(); }
+	iterator end() { return begin() + _size; }
+	const_iterator begin() const { return _heap ? _overflow.data() : _inline.data(); }
+	const_iterator end() const { return begin() + _size; }
+	reverse_iterator rbegin() { return reverse_iterator(end()); }
+	reverse_iterator rend() { return reverse_iterator(begin()); }
+	const_reverse_iterator rbegin() const { return const_reverse_iterator(end()); }
+	const_reverse_iterator rend() const { return const_reverse_iterator(begin()); }
+
+private:
+	static constexpr size_t InlineCapacity = 3;
+	std::array<ast_member*, InlineCapacity> _inline{};
+	std::vector<ast_member*> _overflow;
+	size_t _size = 0;
+	bool _heap = false;
+};
 
 /** base class for AST nodes with children.
  */
 class ast_container : public ast_node {
 public:
 	void add_members(std::initializer_list<ast_member*> members) {
+		m_members.reserve(members.size());
 		for (auto member : members) {
 			m_members.push_back(member);
 		}
@@ -595,10 +676,11 @@ private:
 	@param g root rule of grammar.
 	@param el list of errors.
 	@param ud user data, passed to the parse procedures.
+	@param resolveLeftRecursion enables the general left-recursion resolver.
 	@return pointer to ast node created, or null if there was an error.
 		The return object must be deleted by the caller.
 */
-ast_node* parse(input& i, rule& g, error_list& el, void* ud);
+ast_node* parse(input& i, rule& g, error_list& el, void* ud, bool resolveLeftRecursion = true);
 
 /** check if the start part of given input matches grammar.
 	The parse procedures of each rule parsed are executed
@@ -606,8 +688,9 @@ ast_node* parse(input& i, rule& g, error_list& el, void* ud);
 	@param i input.
 	@param g root rule of grammar.
 	@param ud user data, passed to the parse procedures.
+	@param resolveLeftRecursion enables the general left-recursion resolver.
 	@return true on parsing success, false on failure.
 */
-ast_node* start_with(input& i, rule& g, error_list& el, void* ud);
+ast_node* start_with(input& i, rule& g, error_list& el, void* ud, bool resolveLeftRecursion = true);
 
 } // namespace parserlib

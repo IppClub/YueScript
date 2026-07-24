@@ -9,18 +9,25 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 #include "yuescript/yue_compiler.h"
 #include "yuescript/yue_parser.h"
 
+#include <algorithm>
 #include <chrono>
+#include <condition_variable>
 #include <cstdlib>
+#include <deque>
 #include <fstream>
+#include <functional>
 #include <future>
 #include <iomanip>
 #include <iostream>
 #include <limits>
 #include <memory>
+#include <mutex>
 #include <sstream>
+#include <stdexcept>
 #include <string_view>
 #include <thread>
 #include <tuple>
+#include <vector>
 using namespace std::string_view_literals;
 using namespace std::string_literals;
 using namespace std::chrono_literals;
@@ -32,35 +39,102 @@ using namespace std::chrono_literals;
 
 #if __has_include(<pthread.h>)
 #include <pthread.h>
-template<class R>
-std::future<R> async(const std::function<R()>& f) {
-	using Fn = std::packaged_task<R()>;
-	auto task = new Fn(f);
-	std::future<R> fut = task->get_future();
-
-	pthread_attr_t attr;
-	pthread_attr_init(&attr);
-	pthread_attr_setstacksize(&attr, 8 * 1024 * 1024);
-
-	pthread_t th;
-	pthread_create(&th, &attr,
-		[](void* p)->void* {
-			std::unique_ptr<Fn> fn(static_cast<Fn*>(p));
-			(*fn)();
-			return nullptr;
-		},
-	task);
-	pthread_attr_destroy(&attr);
-	pthread_detach(th);
-	return fut;
-}
-#else
-template<class R>
-std::future<R> async(const std::function<R()>& f) {
-	// fallback: ignore stack size
-	return std::async(std::launch::async, f);
-}
 #endif
+
+class AsyncPool {
+public:
+	explicit AsyncPool(size_t workerCount) {
+		workerCount = std::max<size_t>(workerCount, 1);
+#if __has_include(<pthread.h>)
+		pthread_attr_t attr;
+		pthread_attr_init(&attr);
+		pthread_attr_setstacksize(&attr, 8 * 1024 * 1024);
+		_workers.reserve(workerCount);
+		for (size_t i = 0; i < workerCount; i++) {
+			pthread_t worker;
+			const int result = pthread_create(&worker, &attr, [](void* data) -> void* {
+				static_cast<AsyncPool*>(data)->run();
+				return nullptr;
+			}, this);
+			if (result != 0) {
+				{
+					std::lock_guard<std::mutex> lock(_mutex);
+					_stopping = true;
+				}
+				_condition.notify_all();
+				for (auto createdWorker : _workers) {
+					pthread_join(createdWorker, nullptr);
+				}
+				pthread_attr_destroy(&attr);
+				throw std::runtime_error("failed to create compiler worker thread");
+			}
+			_workers.push_back(worker);
+		}
+		pthread_attr_destroy(&attr);
+#else
+		_workers.reserve(workerCount);
+		for (size_t i = 0; i < workerCount; i++) {
+			_workers.emplace_back([this]() { run(); });
+		}
+#endif
+	}
+
+	~AsyncPool() {
+		{
+			std::lock_guard<std::mutex> lock(_mutex);
+			_stopping = true;
+		}
+		_condition.notify_all();
+#if __has_include(<pthread.h>)
+		for (auto worker : _workers) {
+			pthread_join(worker, nullptr);
+		}
+#else
+		for (auto& worker : _workers) {
+			worker.join();
+		}
+#endif
+	}
+
+	template<class R>
+	std::future<R> async(const std::function<R()>& f) {
+		auto task = std::make_shared<std::packaged_task<R()>>(f);
+		auto result = task->get_future();
+		{
+			std::lock_guard<std::mutex> lock(_mutex);
+			_tasks.emplace_back([task]() { (*task)(); });
+		}
+		_condition.notify_one();
+		return result;
+	}
+
+private:
+	void run() {
+		while (true) {
+			std::function<void()> task;
+			{
+				std::unique_lock<std::mutex> lock(_mutex);
+				_condition.wait(lock, [this]() {
+					return _stopping || !_tasks.empty();
+				});
+				if (_stopping && _tasks.empty()) return;
+				task = std::move(_tasks.front());
+				_tasks.pop_front();
+			}
+			task();
+		}
+	}
+
+	std::mutex _mutex;
+	std::condition_variable _condition;
+	std::deque<std::function<void()>> _tasks;
+	bool _stopping = false;
+#if __has_include(<pthread.h>)
+	std::vector<pthread_t> _workers;
+#else
+	std::vector<std::thread> _workers;
+#endif
+};
 
 #if not(defined YUE_NO_MACRO && defined YUE_COMPILER_ONLY)
 #define _DEFER(code, line) std::shared_ptr<void> _defer_##line(nullptr, [&](auto) { \
@@ -823,6 +897,10 @@ int main(int narg, const char** args) {
 		}
 	}
 #endif // YUE_COMPILER_ONLY
+	const size_t workerCount = std::min(
+		files.size(),
+		static_cast<size_t>(std::max(1u, std::thread::hardware_concurrency())));
+	AsyncPool pool(workerCount);
 #ifndef YUE_NO_WATCHER
 	if (watchFiles) {
 		auto fullWorkPath = fs::absolute(fs::path(workPath)).string();
@@ -832,7 +910,7 @@ int main(int narg, const char** args) {
 		}
 		std::list<std::future<std::string>> results;
 		for (const auto& file : files) {
-			auto task = async<std::string>([=]() {
+			auto task = pool.async<std::string>([=]() {
 #ifndef YUE_COMPILER_ONLY
 				return compileFile(fs::absolute(file.first), config, fullWorkPath, fullTargetPath, minify, rewrite);
 #else
@@ -870,7 +948,7 @@ int main(int narg, const char** args) {
 #endif // YUE_NO_WATCHER
 	std::list<std::future<std::tuple<int, std::string, std::string>>> results;
 	for (const auto& file : files) {
-		auto task = async<std::tuple<int, std::string, std::string>>([=]() {
+		auto task = pool.async<std::tuple<int, std::string, std::string>>([=]() {
 			std::ifstream input(file.first, std::ios::in);
 			if (input) {
 				std::string s(

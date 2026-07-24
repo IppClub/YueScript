@@ -18,6 +18,7 @@ THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND 
 #endif
 
 #include <functional>
+#include <initializer_list>
 #include <list>
 #include <locale>
 #include <string>
@@ -64,8 +65,11 @@ struct item_t {
 	pos* begin;
 	pos* end;
 	void* user_data;
+	input_it input_begin;
+	input_it input_end;
 };
 typedef std::function<bool(const item_t&)> user_handler;
+typedef std::function<size_t(input_it, input_it)> dispatch_handler;
 
 /** a grammar expression.
  */
@@ -402,6 +406,11 @@ expr false_();
  */
 expr user(const expr& e, const user_handler& handler);
 
+/** selects one rule without probing the other alternatives.
+	@return an expression that parses the selected rule.
+*/
+expr dispatch(const dispatch_handler& handler, std::initializer_list<rule*> rules);
+
 /** parses the given input.
 	The parse procedures of each rule parsed are executed
 	before this function returns, if parsing succeeds.
@@ -410,9 +419,10 @@ expr user(const expr& e, const user_handler& handler);
 	@param el list of errors.
 	@param st ast object stack.
 	@param ud user data, passed to the parse procedures.
+	@param resolveLeftRecursion enables the general left-recursion resolver.
 	@return true on parsing success, false on failure.
 */
-bool parse(input& i, rule& g, error_list& el, void* st, void* ud);
+bool parse(input& i, rule& g, error_list& el, void* st, void* ud, bool resolveLeftRecursion = true);
 
 /** check if the start part of given input matches grammar.
 	The parse procedures of each rule parsed are executed
@@ -422,9 +432,10 @@ bool parse(input& i, rule& g, error_list& el, void* st, void* ud);
 	@param el list of errors.
 	@param st ast object stack.
 	@param ud user data, passed to the parse procedures.
+	@param resolveLeftRecursion enables the general left-recursion resolver.
 	@return true on parsing success, false on failure.
 */
-bool start_with(input& i, rule& g, error_list& el, void* st, void* ud);
+bool start_with(input& i, rule& g, error_list& el, void* st, void* ud, bool resolveLeftRecursion = true);
 
 /** output the specific input range to the specific stream.
 	@param stream stream.
