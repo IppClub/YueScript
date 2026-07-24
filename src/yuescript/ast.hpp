@@ -204,7 +204,7 @@ public:
 			_overflow.reserve(size);
 		} else {
 			_overflow.reserve(size);
-			for (size_t i = 0; i < _size; i++) _overflow.push_back(_inline[i]);
+			for (size_t i = 0; i < _size; i++) _overflow.push_back(_inlineStorage[i]);
 			_heap = true;
 		}
 	}
@@ -213,7 +213,7 @@ public:
 		if (_heap) {
 			_overflow.push_back(member);
 		} else if (_size < InlineCapacity) {
-			_inline[_size] = member;
+			_inlineStorage[_size] = member;
 		} else {
 			reserve(_size + 1);
 			_overflow.push_back(member);
@@ -221,9 +221,9 @@ public:
 		_size++;
 	}
 
-	iterator begin() { return _heap ? _overflow.data() : _inline.data(); }
+	iterator begin() { return _heap ? _overflow.data() : _inlineStorage.data(); }
 	iterator end() { return begin() + _size; }
-	const_iterator begin() const { return _heap ? _overflow.data() : _inline.data(); }
+	const_iterator begin() const { return _heap ? _overflow.data() : _inlineStorage.data(); }
 	const_iterator end() const { return begin() + _size; }
 	reverse_iterator rbegin() { return reverse_iterator(end()); }
 	reverse_iterator rend() { return reverse_iterator(begin()); }
@@ -232,7 +232,7 @@ public:
 
 private:
 	static constexpr size_t InlineCapacity = 3;
-	std::array<ast_member*, InlineCapacity> _inline{};
+	std::array<ast_member*, InlineCapacity> _inlineStorage{};
 	std::vector<ast_member*> _overflow;
 	size_t _size = 0;
 	bool _heap = false;
