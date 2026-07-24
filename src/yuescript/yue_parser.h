@@ -323,6 +323,7 @@ private:
 	NONE_AST_RULE(shebang);
 	NONE_AST_RULE(is_lax);
 	NONE_AST_RULE(lax_line);
+	NONE_AST_RULE(simple_value_fallback);
 
 	AST_RULE(Num);
 	AST_RULE(Name);
@@ -405,7 +406,6 @@ private:
 	AST_RULE(ChainValue);
 	AST_RULE(SimpleTable);
 	AST_RULE(SimpleValue);
-	NONE_AST_RULE(simple_value_fallback);
 	AST_RULE(Value);
 	AST_RULE(LuaStringOpen);
 	AST_RULE(LuaStringContent);
