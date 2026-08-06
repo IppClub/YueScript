@@ -266,7 +266,7 @@ wasm-node: clean
 	@mkdir -p wasm/dist/esm
 	@mkdir -p wasm/dist/cjs
 	@echo "Build ESM Module"
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
+	@em++ $(SRC_PATH)/yue_wasm.cpp \
 		$(SRC_PATH)/yuescript/ast.cpp \
 		$(SRC_PATH)/yuescript/yue_ast.cpp \
 		$(SRC_PATH)/yuescript/parser.cpp \
@@ -307,7 +307,7 @@ wasm-node: clean
 		-s MODULARIZE=1 \
 		-s LZ4=1
 	@echo "Build CommonJS Module"
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
+	@em++ $(SRC_PATH)/yue_wasm.cpp \
 		$(SRC_PATH)/yuescript/ast.cpp \
 		$(SRC_PATH)/yuescript/yue_ast.cpp \
 		$(SRC_PATH)/yuescript/parser.cpp \
@@ -354,7 +354,7 @@ wasm-node: clean
 wasm: clean
 	@$(MAKE) generic CC='emcc' AR='emar rcu' RANLIB='emranlib' -C $(SRC_PATH)/3rdParty/lua
 	@mkdir -p doc/docs/.vitepress/public/js
-	@emcc $(SRC_PATH)/yue_wasm.cpp \
+	@em++ $(SRC_PATH)/yue_wasm.cpp \
 		$(SRC_PATH)/yuescript/ast.cpp \
 		$(SRC_PATH)/yuescript/yue_ast.cpp \
 		$(SRC_PATH)/yuescript/parser.cpp \
