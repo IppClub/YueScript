@@ -1435,7 +1435,7 @@ export 🌛 = "月之脚本"
 
 ## 关于 Dora SSR
 
-月之脚本是与开源游戏引擎 [Dora SSR](https://github.com/Dora-SSR/Dora-SSR) 一起开发和维护的。它已被用于创建引擎工具、游戏原型和演示，在实际的游戏项目中验证其能力，同时它也帮助增强了 Dora SSR 游戏引擎的开发体验。
+月之脚本是与开源游戏引擎 [Dora SSR](https://github.com/IppClub/Dora-SSR) 一起开发和维护的。它已被用于创建引擎工具、游戏原型和演示，在实际的游戏项目中验证其能力，同时它也帮助增强了 Dora SSR 游戏引擎的开发体验。
 
 # 安装
 

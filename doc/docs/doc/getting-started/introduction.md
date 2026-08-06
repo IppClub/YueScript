@@ -102,4 +102,4 @@ export 🌛 = "Script of Moon"
 
 ## About Dora SSR
 
-YueScript is being developed and maintained alongside the open-source game engine [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). It has been used to create engine tools, game demos and prototypes, validating its capabilities in real-world scenarios while enhancing the Dora SSR development experience.
+YueScript is being developed and maintained alongside the open-source game engine [Dora SSR](https://github.com/IppClub/Dora-SSR). It has been used to create engine tools, game demos and prototypes, validating its capabilities in real-world scenarios while enhancing the Dora SSR development experience.

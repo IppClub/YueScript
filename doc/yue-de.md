@@ -1444,7 +1444,7 @@ export 🌛 = "Skript des Mondes"
 
 ## Über Dora SSR
 
-YueScript wird zusammen mit der Open-Source-Spiel-Engine [Dora SSR](https://github.com/Dora-SSR/Dora-SSR) entwickelt und gepflegt. Es wird zum Erstellen von Engine-Tools, Spiel-Demos und Prototypen eingesetzt und hat seine Leistungsfähigkeit in realen Szenarien unter Beweis gestellt, während es gleichzeitig die Dora-SSR-Entwicklungserfahrung verbessert.
+YueScript wird zusammen mit der Open-Source-Spiel-Engine [Dora SSR](https://github.com/IppClub/Dora-SSR) entwickelt und gepflegt. Es wird zum Erstellen von Engine-Tools, Spiel-Demos und Prototypen eingesetzt und hat seine Leistungsfähigkeit in realen Szenarien unter Beweis gestellt, während es gleichzeitig die Dora-SSR-Entwicklungserfahrung verbessert.
 
 # Installation
 

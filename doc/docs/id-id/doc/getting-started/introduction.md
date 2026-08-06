@@ -102,4 +102,4 @@ export 🌛 = "Skrip Bulan"
 
 ## Tentang Dora SSR
 
-YueScript dikembangkan dan dipelihara bersama mesin game open-source [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). YueScript telah digunakan untuk membuat alat mesin, demo game, dan prototipe, membuktikan kemampuannya dalam skenario dunia nyata sekaligus meningkatkan pengalaman pengembangan Dora SSR.
+YueScript dikembangkan dan dipelihara bersama mesin game open-source [Dora SSR](https://github.com/IppClub/Dora-SSR). YueScript telah digunakan untuk membuat alat mesin, demo game, dan prototipe, membuktikan kemampuannya dalam skenario dunia nyata sekaligus meningkatkan pengalaman pengembangan Dora SSR.

@@ -102,4 +102,4 @@ export 🌛 = "Script da Lua"
 
 ## Sobre o Dora SSR
 
-O YueScript está sendo desenvolvido e mantido em conjunto com o motor de jogo open-source [Dora SSR](https://github.com/Dora-SSR/Dora-SSR). Tem sido usado para criar ferramentas do motor, demonstrações de jogos e protótipos, validando suas capacidades em cenários do mundo real e aprimorando a experiência de desenvolvimento do Dora SSR.
+O YueScript está sendo desenvolvido e mantido em conjunto com o motor de jogo open-source [Dora SSR](https://github.com/IppClub/Dora-SSR). Tem sido usado para criar ferramentas do motor, demonstrações de jogos e protótipos, validando suas capacidades em cenários do mundo real e aprimorando a experiência de desenvolvimento do Dora SSR.
