@@ -9,26 +9,32 @@
   },
   "repository": "https://github.com/IppClub/YueScript/tree/main/doc",
   "scripts": {
-    "dev": "vitepress dev docs",
-    "build": "vitepress build docs",
-    "preview": "vitepress preview docs"
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test:docs": "node scripts/check-docs.mjs"
   },
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^25.5.0",
-    "vitepress": "^1.6.4",
-    "vue": "^3.5.31"
+    "@astrojs/check": "^0.9.10",
+    "prettier": "3.9.9",
+    "prettier-plugin-astro": "1.1.0",
+    "typescript": "^6.0.3"
   },
   "dependencies": {
+    "@astrojs/starlight": "^0.42.5",
+    "@astrojs/vue": "^7.0.3",
     "@codemirror/commands": "^6.10.3",
     "@codemirror/language": "^6.12.3",
-    "@codemirror/legacy-modes": "^6.5.2",
+    "@codemirror/legacy-modes": "^6.5.4",
     "@codemirror/state": "^6.6.0",
     "@codemirror/view": "^6.40.0",
-    "@fontsource/merriweather": "^5.2.11",
-    "@fontsource/noto-serif-sc": "^5.2.8",
-    "@lezer/highlight": "^1.2.3",
-    "@shikijs/themes": "^4.0.2",
-    "prismjs": "^1.30.0"
-  }
+    "@fontsource/noto-serif": "^5.3.0",
+    "@fontsource/noto-serif-sc": "^5.3.0",
+    "@lezer/highlight": "^1.2.5",
+    "astro": "^7.3.5",
+    "vue": "^3.5.31"
+  },
+  "type": "module"
 }

@@ -1,0 +1,55 @@
+---
+import Head from "@astrojs/starlight/components/Head.astro";
+import headingFont from "@fontsource/noto-serif/files/noto-serif-latin-700-normal.woff2?url";
+import heroFont from "@fontsource/noto-serif/files/noto-serif-latin-800-normal.woff2?url";
+---
+
+<Head />
+<link
+  rel="preload"
+  href={headingFont}
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
+{Astro.locals.starlightRoute.entry.data.template === "splash" && (
+  <link
+    rel="preload"
+    href={heroFont}
+    as="font"
+    type="font/woff2"
+    crossorigin="anonymous"
+  />
+)}
+<meta name="theme-color" content="#0b0e14" />
+
+<script is:inline>
+  document.addEventListener(
+    "pointerdown",
+    () => {
+      document.documentElement.dataset.inputModality = "pointer";
+    },
+    true,
+  );
+  document.addEventListener(
+    "keydown",
+    () => {
+      document.documentElement.dataset.inputModality = "keyboard";
+    },
+    true,
+  );
+
+  const themeColor = document.querySelector('meta[name="theme-color"]');
+  const syncThemeColor = () =>
+    themeColor?.setAttribute(
+      "content",
+      document.documentElement.dataset.theme === "light" ?
+        "#fdfbf7"
+      : "#0b0e14",
+    );
+  syncThemeColor();
+  new MutationObserver(syncThemeColor).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+</script>

@@ -353,7 +353,7 @@ wasm-node: clean
 .PHONY: wasm
 wasm: clean
 	@$(MAKE) generic CC='emcc' AR='emar rcu' RANLIB='emranlib' -C $(SRC_PATH)/3rdParty/lua
-	@mkdir -p doc/docs/.vitepress/public/js
+	@mkdir -p doc/public/js
 	@em++ $(SRC_PATH)/yue_wasm.cpp \
 		$(SRC_PATH)/yuescript/ast.cpp \
 		$(SRC_PATH)/yuescript/yue_ast.cpp \
@@ -363,7 +363,7 @@ wasm: clean
 		$(SRC_PATH)/yuescript/yuescript.cpp \
 		$(SRC_PATH)/3rdParty/lua/liblua.a \
 		-O2 \
-		-o doc/docs/.vitepress/public/js/yuescript.js \
+		-o doc/public/js/yuescript.js \
 		-I $(SRC_PATH) \
 		-I $(SRC_PATH)/3rdParty/ \
 		-I $(SRC_PATH)/3rdParty/lua \

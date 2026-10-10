@@ -1,51 +1,49 @@
-[outputFolder, docFolder] = {...}
+outputFolder = ...
 
 getFiles = (locale) ->
 	locale = if locale == "en" then "" else "#{locale}/"
 	[
-		"doc/docs/#{locale}doc/index.md"
-		"doc/docs/#{locale}doc/advanced/do.md"
-		"doc/docs/#{locale}doc/advanced/line-decorators.md"
-		"doc/docs/#{locale}doc/advanced/macro.md"
-		"doc/docs/#{locale}doc/advanced/try.md"
-		"doc/docs/#{locale}doc/data-structures/table-literals.md"
-		"doc/docs/#{locale}doc/data-structures/comprehensions.md"
-		"doc/docs/#{locale}doc/objects/object-oriented-programming.md"
-		"doc/docs/#{locale}doc/objects/with-statement.md"
-		"doc/docs/#{locale}doc/assignment/assignment.md"
-		"doc/docs/#{locale}doc/assignment/varargs-assignment.md"
-		"doc/docs/#{locale}doc/assignment/if-assignment.md"
-		"doc/docs/#{locale}doc/assignment/destructuring-assignment.md"
-		"doc/docs/#{locale}doc/assignment/the-using-clause-controlling-destructive-assignment.md"
-		"doc/docs/#{locale}doc/getting-started/usage.md"
-		"doc/docs/#{locale}doc/getting-started/introduction.md"
-		"doc/docs/#{locale}doc/getting-started/installation.md"
-		"doc/docs/#{locale}doc/control-flow/conditionals.md"
-		"doc/docs/#{locale}doc/control-flow/for-loop.md"
-		"doc/docs/#{locale}doc/control-flow/continue.md"
-		"doc/docs/#{locale}doc/control-flow/switch.md"
-		"doc/docs/#{locale}doc/control-flow/while-loop.md"
-		"doc/docs/#{locale}doc/functions/function-stubs.md"
-		"doc/docs/#{locale}doc/functions/backcalls.md"
-		"doc/docs/#{locale}doc/functions/function-literals.md"
-		"doc/docs/#{locale}doc/language-basics/whitespace.md"
-		"doc/docs/#{locale}doc/language-basics/comment.md"
-		"doc/docs/#{locale}doc/language-basics/attributes.md"
-		"doc/docs/#{locale}doc/language-basics/operator.md"
-		"doc/docs/#{locale}doc/language-basics/literals.md"
-		"doc/docs/#{locale}doc/language-basics/module.md"
-		"doc/docs/#{locale}doc/extras/license-mit.md"
-		"doc/docs/#{locale}doc/advanced/the-yuescript-library.md"
+		"doc/src/content/docs/#{locale}doc/index.md"
+		"doc/src/content/docs/#{locale}doc/advanced/do.md"
+		"doc/src/content/docs/#{locale}doc/advanced/line-decorators.md"
+		"doc/src/content/docs/#{locale}doc/advanced/macro.md"
+		"doc/src/content/docs/#{locale}doc/advanced/try.md"
+		"doc/src/content/docs/#{locale}doc/data-structures/table-literals.md"
+		"doc/src/content/docs/#{locale}doc/data-structures/comprehensions.md"
+		"doc/src/content/docs/#{locale}doc/objects/object-oriented-programming.md"
+		"doc/src/content/docs/#{locale}doc/objects/with-statement.md"
+		"doc/src/content/docs/#{locale}doc/assignment/assignment.md"
+		"doc/src/content/docs/#{locale}doc/assignment/varargs-assignment.md"
+		"doc/src/content/docs/#{locale}doc/assignment/if-assignment.md"
+		"doc/src/content/docs/#{locale}doc/assignment/destructuring-assignment.md"
+		"doc/src/content/docs/#{locale}doc/assignment/the-using-clause-controlling-destructive-assignment.md"
+		"doc/src/content/docs/#{locale}doc/getting-started/usage.md"
+		"doc/src/content/docs/#{locale}doc/getting-started/introduction.md"
+		"doc/src/content/docs/#{locale}doc/getting-started/installation.md"
+		"doc/src/content/docs/#{locale}doc/control-flow/conditionals.md"
+		"doc/src/content/docs/#{locale}doc/control-flow/for-loop.md"
+		"doc/src/content/docs/#{locale}doc/control-flow/continue.md"
+		"doc/src/content/docs/#{locale}doc/control-flow/switch.md"
+		"doc/src/content/docs/#{locale}doc/control-flow/while-loop.md"
+		"doc/src/content/docs/#{locale}doc/functions/function-stubs.md"
+		"doc/src/content/docs/#{locale}doc/functions/backcalls.md"
+		"doc/src/content/docs/#{locale}doc/functions/function-literals.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/whitespace.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/comment.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/attributes.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/operator.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/literals.md"
+		"doc/src/content/docs/#{locale}doc/language-basics/module.md"
+		"doc/src/content/docs/#{locale}doc/extras/license-mit.md"
+		"doc/src/content/docs/#{locale}doc/advanced/the-yuescript-library.md"
 	]
-docs = [ ["codes_from_doc_#{locale}.lua", "yue-#{locale}.md", getFiles locale] for locale in *["en", "zh", "pt-br", "de", "id-id"]]
-for [compiledFile, docFile, docFiles] in *docs
+docs = [ ["codes_from_doc_#{locale}.lua", getFiles locale] for locale in *["en", "zh", "pt-br", "de", "id-id"]]
+for [compiledFile, docFiles] in *docs
 	codes = []
-	docTexts = []
 	for docFile in *docFiles
 		close input = with? io.open docFile
 			import "yue" as :to_lua
 			text = \read "*a"
-			docTexts[] = text
 			for code in text\gmatch "```yuescript[\r\n]+(.-)```[^%w]"
 				if result, err := to_lua code, implicit_return_root: false, reserve_line_number: false
 					codes[] = result
@@ -60,10 +58,3 @@ for [compiledFile, docFile, docFiles] in *docs
 					os.exit 1
 	close output = with io.open "#{outputFolder}/#{compiledFile}", "w+"
 		\write table.concat codes
-	close output2 = with io.open "#{docFolder}/#{docFile}", "w+"
-		\write (table
-			.concat docTexts, "\n"
-			\gsub "<img .-/>\n\n", ""
-			\gsub "%-%-%-.-%-%-%-\n\n", ""
-			\gsub "<YueDisplay>.-</YueDisplay>\n\n", "")
-

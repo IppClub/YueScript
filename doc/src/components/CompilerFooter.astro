@@ -1,0 +1,246 @@
+---
+import Footer from "@astrojs/starlight/components/Footer.astro";
+import { Icon } from "@astrojs/starlight/components";
+
+const { t } = Astro.locals;
+const messages = {
+  title: t("yue.compiler.title"),
+  close: t("yue.compiler.close"),
+  loading: t("yue.compiler.loading"),
+  loadError: t("yue.compiler.loadError"),
+  modalLoadError: t("yue.compiler.modalLoadError"),
+  buildRuntime: t("yue.compiler.buildRuntime"),
+  compile: t("yue.compiler.compile"),
+  run: t("yue.compiler.run"),
+  programOutput: t("yue.compiler.programOutput"),
+  source: t("yue.compiler.source"),
+  luaOutput: t("yue.compiler.luaOutput"),
+  finished: t("yue.compiler.finished"),
+  complete: t("yue.compiler.complete"),
+  failed: t("yue.compiler.failed"),
+};
+---
+
+<Footer>
+  <slot />
+</Footer>
+<dialog
+  id="yue-compiler-dialog"
+  aria-labelledby="yue-compiler-title"
+  data-pagefind-ignore
+  data-yue-messages={JSON.stringify(messages)}
+>
+  <div class="dialog-header">
+    <h2 id="yue-compiler-title">
+      <span translate="no">YueScript</span>
+      {messages.title}
+    </h2>
+    <button type="button" data-yue-close aria-label={messages.close}>
+      <Icon name="close" />
+    </button>
+  </div>
+  <div data-yue-modal>{messages.loading}</div>
+</dialog>
+
+<script>
+  import type { App } from "vue";
+
+  const dialog = document.querySelector<HTMLDialogElement>(
+    "#yue-compiler-dialog",
+  )!;
+  const messages: {
+    loading: string;
+    loadError: string;
+    modalLoadError: string;
+    buildRuntime: string;
+  } = JSON.parse(dialog.dataset.yueMessages!);
+  const runtime = window as typeof window & {
+    Module?: { onRuntimeInitialized: () => void };
+    yue?: { version: () => string; tolua: () => string[]; exec: () => string };
+  };
+  function loadRuntime() {
+    if (runtime.Module) return;
+    runtime.Module = {
+      onRuntimeInitialized() {
+        runtime.yue = runtime.Module as unknown as NonNullable<
+          typeof runtime.yue
+        >;
+        window.dispatchEvent(new Event("yue:ready"));
+      },
+    };
+    const script = document.createElement("script");
+    script.src = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/js/yuescript.js`;
+    script.onerror = () => {
+      runtime.yue = {
+        version: () => messages.buildRuntime,
+        tolua: () => ["", messages.buildRuntime],
+        exec: () => messages.buildRuntime,
+      };
+      window.dispatchEvent(new Event("yue:ready"));
+    };
+    document.head.append(script);
+  }
+
+  function loadCompiler() {
+    loadRuntime();
+    return Promise.all([import("vue"), import("./YueCompiler.vue")]);
+  }
+
+  for (const container of document.querySelectorAll("[data-yue-compiler]")) {
+    container.setAttribute("aria-busy", "true");
+    container.textContent = messages.loading;
+    loadCompiler()
+      .then(([{ createApp }, { default: YueCompiler }]) => {
+        createApp(YueCompiler, { messages }).mount(container);
+      })
+      .catch(() => {
+        container.setAttribute("role", "alert");
+        container.textContent = messages.loadError;
+      })
+      .finally(() => container.removeAttribute("aria-busy"));
+  }
+  const modal = dialog.querySelector<HTMLElement>("[data-yue-modal]")!;
+  let compiler: App | undefined;
+  let request = 0;
+  dialog.addEventListener("close", () => {
+    request++;
+    compiler?.unmount();
+    compiler = undefined;
+    modal.removeAttribute("aria-busy");
+    modal.removeAttribute("role");
+    modal.textContent = messages.loading;
+  });
+  dialog.addEventListener("click", (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  document.addEventListener("click", async (event) => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    if (target.closest("[data-yue-close]")) dialog.close();
+    const button = target.closest("[data-yue-compile]");
+    if (!button) return;
+    // Expressive Code's copy payload preserves whitespace between rendered lines.
+    const text =
+      button.parentElement
+        ?.querySelector("[data-code]")
+        ?.getAttribute("data-code")
+        ?.replaceAll("\u007f", "\n") ?? "";
+    dialog.showModal();
+    modal.setAttribute("aria-busy", "true");
+    const currentRequest = ++request;
+    try {
+      const [{ createApp }, { default: YueCompiler }] = await loadCompiler();
+      if (!dialog.open || currentRequest !== request) return;
+      compiler = createApp(YueCompiler, {
+        messages,
+        text,
+        compileronly: true,
+        displayonly: true,
+      });
+      compiler.mount(modal);
+    } catch {
+      if (dialog.open && currentRequest === request) {
+        modal.setAttribute("role", "alert");
+        modal.textContent = messages.modalLoadError;
+      }
+    } finally {
+      if (currentRequest === request) modal.removeAttribute("aria-busy");
+    }
+  });
+</script>
+
+<style>
+  dialog {
+    height: var(--dialog-available-height);
+    min-height: 0;
+    overflow: hidden;
+    overscroll-behavior: contain;
+    color: var(--sl-color-text);
+    background: var(--sl-color-bg);
+    border-style: solid;
+    border-color: var(--sl-color-hairline);
+    padding: 0;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  }
+  dialog[open] {
+    display: flex;
+    flex-direction: column;
+  }
+  dialog::backdrop {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(2px);
+  }
+  .dialog-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+    padding: max(0.6rem, env(safe-area-inset-top))
+      max(1rem, env(safe-area-inset-right)) 0.6rem
+      max(1rem, env(safe-area-inset-left));
+    background: var(--sl-color-bg-nav);
+    border-bottom: 1px solid var(--sl-color-hairline);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+  #yue-compiler-title {
+    margin: 0;
+    font-size: 1rem;
+    font-family: var(--font-serif, "Noto Serif", "Noto Serif SC", serif);
+    font-weight: 700;
+    color: var(--sl-color-white);
+  }
+  [data-yue-close] {
+    background: transparent;
+    border: none;
+    color: var(--sl-color-gray-3);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.2rem 0.5rem;
+    line-height: 1;
+    border-radius: 4px;
+    display: grid;
+    place-items: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    transition:
+      color 0.15s ease,
+      background-color 0.15s ease;
+  }
+  [data-yue-close]:hover {
+    color: var(--sl-color-white);
+    background: var(--sl-color-hairline);
+  }
+  [data-yue-modal] {
+    flex: 1;
+    min-height: 0;
+    overflow: auto;
+    padding-bottom: env(safe-area-inset-bottom);
+    scroll-margin-top: 5rem;
+  }
+  :global([data-yue-modal] > .yue-compiler) {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+  }
+  :global([data-yue-modal] .parent) {
+    flex: 1;
+    min-height: 0;
+    grid-auto-rows: minmax(0, 1fr);
+  }
+  :global([data-yue-modal] .editor-section) {
+    min-height: 0;
+  }
+  :global([data-yue-modal] .editor-container) {
+    height: auto;
+    flex: 1;
+    min-height: 0;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    [data-yue-close] {
+      transition: none;
+    }
+  }
+</style>

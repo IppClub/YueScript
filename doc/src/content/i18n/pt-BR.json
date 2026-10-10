@@ -1,0 +1,20 @@
+{
+  "404.text": "Não há nada aqui além da Xiaoyu e do seu laptop! Verifique a URL ou tente usar a barra de pesquisa.",
+  "yue.allInOne": "Visualização em página única",
+  "yue.try": "Experimente yue!",
+  "yue.404.home": "Voltar ao início",
+  "yue.compiler.title": "Compilador",
+  "yue.compiler.close": "Fechar compilador",
+  "yue.compiler.loading": "Carregando compilador…",
+  "yue.compiler.loadError": "Não foi possível carregar o compilador. Recarregue a página para tentar novamente.",
+  "yue.compiler.modalLoadError": "Não foi possível carregar o compilador. Feche e tente novamente.",
+  "yue.compiler.buildRuntime": "Compile o compilador YueScript com: make wasm",
+  "yue.compiler.compile": "Compilar",
+  "yue.compiler.run": "Executar Código",
+  "yue.compiler.programOutput": "Saída do programa",
+  "yue.compiler.source": "Código-fonte YueScript",
+  "yue.compiler.luaOutput": "Saída Lua",
+  "yue.compiler.finished": "O programa terminou sem saída.",
+  "yue.compiler.complete": "Compilação concluída. Saída Lua atualizada.",
+  "yue.compiler.failed": "O compilador falhou. Tente novamente ou reporte este código em github.com/IppClub/YueScript/issues."
+}

@@ -1,0 +1,20 @@
+{
+  "404.text": "这里除了小玉和她的笔记本电脑什么都没有！检查 URL 或尝试使用搜索栏。",
+  "yue.allInOne": "单页视图",
+  "yue.try": "试试 yue！",
+  "yue.404.home": "返回首页",
+  "yue.compiler.title": "编译器",
+  "yue.compiler.close": "关闭编译器",
+  "yue.compiler.loading": "正在加载编译器…",
+  "yue.compiler.loadError": "无法加载编译器。请刷新页面后重试。",
+  "yue.compiler.modalLoadError": "无法加载编译器。请关闭后重试。",
+  "yue.compiler.buildRuntime": "请使用以下命令构建 YueScript 编译器：make wasm",
+  "yue.compiler.compile": "编译",
+  "yue.compiler.run": "运行代码",
+  "yue.compiler.programOutput": "程序输出",
+  "yue.compiler.source": "YueScript 源代码",
+  "yue.compiler.luaOutput": "Lua 输出",
+  "yue.compiler.finished": "程序运行结束，无输出。",
+  "yue.compiler.complete": "编译完成。Lua 输出已更新。",
+  "yue.compiler.failed": "编译器出错。请重试，或在 github.com/IppClub/YueScript/issues 提交此代码。"
+}

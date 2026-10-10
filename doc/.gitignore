@@ -10,5 +10,9 @@ dist
 .basement
 config.local.js
 basement_dist
-docs/.vitepress/public/js/yuescript.js
-docs/.vitepress/public/js/yuescript.wasm
+public/js/yuescript.js
+public/js/yuescript.wasm
+.astro/
+.agents/
+.fallow/
+skills-lock.json

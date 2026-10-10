@@ -1,0 +1,711 @@
+@import "@fontsource/noto-serif/400.css";
+@import "@fontsource/noto-serif/600.css";
+@import "@fontsource/noto-serif/700.css";
+@import "@fontsource/noto-serif/800.css";
+@import "@fontsource/noto-serif/400-italic.css";
+@import "@fontsource/noto-serif/600-italic.css";
+@import "@fontsource/noto-serif/700-italic.css";
+@import "@fontsource/noto-serif/800-italic.css";
+
+@import "@fontsource/noto-serif-sc/400.css";
+@import "@fontsource/noto-serif-sc/700.css";
+@import "@fontsource/noto-serif-sc/800.css";
+
+:root {
+  /* --- TYPOGRAPHY --- */
+  --sl-font:
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sl-font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  --font-serif: "Noto Serif", "Noto Serif SC", serif;
+
+  /* --- BRAND COLORS (Original Moon Gold) --- */
+  --vp-c-brand-1: #f9c749;
+  --color-brand-hover: oklch(
+    from var(--vp-c-brand-1) calc(l - 0.21) calc(c * 1.15) h
+  );
+  --color-brand: #b4ac8f;
+  --color-on-brand: #0b0e14;
+}
+
+:root[data-has-sidebar] {
+  --sl-content-width: 75ch;
+}
+
+/* --- DARK MODE THEME (Midnight Blue) --- */
+:root,
+:root[data-theme="dark"],
+[data-theme="dark"] {
+  /* Brand Accent */
+  --sl-color-accent-low: #2b271d;
+  --sl-color-accent: #b4ac8f;
+  --sl-color-accent-high: #d4ceb8;
+
+  /* Deep Midnight Blue background (replaces standard grey) */
+  --sl-color-bg: #0b0e14;
+  --sl-color-bg-nav: #1a1f2e;
+  --sl-color-bg-sidebar: #1a1f2e;
+  --sl-color-bg-inline-code: #1e293b;
+  --sl-color-bg-accent: #b4ac8f;
+  --sl-color-black: #0b0e14;
+  --sl-color-gray-6: #2b364b;
+  --sl-color-gray-5: #1e293b;
+  --sl-color-gray-4: #475569;
+
+  /* Adjust border colors to blend with blue, not grey */
+  --sl-color-hairline: #2b364b;
+  --sl-color-hairline-light: #2b364b;
+  --sl-color-hairline-shade: #0b0e14;
+
+  /* Text Colors: Moonlight Silver */
+  --sl-color-white: #f1f5f9;
+  --sl-color-text: #e2e8f0;
+  --sl-color-gray-1: #f1f5f9;
+  --sl-color-gray-2: #e2e8f0;
+  --sl-color-gray-3: #94a3b8;
+  --sl-color-text-accent: #d4ceb8;
+  --sl-color-text-invert: #0b0e14;
+
+  /* Code block theme styling */
+  --ec-codeBg: #1e1e1e;
+  --ec-frame-tabBg: #1a1f2e;
+}
+
+/* --- LIGHT MODE THEME (Creamy Paper) --- */
+:root[data-theme="light"],
+[data-theme="light"] {
+  /* Brand Accent */
+  --sl-color-accent-low: #f4f1e8;
+  --sl-color-accent: #8c8260;
+  --sl-color-accent-high: #5c553d;
+
+  /* A warmer, "creamy" paper feel instead of harsh white */
+  --sl-color-bg: #fdfbf7;
+  --sl-color-bg-nav: #e9e5dc;
+  --sl-color-bg-sidebar: #e9e5dc;
+  --sl-color-bg-inline-code: #e9e5dc;
+  --sl-color-bg-accent: #b4ac8f;
+  --sl-color-black: #fdfbf7;
+  --sl-color-gray-7: #e9e5dc;
+  --sl-color-gray-6: #fdfbf7;
+  --sl-color-gray-5: #c4bcae;
+  --sl-color-gray-4: #827969;
+
+  /* Borders / Hairlines */
+  --sl-color-hairline: #b8b0a0;
+  --sl-color-hairline-light: #c4bcae;
+  --sl-color-hairline-shade: #b8b0a0;
+
+  /* Text Colors: Deep Navy instead of pure black for softer contrast */
+  --sl-color-white: #0b1220;
+  --sl-color-text: #111827;
+  --sl-color-gray-1: #111827;
+  --sl-color-gray-2: #1f2937;
+  --sl-color-gray-3: #374151;
+  --sl-color-text-accent: var(--sl-color-accent-high);
+  --sl-color-text-invert: #ffffff;
+
+  /* Code block theme styling */
+  --ec-codeBg: #ffffff;
+  --ec-frame-tabBg: var(--sl-color-bg-nav);
+}
+
+/* Shared details keep both themes legible during interaction. */
+:where(a, button, input, textarea, output, select, summary):focus-visible {
+  outline: 2px solid var(--sl-color-text-accent);
+  outline-offset: 3px;
+}
+
+:root[data-input-modality="pointer"]
+  :where(a, button, input, textarea, output, select, summary):focus-visible {
+  outline: none;
+}
+
+.header :where(a, button, select):focus-visible {
+  outline-offset: 2px;
+}
+
+:where(starlight-theme-select, starlight-lang-select)
+  label:has(select:focus-visible) {
+  z-index: 1;
+}
+
+:where(a, button, select, summary) {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(180, 172, 143, 0.3);
+}
+
+:where(h1, h2, h3, h4, h5, h6, article[id]) {
+  scroll-margin-top: 1.5rem;
+}
+
+.sidebar-pane {
+  overscroll-behavior: contain;
+}
+
+/* Utopia-style gutters collapse on narrow or short viewports. */
+dialog {
+  --dialog-gutter: clamp(0rem, min(5vw - 2.4rem, 10dvh - 3rem), 2rem);
+  --dialog-available-height: calc(100dvh - var(--dialog-gutter) * 4);
+  inset: 0;
+  margin: auto;
+  width: min(
+    max(
+      var(--dialog-max-width, 68.75rem),
+      calc(100vw - var(--dialog-gutter) * 32)
+    ),
+    calc(100% - var(--dialog-gutter) * 2)
+  );
+  max-width: none;
+  height: fit-content;
+  min-height: min(
+    var(--dialog-available-height),
+    max(15rem, calc(100dvh - var(--dialog-gutter) * 24))
+  );
+  max-height: var(--dialog-available-height);
+  border-width: min(1px, var(--dialog-gutter));
+  border-radius: min(0.5rem, var(--dialog-gutter));
+}
+
+site-search dialog {
+  --dialog-max-width: 40rem;
+}
+
+@media (min-width: 48rem) {
+  site-search dialog {
+    min-height: 0;
+  }
+}
+
+site-search .dialog-frame {
+  padding: clamp(1rem, 0.8rem + 1vw, 1.5rem);
+}
+
+site-search button[data-close-modal] {
+  display: flex;
+}
+
+site-search #starlight__search {
+  --sl-search-cancel-space: 5rem;
+}
+
+:root:has(#yue-compiler-dialog[open]) {
+  overflow: hidden;
+}
+
+header.header {
+  border-left: env(safe-area-inset-left) solid transparent;
+  border-right: env(safe-area-inset-right) solid transparent;
+}
+
+@media (pointer: fine) {
+  html {
+    overscroll-behavior: none;
+  }
+}
+
+::selection {
+  background: var(--sl-color-accent-high);
+  color: var(--sl-color-black);
+}
+
+.sl-skip-link {
+  font-weight: 600;
+}
+
+.sl-markdown-content a {
+  text-underline-offset: 0.18em;
+}
+
+.sidebar-content a:not([aria-current="page"]):hover,
+.sidebar-content summary:hover {
+  background: var(--sl-color-gray-6);
+  border-radius: 0.25rem;
+}
+
+:root[data-theme="light"] site-search button[data-open-modal] {
+  border-color: var(--sl-color-gray-4);
+}
+
+/* --- HEADINGS: Apply the Serif Font --- */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.site-title,
+.hero h1,
+.hero [data-page-title] {
+  font-family: "Noto Serif", "Noto Serif SC", serif !important;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-weight: 700;
+}
+
+.site-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  gap: 0.5rem;
+}
+
+.site-title img {
+  height: 1.75rem;
+  flex-shrink: 0;
+  filter: brightness(0) invert(var(--_logo-invert, 0));
+}
+
+:root:not([data-theme="light"]) .site-title img,
+[data-theme="dark"] .site-title img {
+  --_logo-invert: 1;
+}
+
+/* --- NAVBAR SELECTS (THEME & LANGUAGE) --- */
+starlight-theme-select label {
+  --sl-select-width: auto-fit !important;
+}
+
+starlight-lang-select label {
+  --sl-select-width: auto-fit !important;
+}
+
+starlight-theme-select select,
+starlight-lang-select select {
+  width: auto !important;
+  min-width: calc(var(--sl-select-width) + var(--sl-inline-padding) * 2);
+  field-sizing: content;
+  background-color: var(--sl-color-bg-nav);
+  color: var(--sl-color-gray-2);
+}
+
+@media (width < 50rem) {
+  .mobile-preferences {
+    gap: 0.75rem;
+    padding-block: 1rem;
+    border-top-color: var(--sl-color-hairline);
+  }
+
+  .mobile-preferences .social-icons {
+    width: 100%;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+  }
+
+  .mobile-preferences .social-icons a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    margin: 0;
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+    background-color: var(--sl-color-bg-nav);
+  }
+
+  .mobile-preferences .social-icons .try-link {
+    margin-inline-end: auto;
+    padding-inline: 1rem;
+    border-color: var(--color-brand);
+    background-color: var(--color-brand);
+    color: var(--color-on-brand);
+  }
+
+  .mobile-preferences :is(starlight-theme-select, starlight-lang-select) {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .mobile-preferences label {
+    border: 1px solid var(--sl-color-hairline);
+    border-radius: 0.5rem;
+    background-color: var(--sl-color-bg-nav);
+  }
+
+  .mobile-preferences select {
+    width: 100% !important;
+    min-height: 2.75rem;
+    margin: 0;
+    border-radius: inherit;
+    background-color: transparent;
+  }
+
+  .mobile-preferences .label-icon {
+    inset-inline-start: 0.5rem;
+  }
+
+  .mobile-preferences .caret {
+    inset-inline-end: 0.5rem;
+  }
+}
+
+/* Make the Hero Title (YueScript) feel more "Editorial" */
+.hero h1,
+.hero [data-page-title] {
+  font-weight: 800 !important;
+  color: var(--sl-color-accent-high) !important;
+}
+
+/* Utopia-style spacing interpolates between 20rem and 90rem viewports. */
+[data-has-hero] {
+  --home-space-xs: clamp(0.5rem, 0.4286rem + 0.3571vw, 0.75rem);
+  --home-space-s: clamp(1rem, 0.8571rem + 0.7143vw, 1.5rem);
+  --home-space-m: clamp(1.5rem, 1.2143rem + 1.4286vw, 2.5rem);
+  --home-space-l: clamp(2rem, 1.7143rem + 1.4286vw, 3rem);
+  --sl-main-pad: 0 0 var(--home-space-m);
+}
+
+[data-has-hero] .content-panel {
+  padding: var(--home-space-s);
+}
+
+[data-has-hero] .sl-container {
+  margin-inline: auto;
+}
+
+[data-has-hero] .hero {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  gap: var(--home-space-l);
+  padding-block: var(--home-space-xs);
+  container-type: inline-size;
+  container-name: hero;
+}
+
+[data-has-hero] .hero > .stack {
+  order: 1;
+  flex: 2 1 26rem;
+  min-width: 0;
+  gap: var(--home-space-m);
+  text-align: start;
+}
+
+[data-has-hero] .hero .copy {
+  align-items: flex-start;
+  gap: var(--home-space-s);
+}
+
+[data-has-hero] .hero h1 {
+  font-size: clamp(2.25rem, 1.75rem + 2.5vw, 4rem);
+}
+
+[data-has-hero] .hero .tagline {
+  font-size: clamp(1rem, 0.9286rem + 0.3571vw, 1.25rem);
+}
+
+[data-has-hero] .hero .actions {
+  justify-content: flex-start;
+  align-items: center;
+  gap: var(--home-space-xs) var(--home-space-m);
+}
+
+/* Center text and buttons when the hero container is narrow enough
+   that the image wraps above the text stack. */
+@container hero (max-width: 67rem) {
+  [data-has-hero] .hero > .stack {
+    text-align: center;
+  }
+
+  [data-has-hero] .hero .copy {
+    align-items: center;
+  }
+
+  [data-has-hero] .hero .actions {
+    justify-content: center;
+  }
+}
+
+[data-has-hero] .hero .sl-link-button {
+  font-size: clamp(0.875rem, 0.8393rem + 0.1786vw, 1rem);
+  padding-block: var(--home-space-xs);
+}
+
+[data-has-hero] .hero .sl-link-button.primary {
+  padding: var(--home-space-xs) var(--home-space-s) !important;
+}
+
+[data-has-hero] .hero > img,
+[data-has-hero] .hero > .hero-html {
+  order: 2;
+  flex: 1 1 18rem;
+  min-width: 0;
+  width: auto;
+  margin: 0;
+  justify-content: center;
+}
+
+[data-has-hero] .hero > img,
+[data-has-hero] .hero > .hero-html img {
+  display: block;
+  height: auto;
+  max-height: 30rem;
+  object-fit: contain;
+}
+
+[data-has-hero] .hero > .hero-html img {
+  width: min(100%, clamp(14rem, 11.8571rem + 10.7143vw, 21.5rem));
+}
+
+[data-has-hero] .hero > .hero-html a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+/* --- BUTTONS --- */
+/* Dark labels keep the original gold fill readable in both themes. */
+.sl-link-button.primary {
+  color: var(--color-on-brand) !important;
+  background-color: var(--vp-c-brand-1) !important;
+  border-color: var(--vp-c-brand-1) !important;
+  font-weight: 600 !important;
+  padding: 0.6rem 1.4rem !important;
+  transition:
+    background-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.sl-link-button.primary:hover {
+  background-color: var(--color-brand-hover) !important;
+  color: #fdfbf7 !important;
+  border-color: var(--color-brand-hover) !important;
+}
+
+.sidebar-content .top-level .large {
+  font-family: var(--font-serif);
+  font-weight: 600;
+}
+
+.pagination-links .link-title {
+  font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+button[data-yue-compile] {
+  border: none;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-on-brand) !important;
+  background-color: var(--vp-c-brand-1) !important;
+  text-decoration: none;
+  padding: 0.35rem 0.85rem;
+  border-radius: 4px;
+  transition: background-color 0.15s ease;
+  box-sizing: border-box;
+  border-bottom: 1px solid #9c9371;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  min-height: 2.75rem;
+}
+
+.sl-markdown-content img {
+  height: auto;
+}
+
+button[data-yue-compile]:hover {
+  background-color: var(--color-brand-hover) !important;
+  color: #fdfbf7 !important;
+}
+
+/* --- HOME PAGE FEATURES & FOOTER --- */
+[data-has-hero] .sl-markdown-content {
+  margin: var(--home-space-m) 0 0;
+  padding: 0;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+  gap: var(--home-space-s);
+  margin: 0;
+}
+
+.feature {
+  margin: 0;
+  background-color: var(--sl-color-bg-nav);
+  border: 1px solid var(--sl-color-hairline);
+  border-radius: 12px;
+  padding: var(--home-space-s);
+  display: flex;
+  flex-direction: column;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.feature:hover {
+  border-color: var(--vp-c-brand-1);
+}
+
+.feature h2,
+.feature h3 {
+  margin-top: 0 !important;
+  margin-bottom: 0.5rem !important;
+  font-size: 1.2rem !important;
+  color: var(--sl-color-white);
+  font-family: "Noto Serif", "Noto Serif SC", serif !important;
+  letter-spacing: -0.02em;
+}
+
+.feature p {
+  margin: 0 !important;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--sl-color-gray-3);
+}
+
+.home-footer {
+  border-top: 1px solid var(--sl-color-hairline);
+  padding: var(--home-space-m) 0 0;
+  margin-top: var(--home-space-l);
+  text-align: center;
+}
+
+.home-footer p {
+  margin: 0 !important;
+  line-height: 24px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--sl-color-gray-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-link-button.primary,
+  button[data-yue-compile],
+  .feature {
+    transition: none;
+  }
+}
+
+/* Prism theme for YueCompiler output (shikijs/themes light-plus & dark-plus) */
+.code-output,
+.code-output code {
+  background: #ffffff;
+  color: #000000;
+  font-size: 14px;
+}
+
+:root:not([data-theme="light"]) .code-output,
+:root:not([data-theme="light"]) .code-output code,
+[data-theme="dark"] .code-output,
+[data-theme="dark"] .code-output code {
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+/* light-plus */
+.code-output .token.comment {
+  color: #008000;
+}
+
+.code-output .token.keyword {
+  color: #af00db;
+}
+
+.code-output .token.operator,
+.code-output .token.punctuation {
+  color: #000000;
+}
+
+.code-output .token.string,
+.code-output .token.char {
+  color: #a31515;
+}
+
+.code-output .token.regex {
+  color: #811f3f;
+}
+
+.code-output .token.variable,
+.code-output .token.parameter {
+  color: #001080;
+}
+
+.code-output .token.number,
+.code-output .token.boolean,
+.code-output .token.constant {
+  color: #098658;
+}
+
+.code-output .token.function {
+  color: #795e26;
+}
+
+.code-output .token.class-name,
+.code-output .token.builtin {
+  color: #267f99;
+}
+
+.code-output .token.invalid {
+  color: #cd3131;
+}
+
+/* dark-plus */
+:root:not([data-theme="light"]) .code-output .token.comment,
+[data-theme="dark"] .code-output .token.comment {
+  color: #6a9955;
+}
+
+:root:not([data-theme="light"]) .code-output .token.keyword,
+[data-theme="dark"] .code-output .token.keyword {
+  color: #c586c0;
+}
+
+:root:not([data-theme="light"]) .code-output .token.operator,
+:root:not([data-theme="light"]) .code-output .token.punctuation,
+[data-theme="dark"] .code-output .token.operator,
+[data-theme="dark"] .code-output .token.punctuation {
+  color: #d4d4d4;
+}
+
+:root:not([data-theme="light"]) .code-output .token.string,
+:root:not([data-theme="light"]) .code-output .token.char,
+[data-theme="dark"] .code-output .token.string,
+[data-theme="dark"] .code-output .token.char {
+  color: #ce9178;
+}
+
+:root:not([data-theme="light"]) .code-output .token.regex,
+[data-theme="dark"] .code-output .token.regex {
+  color: #d16969;
+}
+
+:root:not([data-theme="light"]) .code-output .token.variable,
+:root:not([data-theme="light"]) .code-output .token.parameter,
+[data-theme="dark"] .code-output .token.variable,
+[data-theme="dark"] .code-output .token.parameter {
+  color: #9cdcfe;
+}
+
+:root:not([data-theme="light"]) .code-output .token.number,
+:root:not([data-theme="light"]) .code-output .token.boolean,
+:root:not([data-theme="light"]) .code-output .token.constant,
+[data-theme="dark"] .code-output .token.number,
+[data-theme="dark"] .code-output .token.boolean,
+[data-theme="dark"] .code-output .token.constant {
+  color: #b5cea8;
+}
+
+:root:not([data-theme="light"]) .code-output .token.function,
+[data-theme="dark"] .code-output .token.function {
+  color: #dcdcaa;
+}
+
+:root:not([data-theme="light"]) .code-output .token.class-name,
+:root:not([data-theme="light"]) .code-output .token.builtin,
+[data-theme="dark"] .code-output .token.class-name,
+[data-theme="dark"] .code-output .token.builtin {
+  color: #4ec9b0;
+}
+
+:root:not([data-theme="light"]) .code-output .token.invalid,
+[data-theme="dark"] .code-output .token.invalid {
+  color: #f44747;
+}

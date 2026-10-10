@@ -1,0 +1,525 @@
+---
+title: 宏
+sidebar:
+  order: 28
+---
+
+## 常见用法
+
+&emsp;&emsp;宏函数用于在编译时执行一段代码来生成新的代码，并将生成的代码插入到最终编译结果中。
+
+```yuescript
+macro PI2 = -> math.pi * 2
+area = $PI2 * 5
+
+macro HELLO = -> "'你好 世界'"
+print $HELLO
+
+macro config = (debugging) ->
+  global debugMode = debugging == "true"
+  ""
+
+macro asserts = (cond) ->
+  debugMode and "assert #{cond}" or ""
+
+macro assert = (cond) ->
+  debugMode and "assert #{cond}" or "#{cond}"
+
+$config true
+$asserts item ~= nil
+
+$config false
+value = $assert item
+
+-- 宏函数参数传递的表达式会被转换为字符串
+macro and = (...) -> "#{ table.concat {...}, ' and ' }"
+if $and f1!, f2!, f3!
+  print "OK"
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro PI2 = -> math.pi * 2
+area = $PI2 * 5
+
+macro HELLO = -> "'你好 世界'"
+print $HELLO
+
+macro config = (debugging) ->
+  global debugMode = debugging == "true"
+  ""
+
+macro asserts = (cond) ->
+  debugMode and "assert #{cond}" or ""
+
+macro assert = (cond) ->
+  debugMode and "assert #{cond}" or "#{cond}"
+
+$config true
+$asserts item ~= nil
+
+$config false
+value = $assert item
+
+-- 宏函数参数传递的表达式会被转换为字符串
+macro and = (...) -> "#{ table.concat {...}, ' and ' }"
+if $and f1!, f2!, f3!
+  print "OK"
+```
+
+</div>
+</div>
+
+## 直接插入代码
+
+&emsp;&emsp;宏函数可以返回一个包含月之脚本代码的字符串，或是一个包含 Lua 代码字符串的配置表。
+
+```yuescript
+macro yueFunc = (var) -> "local #{var} = ->"
+$yueFunc funcA
+funcA = -> "无法访问宏生成月之脚本里定义的变量"
+
+macro luaFunc = (var) -> {
+  code: "local function #{var}() end"
+  type: "lua"
+}
+$luaFunc funcB
+funcB = -> "无法访问宏生成 Lua 代码里定义的变量"
+
+macro lua = (code) -> {
+  :code
+  type: "lua"
+}
+
+-- raw字符串的开始和结束符号会自动被去除了再传入宏函数
+$lua[==[
+-- 插入原始Lua代码
+if cond then
+  print("输出")
+end
+]==]
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro yueFunc = (var) -> "local #{var} = ->"
+$yueFunc funcA
+funcA = -> "无法访问宏生成月之脚本里定义的变量"
+
+macro luaFunc = (var) -> {
+  code: "local function #{var}() end"
+  type: "lua"
+}
+$luaFunc funcB
+funcB = -> "无法访问宏生成 Lua 代码里定义的变量"
+
+macro lua = (code) -> {
+  :code
+  type: "lua"
+}
+
+-- raw字符串的开始和结束符号会自动被去除了再传入宏函数
+$lua[==[
+-- 插入原始Lua代码
+if cond then
+  print("输出")
+end
+]==]
+```
+
+</div>
+</div>
+
+## 导出宏
+
+&emsp;&emsp;宏函数可以从一个模块中导出，并在另一个模块中导入。你必须将导出的宏函数放在一个单独的文件中使用，而且只有宏定义、宏导入和宏展开可以放入这个宏导出模块中。
+
+```yuescript
+-- 文件: utils.yue
+export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
+export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
+export macro foreach = (items, action) -> "for _ in *#{items}
+  #{action}"
+
+-- 文件 main.yue
+import "utils" as {
+  $, -- 表示导入所有宏的符号
+  $foreach: $each -- 重命名宏 $foreach 为 $each
+}
+[1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+-- 文件: utils.yue
+export macro map = (items, action) -> "[#{action} for _ in *#{items}]"
+export macro filter = (items, action) -> "[_ for _ in *#{items} when #{action}]"
+export macro foreach = (items, action) -> "for _ in *#{items}
+  #{action}"
+
+-- 文件 main.yue
+-- 在浏览器中不支持import函数，请在真实环境中尝试
+--[[
+import "utils" as {
+  $, -- 表示导入所有宏的符号
+  $foreach: $each -- 重命名宏 $foreach 为 $each
+}
+[1, 2, 3] |> $map(_ * 2) |> $filter(_ > 4) |> $each print _
+]]
+```
+
+</div>
+</div>
+
+## 内置宏
+
+&emsp;&emsp;月之脚本中有一些内置可以直接使用的宏，但你可以通过声明相同名称的宏来覆盖它们。
+
+```yuescript
+print $FILE -- 获取当前模块名称的字符串
+print $LINE -- 获取当前代码行数：2
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+print $FILE -- 获取当前模块名称的字符串
+print $LINE -- 获取当前代码行数：2
+```
+
+</div>
+</div>
+
+## 用宏生成宏
+
+&emsp;&emsp;在月之脚本中，宏函数允许你在编译时生成代码。通过嵌套的宏函数，你可以创建更复杂的生成模式。这个特性允许你定义一个宏函数，用它来生成另一个宏函数，从而实现更加动态的代码生成。
+
+```yuescript
+macro Enum = (...) ->
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
+
+macro BodyType = $Enum(
+  Static
+  Dynamic
+  Kinematic
+)
+
+print "有效的枚举类型:", $BodyType Static
+-- print "编译报错的枚举类型:", $BodyType Unknown
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro Enum = (...) ->
+  items = {...}
+  itemSet = {item, true for item in *items}
+  (item) ->
+    error "got \"#{item}\", expecting one of #{table.concat items, ', '}" unless itemSet[item]
+    "\"#{item}\""
+
+macro BodyType = $Enum(
+  Static
+  Dynamic
+  Kinematic
+)
+
+print "有效的枚举类型:", $BodyType Static
+-- print "编译报错的枚举类型:", $BodyType Unknown
+```
+
+</div>
+</div>
+
+## 生成多行代码
+
+&emsp;&emsp;当宏返回多行 Yue 代码时，不推荐使用带引号的多行字符串，建议优先使用 `-> |`。
+
+&emsp;&emsp;带引号的字符串会按字面保留文本；而 YAML 风格多行字符串会移除公共前导缩进。对宏生成的 Yue 代码来说，这通常能让代码块结构更稳定，尤其是在生成代码里包含注释或嵌套块时。
+
+```yuescript
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro default_conf = (conf) -> "
+  -- useful; only set once
+#{conf}.identity = 'LOVE'
+#{conf}.version = \"11.5\"
+  "
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+</div>
+</div>
+
+```yuescript
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro default_conf = (conf) -> |
+  -- useful; only set once
+  #{conf}.identity = 'LOVE'
+  #{conf}.version = "11.5"
+
+love.conf = (t) ->
+  $default_conf t
+```
+
+</div>
+</div>
+
+## 宏参数检查
+
+&emsp;&emsp;可以直接在参数列表中声明期望的 AST 节点类型，并在编译时检查传入的宏参数是否符合预期。
+
+```yuescript
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro printNumAndStr = (num `Num, str `String) -> |
+  print(
+    #{num}
+    #{str}
+  )
+
+$printNumAndStr 123, "hello"
+```
+
+</div>
+</div>
+
+&emsp;&emsp;如果需要做更加灵活的参数检查操作，可以使用内置的 `$is_ast` 宏函数在合适的位置进行手动检查。
+
+```yuescript
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro printNumAndStr = (num, str) ->
+  error "expected Num as first argument" unless $is_ast Num, num
+  error "expected String as second argument" unless $is_ast String, str
+  "print(#{num}, #{str})"
+
+$printNumAndStr 123, "hello"
+```
+
+</div>
+</div>
+
+&emsp;&emsp;更多关于可用 AST 节点的详细信息，请参考 [yue_parser.cpp](https://github.com/IppClub/YueScript/blob/main/src/yuescript/yue_parser.cpp) 中大写的规则定义。
+
+## 注解语句
+
+&emsp;&emsp;注解语句会把一个宏应用到它后面的那条语句上。
+
+&emsp;&emsp;这等价于调用该宏，并把后面那条语句的源码作为最后一个参数附加进去。
+
+```yuescript
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro ShowName = (code) -> |
+  print "#{code\match '^[%w_]*'}"
+
+$[ShowName]
+myFunc = ->
+
+return
+```
+
+</div>
+</div>
+
+&emsp;&emsp;如果注解宏返回的是配置表，可选字段 `before` 可以控制生成结果插入到被注解语句之前还是之后。
+
+```yuescript
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro Tag = (tag, code) ->
+  tableName = code\match "^[%w_]+"
+  return
+    type: "text"
+    before: tag == "before"
+    code: "-- #{tag}:#{tableName}"
+
+$[Tag before]
+tableA = {}
+
+$[Tag after]
+tableB = {}
+
+return
+```
+
+</div>
+</div>
+
+&emsp;&emsp;由于后面的语句会作为额外的宏参数传入，注解也可以从类声明生成注册代码。它同样可以使用普通宏支持的 AST 参数检查。
+
+```yuescript
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro Register = (registry, code`ClassDecl) ->
+  className = code\match "^class%s+(%w+)"
+  return |
+    #{registry}["#{className}"] = #{className}
+
+registry = {}
+
+$[Register(registry)]
+class Worker
+  run: => "ok"
+
+return
+```
+
+</div>
+</div>
+
+&emsp;&emsp;注解也可以用来给函数注入包装代码。
+
+```yuescript
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+<div class="yue-example">
+<button type="button" data-yue-compile>Compile</button>
+<div hidden data-pagefind-ignore>
+
+```yue
+macro ValidateNumberArgs = (code) ->
+  funcName = code\match "^(%w+)%s*="
+  return |
+    local __orig_#{funcName} = #{funcName}
+    #{funcName} = (...) ->
+      for i = 1, select "#", ...
+        assert type(select i, ...) == "number", "expected number for arg \#{i}"
+      __orig_#{funcName} ...
+
+$[ValidateNumberArgs]
+add = (a, b) -> a + b
+```
+
+</div>
+</div>
+
+&emsp;&emsp;注解后面必须紧跟一条语句，而且不能作用在 `return` 语句上。如果被注解的语句正好位于代码块末尾，而你又需要拿到原始的语句 AST 形态，就需要额外补一个显式的 `return`，避免它被隐式返回表达式包起来。

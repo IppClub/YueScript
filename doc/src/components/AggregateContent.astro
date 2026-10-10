@@ -1,0 +1,15 @@
+---
+interface Props {
+  prefix: string;
+}
+
+const { prefix } = Astro.props;
+// Each Markdown page can reuse heading IDs. Namespace them in the combined page.
+const html = (await Astro.slots.render("default"))
+  .replace(/\bid="([^"]+)"/g, `id="${prefix}--$1"`)
+  .replace(/\bhref="#([^"]+)"/g, `href="#${prefix}--$1"`)
+  .replace(/(<\/?h)([1-5])\b/g, (_, tag, level) => `${tag}${Number(level) + 1}`)
+  .replace(/<img\b(?![^>]*\sloading\s*=)/g, '<img loading="lazy"');
+---
+
+<Fragment set:html={html} />

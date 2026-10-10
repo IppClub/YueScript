@@ -1,18 +1,5 @@
 {
-  "compilerOptions": {
-    "target": "ES2020",
-    "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "lib": ["ES2020", "DOM", "DOM.Iterable"],
-    "jsx": "preserve",
-    "types": ["vitepress/client"],
-    "skipLibCheck": true,
-    "noEmit": true
-  },
-  "include": [
-    "docs/.vitepress/**/*.ts",
-    "docs/.vitepress/**/*.mts",
-    "docs/.vitepress/**/*.vue",
-    "docs/.vitepress/env.d.ts"
-  ]
+  "extends": "astro/tsconfigs/strictest",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist"]
 }

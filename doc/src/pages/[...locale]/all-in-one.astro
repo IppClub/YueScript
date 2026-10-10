@@ -1,0 +1,53 @@
+---
+import { getCollection, render } from "astro:content";
+import StarlightPage from "@astrojs/starlight/components/StarlightPage.astro";
+import AggregateContent from "../../components/AggregateContent.astro";
+import { locales } from "../../locales.mjs";
+
+interface Props {
+  locale: string;
+  lang: string;
+}
+
+export function getStaticPaths() {
+  return Object.entries(locales).map(([locale, { lang }]) => ({
+    params: { locale: locale === "root" ? undefined : locale },
+    props: { locale, lang },
+  }));
+}
+
+const { locale, lang } = Astro.props;
+const entries = (
+  await getCollection("docs", ({ id, data }) => {
+    const entryLocale =
+      Object.keys(locales).find(
+        (key) => id === key || id.startsWith(`${key}/`),
+      ) ?? "root";
+    return !data.draft && data.template !== "splash" && entryLocale === locale;
+  })
+).sort(
+  (a, b) =>
+    (a.data.sidebar.order ?? Infinity) - (b.data.sidebar.order ?? Infinity) ||
+    a.id.localeCompare(b.id),
+);
+const sections = await Promise.all(
+  entries.map(async (entry) => ({ entry, ...(await render(entry)) })),
+);
+---
+
+<StarlightPage
+  lang={lang}
+  frontmatter={{
+    title: Astro.locals.t("yue.allInOne"),
+    tableOfContents: false,
+  }}
+>
+  {sections.map(({ entry, Content }) => (
+    <article id={entry.id}>
+      <h2>{entry.data.title}</h2>
+      <AggregateContent prefix={entry.id}>
+        <Content />
+      </AggregateContent>
+    </article>
+  ))}
+</StarlightPage>

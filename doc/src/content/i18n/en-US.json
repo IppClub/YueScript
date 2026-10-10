@@ -1,0 +1,20 @@
+{
+  "404.text": "Nothing here but Xiaoyu and her laptop! Check the URL or try using the search bar.",
+  "yue.allInOne": "All-in-One View",
+  "yue.try": "Try yue!",
+  "yue.404.home": "Back to home",
+  "yue.compiler.title": "Compiler",
+  "yue.compiler.close": "Close Compiler",
+  "yue.compiler.loading": "Loading compiler…",
+  "yue.compiler.loadError": "The compiler could not load. Reload the page to try again.",
+  "yue.compiler.modalLoadError": "The compiler could not load. Close it and try again.",
+  "yue.compiler.buildRuntime": "Build the YueScript compiler with: make wasm",
+  "yue.compiler.compile": "Compile",
+  "yue.compiler.run": "Run Code",
+  "yue.compiler.programOutput": "Program output",
+  "yue.compiler.source": "YueScript source",
+  "yue.compiler.luaOutput": "Lua output",
+  "yue.compiler.finished": "Program finished without output.",
+  "yue.compiler.complete": "Compilation complete. Lua output updated.",
+  "yue.compiler.failed": "The compiler failed. Try again or report this code at github.com/IppClub/YueScript/issues."
+}

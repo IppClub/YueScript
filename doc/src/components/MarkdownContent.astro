@@ -1,0 +1,16 @@
+---
+import { escapeHTML } from "astro/runtime/server/escape.js";
+import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
+
+const compileLabel = escapeHTML(Astro.locals.t("yue.compiler.compile"));
+const html = (await Astro.slots.render("default"))
+  .replace(/<(pre|code)\b(?![^>]*\stranslate\s*=)/g, '<$1 translate="no"')
+  .replace(
+    /(<button\b[^>]*\bdata-yue-compile(?=[\s>])[^>]*>)[^<]*(<\/button>)/g,
+    (_, opening, closing) => `${opening}${compileLabel}${closing}`,
+  );
+---
+
+<MarkdownContent>
+  <Fragment set:html={html} />
+</MarkdownContent>

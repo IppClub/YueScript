@@ -1,0 +1,20 @@
+{
+  "404.text": "Tak ada apa pun di sini selain Xiaoyu dan laptopnya! Periksa URL atau coba gunakan bilah pencarian.",
+  "yue.allInOne": "Tampilan Satu Halaman",
+  "yue.try": "Coba yue!",
+  "yue.404.home": "Kembali ke beranda",
+  "yue.compiler.title": "Kompiler",
+  "yue.compiler.close": "Tutup kompiler",
+  "yue.compiler.loading": "Memuat kompiler…",
+  "yue.compiler.loadError": "Kompiler tidak dapat dimuat. Muat ulang halaman untuk mencoba lagi.",
+  "yue.compiler.modalLoadError": "Kompiler tidak dapat dimuat. Tutup dan coba lagi.",
+  "yue.compiler.buildRuntime": "Bangun kompiler YueScript dengan: make wasm",
+  "yue.compiler.compile": "Kompilasi",
+  "yue.compiler.run": "Jalankan Kode",
+  "yue.compiler.programOutput": "Keluaran program",
+  "yue.compiler.source": "Kode sumber YueScript",
+  "yue.compiler.luaOutput": "Keluaran Lua",
+  "yue.compiler.finished": "Program selesai tanpa keluaran.",
+  "yue.compiler.complete": "Kompilasi selesai. Keluaran Lua diperbarui.",
+  "yue.compiler.failed": "Kompiler gagal. Coba lagi atau laporkan kode ini di github.com/IppClub/YueScript/issues."
+}

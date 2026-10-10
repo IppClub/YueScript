@@ -3,7 +3,7 @@
 <table align="center">
   <tr>
     <td align="center" valign="middle" width="150" height="150">
-      <img src="doc/docs/.vitepress/public/image/yuescript.png" alt="YueScript logo"/><br/>
+      <img src="doc/public/image/yuescript.png" alt="YueScript logo"/><br/>
     </td>
     <td valign="middle">
       <strong>A delightful language that compiles to Lua</strong><br/>
@@ -18,7 +18,7 @@
 </table>
 
 <p align="center">
-  <img src="doc/docs/.vitepress/public/image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png" width="360" alt="Xiaoyu, the YueScript mascot"/>
+  <img src="doc/public/image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png" width="360" alt="Xiaoyu, the YueScript mascot"/>
 </p>
 
 <p align="center">

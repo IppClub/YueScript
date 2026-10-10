@@ -1,0 +1,14 @@
+---
+import NotFound from "../404.astro";
+import { locales } from "../../locales.mjs";
+
+export function getStaticPaths() {
+  return Object.keys(locales)
+    .filter((locale) => locale !== "root")
+    .map((locale) => ({ params: { locale } }));
+}
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, "/");
+---
+
+<NotFound home={`${base}${Astro.params.locale}/`} />
