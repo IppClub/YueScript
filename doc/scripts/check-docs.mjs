@@ -47,6 +47,7 @@ const docs = files
       file,
       source,
       slug,
+      title: frontmatter.match(/^title: (.+)$/m)?.[1],
       splash: /^template:\s*splash$/m.test(frontmatter),
       order: Number(frontmatter.match(/^  order: (-?\d+)/m)?.[1] ?? Infinity),
     };
@@ -71,10 +72,26 @@ function checkTranslations(html, lang, route) {
       );
     }
   }
-  assert.ok(
-    decodeHtml(html).includes(`>${dictionary["yue.try"]}</a>`),
-    `Wrong Try link translation: ${route}`,
-  );
+  const locale = Object.keys(locales).find((key) => locales[key].lang === lang);
+  const trySlug = locale === "root" ? "try" : `${locale}/try`;
+  const tryTitle = docs.find(({ slug }) => slug === trySlug)?.title;
+  assert.ok(tryTitle, `Missing Try page title: ${lang}`);
+  const tryLinks = [
+    ...html.matchAll(/<a\b[^>]*href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g),
+  ]
+    .filter(([, href]) => href === `/${trySlug}/`)
+    .map(([, , content]) => decodeHtml(content.replace(/<[^>]*>/g, "")).trim());
+  // Localized 404 pages have no sidebar or Try button.
+  if (!route.endsWith("/404/")) {
+    assert.ok(tryLinks.length, `Missing localized Try link: ${route}`);
+  }
+  for (const label of tryLinks) {
+    // Home buttons use the UI message; sidebar links use the page title.
+    assert.ok(
+      label === dictionary["yue.try"] || label === tryTitle,
+      `Wrong Try link translation: ${route}: ${label}`,
+    );
+  }
   assert.ok(
     decodeHtml(html).includes(
       `aria-label="${dictionary["yue.compiler.close"]}"`,
