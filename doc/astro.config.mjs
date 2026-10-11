@@ -4,8 +4,51 @@ import { defineConfig } from "astro/config";
 
 import starlight from "@astrojs/starlight";
 import vue from "@astrojs/vue";
+import ogImages, { element, Renderer } from "@alfanjauhari/astro-og-images";
 
 import { locales } from "./src/locales.mjs";
+
+const ogRenderer = new Renderer();
+for (const [name, font] of [
+  [
+    "Noto Serif",
+    "@fontsource/noto-serif/files/noto-serif-latin-700-normal.woff2",
+  ],
+  [
+    "Noto Serif",
+    "@fontsource/noto-serif/files/noto-serif-latin-ext-700-normal.woff2",
+  ],
+  [
+    "Noto Serif SC",
+    "@fontsource/noto-serif-sc/files/noto-serif-sc-chinese-simplified-700-normal.woff2",
+  ],
+  ["Noto Sans", "@fontsource/noto-sans/files/noto-sans-latin-400-normal.woff2"],
+  [
+    "Noto Sans",
+    "@fontsource/noto-sans/files/noto-sans-latin-ext-400-normal.woff2",
+  ],
+  [
+    "Noto Sans SC",
+    "@fontsource/noto-sans-sc/files/noto-sans-sc-chinese-simplified-400-normal.woff2",
+  ],
+]) {
+  await ogRenderer.registerFont({
+    name,
+    data: readFileSync(new URL(import.meta.resolve(font))),
+  });
+}
+const ogMascot = `data:image/png;base64,${readFileSync(
+  new URL(
+    "./public/image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png",
+    import.meta.url,
+  ),
+).toString("base64")}`;
+const ogLogo = `data:image/svg+xml;base64,${Buffer.from(
+  readFileSync(
+    new URL("./public/image/yuescript.svg", import.meta.url),
+    "utf8",
+  ).replaceAll("fill:#b4ac8f", "fill:#ffffff"),
+).toString("base64")}`;
 
 // The sidebar config runs before Astro loads content collections.
 const allInOneLabels = Object.fromEntries(
@@ -44,6 +87,59 @@ export default defineConfig({
   trailingSlash: "always",
   redirects,
   integrations: [
+    ogImages({
+      format: "png",
+      width: 1200,
+      height: 630,
+      renderer: ogRenderer,
+      emoji: "from-font",
+      render: ({ title, description }) =>
+        element(
+          "div",
+          {
+            tw: "flex h-full w-full flex-col bg-[#0b0e14] p-16 text-[#f1f5f9]",
+            style: { fontFamily: "Noto Serif, Noto Serif SC", fontWeight: 700 },
+          },
+          element(
+            "div",
+            {
+              tw: "flex items-center gap-3 text-[32px] leading-[1.2] text-[#d4ceb8]",
+            },
+            element("img", { src: ogLogo, width: 40, height: 34 }),
+            "YueScript",
+          ),
+          element(
+            "div",
+            { tw: "flex flex-1 items-center gap-12" },
+            element(
+              "div",
+              { tw: "flex flex-1 flex-col gap-6" },
+              element(
+                "div",
+                {
+                  tw: "leading-[1.2] text-[#d4ceb8]",
+                  style: { fontSize: title.length > 60 ? 48 : 64 },
+                },
+                title,
+              ),
+              description &&
+                element(
+                  "div",
+                  {
+                    tw: "text-[26px] leading-[1.4] text-[#e2e8f0]",
+                    style: {
+                      fontFamily: "Noto Sans, Noto Sans SC",
+                      fontWeight: 400,
+                    },
+                  },
+                  description,
+                ),
+            ),
+            element("img", { src: ogMascot, width: 250, height: 350 }),
+          ),
+          element("div", { tw: "text-[22px] text-[#f9c749]" }, "yuescript.org"),
+        ),
+    }),
     {
       name: "legacy-html-redirects",
       hooks: {

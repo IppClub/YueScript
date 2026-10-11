@@ -1,2 +1,4 @@
 allowBuilds:
   esbuild: true
+minimumReleaseAgeExclude:
+  - "@alfanjauhari/astro-og-images@0.3.0"
