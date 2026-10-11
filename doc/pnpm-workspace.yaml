@@ -1,4 +1,4 @@
 allowBuilds:
   esbuild: true
-patchedDependencies:
-  "@alfanjauhari/astro-og-images@0.2.0": patches/@alfanjauhari__astro-og-images@0.2.0.patch
+minimumReleaseAgeExclude:
+  - "@alfanjauhari/astro-og-images@0.3.0"

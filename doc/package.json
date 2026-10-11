@@ -23,7 +23,7 @@
     "typescript": "^6.0.3"
   },
   "dependencies": {
-    "@alfanjauhari/astro-og-images": "0.2.0",
+    "@alfanjauhari/astro-og-images": "0.3.0",
     "@astrojs/starlight": "^0.42.5",
     "@astrojs/vue": "^7.0.3",
     "@codemirror/commands": "^6.10.3",
