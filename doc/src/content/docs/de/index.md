@@ -8,9 +8,10 @@ hero:
       <a href="/de/doc/extras/mascot/"><img width="1071" height="1500" decoding="async" fetchpriority="high" src="/image/mascot/electrichearts_20260211A_yuescript_xiaoyu.png"
       alt="YueScript" /></a>
   actions:
-    - text: Schnellstart →
+    - text: Dokumentation
       link: /de/doc/
       variant: primary
+      icon: open-book
     - text: yue ausprobieren!
       link: /de/try/
       variant: minimal
