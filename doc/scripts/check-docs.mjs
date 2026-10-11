@@ -1,7 +1,27 @@
 import assert from "node:assert/strict";
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
+import { getOgImagePath } from "@alfanjauhari/astro-og-images/path";
 
 import { locales } from "../src/locales.mjs";
+
+for (const [pathname, imagePath] of [
+  ["/docs/404/", "/docs/404.png"],
+  ["/docs/zh/404/", "/docs/zh/404/index.png"],
+  ["/docs/doc/", "/docs/doc/index.png"],
+]) {
+  assert.equal(
+    new URL(
+      getOgImagePath({
+        base: "/docs/",
+        format: "png",
+        site: new URL("https://yuescript.org"),
+        url: new URL(pathname, "https://yuescript.org"),
+      }),
+    ).pathname,
+    imagePath,
+    `Wrong preview path under DOCS_BASE: ${pathname}`,
+  );
+}
 
 const translations = Object.fromEntries(
   Object.values(locales).map(({ lang }) => [
@@ -110,6 +130,36 @@ function checkTranslations(html, lang, route) {
 }
 
 function checkInterface(html, route) {
+  const previewImages = [
+    ...html.matchAll(/<meta\s+property="og:image"\s+content="([^"]+)"/g),
+  ];
+  assert.equal(previewImages.length, 1, `Expected one preview image: ${route}`);
+  const previewUrl = new URL(decodeHtml(previewImages[0][1]));
+  assert.equal(
+    previewUrl.origin,
+    "https://yuescript.org",
+    `Wrong preview origin: ${route}`,
+  );
+  const preview = readFileSync(`dist${previewUrl.pathname}`);
+  assert.equal(
+    preview.subarray(0, 8).toString("hex"),
+    "89504e470d0a1a0a",
+    `Invalid preview PNG: ${route}`,
+  );
+  assert.equal(preview.readUInt32BE(16), 1200, `Wrong preview width: ${route}`);
+  assert.equal(preview.readUInt32BE(20), 630, `Wrong preview height: ${route}`);
+  assert.equal(
+    decodeHtml(
+      html.match(/<meta\s+name="twitter:image"\s+content="([^"]+)"/)?.[1] ?? "",
+    ),
+    previewUrl.href,
+    `Twitter must use the same preview image: ${route}`,
+  );
+  assert.match(
+    html,
+    /name="twitter:card" content="summary_large_image"/,
+    `Missing large preview card: ${route}`,
+  );
   for (const [image] of html.matchAll(/<img\b[^>]*>/g)) {
     assert.match(
       image,
@@ -128,7 +178,18 @@ function checkInterface(html, route) {
     );
   }
   assert.match(html, /class="[^"]*sl-skip-link/, `Missing skip link: ${route}`);
-  assert.match(html, /name="theme-color"/, `Missing theme color: ${route}`);
+  for (const [theme, color] of [
+    ["light", "#8c8260"],
+    ["dark", "#b4ac8f"],
+  ]) {
+    assert.match(
+      html,
+      new RegExp(
+        `name="theme-color" content="${color}" media="\\(prefers-color-scheme: ${theme}\\)"`,
+      ),
+      `Missing ${theme} accent theme color: ${route}`,
+    );
+  }
   assert.match(
     html,
     /rel="preload"[^>]*as="font"/,
@@ -301,5 +362,5 @@ assert.ok(
   "Standalone yue-*.md manuals must be removed",
 );
 console.log(
-  `Verified ${docs.length} routes, legacy HTML redirects, ${Object.keys(locales).length} language aggregates, localized UI, ordering and anchors, and ${controls} compiler controls.`,
+  `Verified ${docs.length} routes, preview images, legacy HTML redirects, ${Object.keys(locales).length} language aggregates, localized UI, ordering and anchors, and ${controls} compiler controls.`,
 );

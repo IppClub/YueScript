@@ -2,9 +2,33 @@
 import Head from "@astrojs/starlight/components/Head.astro";
 import headingFont from "@fontsource/noto-serif/files/noto-serif-latin-700-normal.woff2?url";
 import heroFont from "@fontsource/noto-serif/files/noto-serif-latin-800-normal.woff2?url";
+import bodyFont from "@fontsource/noto-sans/files/noto-sans-latin-400-normal.woff2?url";
+import { getOgImagePath } from "@alfanjauhari/astro-og-images/path";
+
+const image = getOgImagePath({
+  base: import.meta.env.BASE_URL,
+  format: "png",
+  site: Astro.site,
+  url: Astro.url,
+});
+const imageAlt = `${Astro.locals.starlightRoute.entry.data.title} | YueScript`;
 ---
 
 <Head />
+<meta property="og:image" content={image} />
+<meta property="og:image:type" content="image/png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content={imageAlt} />
+<meta name="twitter:image" content={image} />
+<meta name="twitter:image:alt" content={imageAlt} />
+<link
+  rel="preload"
+  href={bodyFont}
+  as="font"
+  type="font/woff2"
+  crossorigin="anonymous"
+/>
 <link
   rel="preload"
   href={headingFont}
@@ -21,7 +45,16 @@ import heroFont from "@fontsource/noto-serif/files/noto-serif-latin-800-normal.w
     crossorigin="anonymous"
   />
 )}
-<meta name="theme-color" content="#0b0e14" />
+<meta
+  name="theme-color"
+  content="#8c8260"
+  media="(prefers-color-scheme: light)"
+/>
+<meta
+  name="theme-color"
+  content="#b4ac8f"
+  media="(prefers-color-scheme: dark)"
+/>
 
 <script is:inline>
   document.addEventListener(
@@ -39,14 +72,15 @@ import heroFont from "@fontsource/noto-serif/files/noto-serif-latin-800-normal.w
     true,
   );
 
-  const themeColor = document.querySelector('meta[name="theme-color"]');
-  const syncThemeColor = () =>
-    themeColor?.setAttribute(
-      "content",
+  const themeColors = document.querySelectorAll('meta[name="theme-color"]');
+  const syncThemeColor = () => {
+    // Match --sl-color-accent, including saved or manually selected themes.
+    const color =
       document.documentElement.dataset.theme === "light" ?
-        "#fdfbf7"
-      : "#0b0e14",
-    );
+        "#8c8260"
+      : "#b4ac8f";
+    themeColors.forEach((meta) => meta.setAttribute("content", color));
+  };
   syncThemeColor();
   new MutationObserver(syncThemeColor).observe(document.documentElement, {
     attributes: true,

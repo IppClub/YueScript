@@ -1,3 +1,14 @@
+@import "@fontsource/noto-sans/400.css";
+@import "@fontsource/noto-sans/500.css";
+@import "@fontsource/noto-sans/600.css";
+@import "@fontsource/noto-sans/700.css";
+@import "@fontsource/noto-sans/400-italic.css";
+@import "@fontsource/noto-sans/700-italic.css";
+@import "@fontsource/noto-sans-sc/400.css";
+@import "@fontsource/noto-sans-sc/500.css";
+@import "@fontsource/noto-sans-sc/600.css";
+@import "@fontsource/noto-sans-sc/700.css";
+
 @import "@fontsource/noto-serif/400.css";
 @import "@fontsource/noto-serif/600.css";
 @import "@fontsource/noto-serif/700.css";
@@ -13,8 +24,7 @@
 
 :root {
   /* --- TYPOGRAPHY --- */
-  --sl-font:
-    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --sl-font: "Noto Sans", "Noto Sans SC", sans-serif;
   --sl-font-mono:
     ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
