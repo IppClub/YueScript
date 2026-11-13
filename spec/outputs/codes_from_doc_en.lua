@@ -802,7 +802,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -1023,7 +1023,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
