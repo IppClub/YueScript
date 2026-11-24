@@ -39,9 +39,9 @@ YueScript-Modul in Lua verwenden:
   ```lua
   local yue = require("yue")
   local codes, err, globals = yue.to_lua([[
-    f = ->
-      print "Hallo Welt"
-    f!
+  f = ->
+    print "Hallo Welt"
+  f!
   ]],{
     implicit_return_root = true,
     reserve_line_number = true,

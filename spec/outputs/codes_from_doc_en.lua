@@ -4584,8 +4584,8 @@ f2 = function(_arg_0, c)
 	if c == nil then
 		c = { }
 	end
+	return print(a1, b, c)
 end
-print(a1, b, c)
 local arg1 = {
 	a = 0
 }

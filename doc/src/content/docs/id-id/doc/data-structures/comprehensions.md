@@ -317,7 +317,7 @@ Slicing juga bisa digunakan sebagai ekspresi. Ini berguna untuk mendapatkan sub-
 
 ```yuescript
 -- ambil item ke-2 dan ke-4 sebagai list baru
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- ambil 4 item terakhir
 last_four_items = items[-4, -1]
@@ -329,7 +329,7 @@ last_four_items = items[-4, -1]
 
 ```yue
 -- ambil item ke-2 dan ke-4 sebagai list baru
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- ambil 4 item terakhir
 last_four_items = items[-4, -1]

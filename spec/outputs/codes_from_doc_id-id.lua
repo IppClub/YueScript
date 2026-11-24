@@ -802,7 +802,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -1023,7 +1023,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -4584,8 +4584,8 @@ f2 = function(_arg_0, c)
 	if c == nil then
 		c = { }
 	end
+	return print(a1, b, c)
 end
-print(a1, b, c)
 local arg1 = {
 	a = 0
 }

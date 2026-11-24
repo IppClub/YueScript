@@ -241,6 +241,16 @@ for (const [locale, { lang }] of Object.entries(locales)) {
     );
   }
   assert.ok(!aggregate.includes("<starlight-toc"), `Unexpected TOC: ${route}`);
+  for (const asset of [
+    /<link rel="stylesheet" href="[^"]*\/ec\.[^"]+\.css">/g,
+    /<script type="module" src="[^"]*\/ec\.[^"]+\.js"><\/script>/g,
+  ]) {
+    assert.equal(
+      [...aggregate.matchAll(asset)].length,
+      1,
+      `Expected one copy of each shared Expressive Code asset: ${route}`,
+    );
+  }
   assert.equal(
     (aggregate.match(/data-yue-compile(?:>|\s)/g) ?? []).length,
     localeDocs.reduce(
@@ -288,11 +298,35 @@ for (const { file, source, slug, splash } of docs) {
     `Missing compiler controls: ${file}`,
   );
   controls += expectedControls;
+  const examples = [
+    ...source.matchAll(/^```(?:yuescript|yue)\n([\s\S]*?)\n```$/gm),
+  ];
   const snippets = [
     ...source.matchAll(
       /<div class="yue-example">[\s\S]*?```(?:yue|yuescript)\n([\s\S]*?)\n```/g,
     ),
-  ].map((match) => match[1]);
+  ].map((match) => {
+    const [, code] = match;
+    const visible = examples.findLast(
+      (example) => example.index + example[0].length <= match.index,
+    );
+    assert.ok(visible, `Missing visible example: ${file}`);
+    const [, visibleCode] = visible;
+    // The browser cannot import the separate utils.yue file used in this example.
+    const comparableCode =
+      file.endsWith("doc/advanced/macro.md") ?
+        code.replace(
+          /^--[^\n]*\n--\[\[\n(import "utils" as \{[\s\S]+)\n\]\]$/m,
+          "$1",
+        )
+      : code;
+    assert.equal(
+      comparableCode.trimEnd(),
+      visibleCode.trimEnd(),
+      `Compile input differs from the visible example in ${file}:\n${visibleCode}`,
+    );
+    return code;
+  });
   const payloads = [
     ...html.matchAll(/<div class="yue-example">[\s\S]*?\sdata-code="([^"]*)"/g),
   ].map((match) => decodeHtml(match[1]).replaceAll("\u007f", "\n"));

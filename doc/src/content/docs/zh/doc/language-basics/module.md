@@ -120,7 +120,7 @@ do
   import global
   print "hello"
   math.random 3
-  -- print = nil -- 报错：自动导入的全局变量是常量
+  -- print = nil -- 报错：自动导入的全局变量为常量
 
 do
   -- 被显式声明为全局的变量不会被自动导入

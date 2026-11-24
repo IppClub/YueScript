@@ -802,7 +802,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -1023,7 +1023,7 @@ do
 	local _accum_0 = { }
 	local _len_0 = 1
 	local _list_0 = items
-	for _index_0 = 2, 4 do
+	for _index_0 = 2, 4, 2 do
 		local _item_0 = _list_0[_index_0]
 		_accum_0[_len_0] = _item_0
 		_len_0 = _len_0 + 1
@@ -2501,7 +2501,7 @@ do
 	y, z = 2, 3
 end
 do
-	x = 1
+	X = 1
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
 	B = 2
@@ -2552,7 +2552,7 @@ do
 	y, z = 2, 3
 end
 do
-	x = 1
+	X = 1
 	print("只预先声明大写的变量为全局变量")
 	local a = 1
 	B = 2
@@ -4373,7 +4373,7 @@ if func(1, 2, 3, "你好", "世界") then
 	print("我在if内部")
 end
 if func(1, 2, 3, "你好", "世界") then
-	print("hello")
+	print("你好")
 	print("我在if内部")
 end
 local f1

@@ -408,7 +408,7 @@ if func 1, 2, 3,
 if func 1, 2, 3,
     "你好",
     "世界"
-  print "hello"
+  print "你好"
   print "我在if内部"
 ```
 

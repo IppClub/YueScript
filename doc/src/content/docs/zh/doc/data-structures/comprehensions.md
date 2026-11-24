@@ -317,7 +317,7 @@ reverse_slice = [item for item in *items[-1,1,-1]]
 
 ```yuescript
 -- 取第2和第4个元素作为新的列表
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- 取最后4个元素作为新的列表
 last_four_items = items[-4, -1]
@@ -329,7 +329,7 @@ last_four_items = items[-4, -1]
 
 ```yue
 -- 取第2和第4个元素作为新的列表
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- 取最后4个元素作为新的列表
 last_four_items = items[-4, -1]

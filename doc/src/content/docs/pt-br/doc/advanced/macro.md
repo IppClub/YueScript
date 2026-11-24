@@ -167,6 +167,7 @@ export macro foreach = (items, action) -> "for _ in *#{items}
   #{action}"
 
 -- arquivo main.yue
+-- A importação de arquivos não está disponível no navegador. Teste em um ambiente local.
 --[[
 import "utils" as {
   $, -- símbolo para importar todas as macros

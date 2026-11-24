@@ -320,6 +320,7 @@ print tb.item
 tb = <"value">: 123
 tb.<index> = tb.<>
 print tb.value
+
 tb.<> = __index: {item: "hallo"}
 print tb.item
 ```
@@ -448,6 +449,7 @@ a ??= false
 local a, b, c, d
 a = b ?? c ?? d
 func a ?? {}
+
 a ??= false
 ```
 

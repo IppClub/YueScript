@@ -86,7 +86,7 @@ const messages = {
     return Promise.all([import("vue"), import("./YueCompiler.vue")]);
   }
 
-  for (const container of document.querySelectorAll("[data-yue-compiler]")) {
+  function mountInlineCompiler(container: Element) {
     container.setAttribute("aria-busy", "true");
     container.textContent = messages.loading;
     loadCompiler()
@@ -98,6 +98,23 @@ const messages = {
         container.textContent = messages.loadError;
       })
       .finally(() => container.removeAttribute("aria-busy"));
+  }
+  const inlineCompilers = document.querySelectorAll("[data-yue-compiler]");
+  if (inlineCompilers.length && "IntersectionObserver" in window) {
+    // All in One also includes the Try page, near the bottom of the manual.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const { target, isIntersecting } of entries) {
+          if (!isIntersecting) continue;
+          observer.unobserve(target);
+          mountInlineCompiler(target);
+        }
+      },
+      { rootMargin: "200px" },
+    );
+    inlineCompilers.forEach((container) => observer.observe(container));
+  } else {
+    inlineCompilers.forEach(mountInlineCompiler);
   }
   const modal = dialog.querySelector<HTMLElement>("[data-yue-modal]")!;
   let compiler: App | undefined;

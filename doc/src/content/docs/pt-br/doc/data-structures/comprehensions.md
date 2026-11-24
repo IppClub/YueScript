@@ -317,7 +317,7 @@ O slicing também pode ser usado como expressão. Isso é útil para obter uma s
 
 ```yuescript
 -- pegar o 2º e 4º itens como nova lista
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- pegar os últimos 4 itens
 last_four_items = items[-4, -1]
@@ -329,7 +329,7 @@ last_four_items = items[-4, -1]
 
 ```yue
 -- pegar o 2º e 4º itens como nova lista
-sub_list = items[2, 4]
+sub_list = items[2, 4, 2]
 
 -- pegar os últimos 4 itens
 last_four_items = items[-4, -1]

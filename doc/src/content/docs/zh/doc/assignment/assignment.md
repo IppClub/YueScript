@@ -133,7 +133,7 @@ do
   y, z = 2, 3
 
 do
-  global x = 1
+  global X = 1
   global ^
   print "只预先声明大写的变量为全局变量"
   a = 1
@@ -154,7 +154,7 @@ do
   y, z = 2, 3
 
 do
-  global x = 1
+  global X = 1
   global ^
   print "只预先声明大写的变量为全局变量"
   a = 1

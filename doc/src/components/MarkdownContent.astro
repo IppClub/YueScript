@@ -3,7 +3,20 @@ import { escapeHTML } from "astro/runtime/server/escape.js";
 import MarkdownContent from "@astrojs/starlight/components/MarkdownContent.astro";
 
 const compileLabel = escapeHTML(Astro.locals.t("yue.compiler.compile"));
+const seenCodeAssets = new Set<string>();
 const html = (await Astro.slots.render("default"))
+  // Expressive Code adds its assets to the first code block of each Markdown
+  // file, so the All in One page receives the same stylesheet many times.
+  .replace(
+    /(<div class="expressive-code">)((?:<link rel="stylesheet" href="[^"]+">|<script type="module" src="[^"]+"><\/script>)+)/g,
+    (_, container: string, assets: string) =>
+      container +
+      assets.replace(/<link[^>]+>|<script[^>]+><\/script>/g, (asset) => {
+        if (seenCodeAssets.has(asset)) return "";
+        seenCodeAssets.add(asset);
+        return asset;
+      }),
+  )
   .replace(/<(pre|code)\b(?![^>]*\stranslate\s*=)/g, '<$1 translate="no"')
   .replace(
     /(<button\b[^>]*\bdata-yue-compile(?=[\s>])[^>]*>)[^<]*(<\/button>)/g,

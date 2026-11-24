@@ -464,7 +464,7 @@ f1 = (:a, :b, :c) ->
 f1 a: 1, b: "2", c: {}
 
 f2 = ({a: a1 = 123, :b = 'abc'}, c = {}) ->
-print a1, b, c
+  print a1, b, c
 
 arg1 = {a: 0}
 f2 arg1, arg2

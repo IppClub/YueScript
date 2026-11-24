@@ -24,7 +24,7 @@ sidebar:
 
   ```lua
   local yue = require("yue")
-  yue.insert_loaders()
+  yue.insert_loader()
   local success, result = xpcall(function()
     return require("yuescript_module_name")
   end, function(err)
