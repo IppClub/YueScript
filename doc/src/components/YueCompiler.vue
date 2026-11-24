@@ -18,9 +18,7 @@
         </div>
       </div>
     </div>
-    <p :class="compileError ? 'compiler-status' : 'sr-only'" role="status">
-      {{ compilationStatus }}
-    </p>
+    <p class="sr-only" role="status">{{ compilationStatus }}</p>
     <div v-if="!compileronly" class="compiler-actions">
       <output
         class="resultArea"
@@ -43,7 +41,12 @@
 </template>
 
 <script>
-import { defaultKeymap, history, historyKeymap } from "@codemirror/commands";
+import {
+  defaultKeymap,
+  history,
+  historyKeymap,
+  indentWithTab,
+} from "@codemirror/commands";
 import {
   HighlightStyle,
   indentUnit,
@@ -210,7 +213,6 @@ export default {
       readonly: true,
       code: "",
       compiled: "",
-      compileError: false,
       compilationStatus: "",
       result: "",
       editorView: null,
@@ -636,7 +638,7 @@ export default {
         extensions: [
           lineNumbers(),
           history(),
-          keymap.of([...defaultKeymap, ...historyKeymap]),
+          keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap]),
           StreamLanguage.define({
             ...yuescriptMode,
             tokenTable: {
@@ -736,9 +738,9 @@ export default {
         let res = ["", this.messages.failed];
         try {
           res = window.yue.tolua(text, true, !this.displayonly, true);
-          this.compileError = res[0] === "" && res[1] !== "";
+          const compileError = res[0] === "" && res[1] !== "";
           this.compilationStatus =
-            this.compileError ? res[1] : this.messages.complete;
+            compileError ? res[1] : this.messages.complete;
           if (res[0] !== "") {
             this.compiled = res[0];
           } else {
@@ -746,7 +748,6 @@ export default {
           }
         } catch (error) {
           this.compiled = res[1];
-          this.compileError = true;
           this.compilationStatus = res[1];
         }
       }
@@ -862,12 +863,6 @@ export default {
 .button:disabled {
   opacity: 0.6;
   cursor: wait;
-}
-
-.compiler-status {
-  margin-block: 0.75rem 0;
-  font-size: 0.875rem;
-  overflow-wrap: anywhere;
 }
 
 .code-editor {
